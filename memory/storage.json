@@ -1,13 +1,13 @@
 {
   "activePhase": "studio_setup",
-  "activeAgent": "producer",
+  "activeAgent": "archivist",
   "decisions": [
-    "Establish foundational elements for the AI game studio"
+    "Establish foundational elements for the AI game studio."
   ],
   "currentTasks": [
-    "Define studio mission and vision",
-    "Set up legal structure and registration",
-    "Establish initial budget and funding sources"
+    "Define studio mission and vision statements.",
+    "Establish team roles and responsibilities.",
+    "Set up project management tools and communication channels."
   ],
-  "lastStatus": "in_progress"
+  "lastStatus": "pending"
 }

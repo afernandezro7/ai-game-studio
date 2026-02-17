@@ -37,39 +37,63 @@ export class Orchestrator {
     console.log("=== AGENT RESULT ===")
     console.log(result)
 
-    // Actualizamos fase
-    this.memory.activePhase = result.phase
+    // Actualizamos fase según el agente activo
+    switch (this.memory.activeAgent) {
+      case "producer":
+        this.memory.activePhase = StudioPhase.STUDIO_SETUP
+        break
+      case "archivist":
+        this.memory.activePhase = StudioPhase.KNOWLEDGE_PREPARATION
+        break
+      case "gamedesign":
+        this.memory.activePhase = StudioPhase.GAME_DESIGN
+        break
+      case "qa":
+        this.memory.activePhase = StudioPhase.QA_REVIEW
+        break
+      case "release":
+        this.memory.activePhase = StudioPhase.RELEASE
+        break
+    }
 
-    // Evitar duplicados
+    // Evitar duplicados en decisiones
     if (!this.memory.decisions.includes(result.objective)) {
       this.memory.decisions.push(result.objective)
     }
 
-    // Actualizamos tareas y status
     this.memory.currentTasks = result.tasks
     this.memory.lastStatus = result.status
 
-    // 🔥 TRANSITION LOGIC
+    // TRANSICIÓN AL SIGUIENTE AGENTE
     this.memory.activeAgent = this.resolveNextAgent(result)
 
-    // Guardamos memoria
     MemoryService.save(this.memory)
 
     console.log("=== MEMORY UPDATED ===")
     console.log("Next active agent:", this.memory.activeAgent)
   }
 
+
   private resolveNextAgent(result: AgentOutput): AgentName {
-    const objectiveLower = result.objective.toLowerCase()
+    switch (this.memory.activeAgent) {
+      case "producer":
+        return "archivist"
 
-    if (result.phase === StudioPhase.STUDIO_SETUP && objectiveLower.includes("knowledge base")) {
-      return "archivist"
+      case "archivist":
+        return "gamedesign"
+
+      case "gamedesign":
+        return "qa"
+
+      case "qa":
+        return "release"
+
+      case "release":
+        return "release" // última fase, se mantiene
+
+      default:
+        return this.memory.activeAgent
     }
-
-    if (result.phase === StudioPhase.KNOWLEDGE_PREPARATION) {
-      return "archivist"
-    }
-
-    return this.memory.activeAgent
   }
+
 }
