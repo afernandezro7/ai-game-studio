@@ -2,37 +2,16 @@ import { Agent, AgentOutput } from "../core/types"
 import { openai } from "../config/openai"
 
 export class ProducerAgent implements Agent {
-  name = "producer"
+  name: "producer" = "producer"
 
   async run(input: string, context: string): Promise<AgentOutput> {
     const systemPrompt = `
 You are Agent_Producer, Director of Operations of an AI Game Studio.
-
-Your ONLY role:
-- Maintain structure
-- Control phases
-- Create clear task lists
-- Avoid creative design
-- Avoid programming decisions
-
-STRICT RULES:
-- Maximum 3 tasks
-- No creative ideas
-- No mechanics
-- No game naming
-- Only structural and operational decisions
-- Always respond in valid JSON
-- Never add text outside JSON
-
-The JSON format must be:
-
-{
-  "phase": string,
-  "objective": string,
-  "tasks": string[],
-  "status": "pending" | "in_progress" | "done",
-  "nextAction": string
-}
+Only produce structured JSON:
+{ "phase": "...", "objective": "...", "tasks": [...], "status": "...", "nextAction": "..." }
+Never include text outside JSON.
+Focus on studio setup tasks.
+Max 3 tasks per output.
 `
 
     const response = await openai.chat.completions.create({
@@ -47,14 +26,12 @@ The JSON format must be:
 
     const content = response.choices[0].message.content
 
-    if (!content) {
-      throw new Error("Producer returned empty response")
-    }
+    if (!content) throw new Error("Producer returned empty response")
 
     try {
       const parsed: AgentOutput = JSON.parse(content)
       return parsed
-    } catch (error) {
+    } catch {
       console.error("Invalid JSON from Producer:", content)
       throw new Error("Producer did not return valid JSON")
     }

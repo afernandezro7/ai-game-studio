@@ -1,5 +1,8 @@
 import { ProducerAgent } from "../agents/producer.agent"
 import { ArchivistAgent } from "../agents/archivist.agent"
+import { GameDesignAgent } from "../agents/gamedesign.agent"
+import { QAAgent } from "../agents/qa.agent"
+import { ReleaseAgent } from "../agents/release.agent"
 import { AgentOutput, AgentName, StudioPhase } from "./types"
 import { MemoryService, StudioMemory } from "../memory/memory.service"
 
@@ -15,6 +18,7 @@ export class Orchestrator {
 
     let result: AgentOutput
 
+    // Ejecutar el agente activo
     switch (activeAgent) {
       case "producer":
         const producer = new ProducerAgent()
@@ -24,6 +28,21 @@ export class Orchestrator {
       case "archivist":
         const archivist = new ArchivistAgent()
         result = await archivist.run(input, JSON.stringify(this.memory, null, 2))
+        break
+
+      case "gamedesign":
+        const gamedesign = new GameDesignAgent()
+        result = await gamedesign.run(input, JSON.stringify(this.memory, null, 2))
+        break
+
+      case "qa":
+        const qa = new QAAgent()
+        result = await qa.run(input, JSON.stringify(this.memory, null, 2))
+        break
+
+      case "release":
+        const release = new ReleaseAgent()
+        result = await release.run(input, JSON.stringify(this.memory, null, 2))
         break
 
       default:
@@ -37,7 +56,7 @@ export class Orchestrator {
     console.log("=== AGENT RESULT ===")
     console.log(result)
 
-    // Actualizamos fase según el agente activo
+    // Actualizamos fase automáticamente según agente
     switch (this.memory.activeAgent) {
       case "producer":
         this.memory.activePhase = StudioPhase.STUDIO_SETUP
@@ -73,7 +92,6 @@ export class Orchestrator {
     console.log("Next active agent:", this.memory.activeAgent)
   }
 
-
   private resolveNextAgent(result: AgentOutput): AgentName {
     switch (this.memory.activeAgent) {
       case "producer":
@@ -95,5 +113,4 @@ export class Orchestrator {
         return this.memory.activeAgent
     }
   }
-
 }
