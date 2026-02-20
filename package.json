@@ -1,0 +1,22 @@
+{
+  "name": "ai-game-studio",
+  "version": "1.0.0",
+  "description": "AI Game Studio Orchestrator",
+  "private": true,
+  "workspaces": [
+    "client-web"
+  ],
+  "scripts": {
+    "release:patch": "npm version patch -m \"chore(release): %s\" && git push && git push --tags",
+    "release:minor": "npm version minor -m \"chore(release): %s\" && git push && git push --tags",
+    "release:major": "npm version major -m \"chore(release): %s\" && git push && git push --tags"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
