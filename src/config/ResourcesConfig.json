@@ -1,0 +1,27 @@
+{
+  "resources": [
+    {
+      "id": "wood_yggdrasil",
+      "name": "Madera de Yggdrasil",
+      "type": "SoftCurrency",
+      "description": "Recurso principal para construcción."
+    },
+    {
+      "id": "steel_dwarf",
+      "name": "Acero Enano",
+      "type": "SoftCurrency",
+      "description": "Recurso principal para tropas."
+    },
+    {
+      "id": "runes",
+      "name": "Runas",
+      "type": "HardCurrency",
+      "description": "Moneda premium."
+    }
+  ],
+  "initialResources": {
+    "wood_yggdrasil": 500,
+    "steel_dwarf": 500,
+    "runes": 100
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://afernandezro7.github.io/ai-game-studio/"
+    }
+  ]
+}

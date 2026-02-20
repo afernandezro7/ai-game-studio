@@ -1,0 +1,142 @@
+{
+  "buildings": [
+    {
+      "id": "great_hall",
+      "name": "Gran Salón",
+      "description": "El corazón del asentamiento.",
+      "levels": [
+        {
+          "level": 1,
+          "cost": {
+            "wood_yggdrasil": 0,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 0,
+          "hp": 1500,
+          "storage": {
+            "wood_yggdrasil": 1500,
+            "steel_dwarf": 1500
+          },
+          "passiveProduction": {
+            "wood_yggdrasil": 50,
+            "steel_dwarf": 50
+          }
+        },
+        {
+          "level": 2,
+          "cost": {
+            "wood_yggdrasil": 1000,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 5,
+          "hp": 2200,
+          "storage": {
+            "wood_yggdrasil": 4000,
+            "steel_dwarf": 4000
+          },
+          "passiveProduction": {
+            "wood_yggdrasil": 100,
+            "steel_dwarf": 100
+          }
+        },
+        {
+          "level": 3,
+          "cost": {
+            "wood_yggdrasil": 4000,
+            "steel_dwarf": 1000
+          },
+          "buildTimeMin": 45,
+          "hp": 3100,
+          "storage": {
+            "wood_yggdrasil": 10000,
+            "steel_dwarf": 10000
+          },
+          "passiveProduction": {
+            "wood_yggdrasil": 200,
+            "steel_dwarf": 200
+          }
+        }
+      ]
+    },
+    {
+      "id": "lumber_mill",
+      "name": "Aserradero de Yggdrasil",
+      "description": "Produce Madera de Yggdrasil.",
+      "levels": [
+        {
+          "level": 1,
+          "cost": {
+            "wood_yggdrasil": 100,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 1,
+          "hp": 400,
+          "productionRatePerHour": 200,
+          "storageCapacity": 500
+        },
+        {
+          "level": 2,
+          "cost": {
+            "wood_yggdrasil": 300,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 5,
+          "hp": 480,
+          "productionRatePerHour": 400,
+          "storageCapacity": 1000
+        },
+        {
+          "level": 3,
+          "cost": {
+            "wood_yggdrasil": 700,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 15,
+          "hp": 580,
+          "productionRatePerHour": 700,
+          "storageCapacity": 2500
+        }
+      ]
+    },
+    {
+      "id": "steel_mine",
+      "name": "Mina de Acero Enano",
+      "description": "Produce Acero Enano.",
+      "levels": [
+        {
+          "level": 1,
+          "cost": {
+            "wood_yggdrasil": 150,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 1,
+          "hp": 400,
+          "productionRatePerHour": 200,
+          "storageCapacity": 500
+        },
+        {
+          "level": 2,
+          "cost": {
+            "wood_yggdrasil": 300,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 5,
+          "hp": 480,
+          "productionRatePerHour": 400,
+          "storageCapacity": 1000
+        },
+        {
+          "level": 3,
+          "cost": {
+            "wood_yggdrasil": 700,
+            "steel_dwarf": 0
+          },
+          "buildTimeMin": 15,
+          "hp": 580,
+          "productionRatePerHour": 700,
+          "storageCapacity": 2500
+        }
+      ]
+    }
+  ]
+}
