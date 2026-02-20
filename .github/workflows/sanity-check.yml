@@ -1,0 +1,40 @@
+name: Studio Sanity Check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON configurations
+        run: |
+          for file in src/config/*.json; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              if jq empty "$file"; then
+                echo "✅ $file is valid"
+              else
+                echo "❌ $file is invalid"
+                exit 1
+              fi
+            fi
+          done
+
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Markdown Link Check
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          use-verbose-mode: "yes"
+          folder-path: "docs"
+          file-path: "./README.md"
