@@ -7,6 +7,12 @@ Construir un sistema de agentes de IA que colaboren para crear juegos móviles t
 - Clash of Clans
 - Rise of Kingdoms
 
+## 🎮 Prototipo Jugable
+
+Puedes probar la última versión del juego aquí:  
+👉 **[Jugar Ahora](https://afernandezro7.github.io/ai-game-studio/)**  
+_(Actualizado automáticamente con cada commit a `main`)_
+
 El sistema debe ser:
 
 - Determinista
