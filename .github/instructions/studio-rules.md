@@ -18,7 +18,10 @@ El ciclo de vida de una idea en nuestro estudio sigue este orden estricto:
 2. **GameDesign:** Toma el Pitch y diseña las mecánicas, la economía y el balanceo.
 3. **Archivist:** Toma los diseños y los estructura en el Game Design Document (GDD) oficial.
 4. **QA:** Revisa el GDD en busca de lagunas lógicas, exploits en la economía o mecánicas aburridas.
-5. **Release:** Prepara los assets, el roadmap de lanzamiento y las notas de la versión.
+5. **Developer:** Implementa lógica y genera archivos de configuración JSON a partir del GDD.
+6. **ArtDirector:** Visualiza (Mermaid) y diseña (Prompts).
+7. **Release:** Prepara los assets, el roadmap de lanzamiento y las notas de la versión.
+8. **Todos:** Actualizan el `DEVLOG.md` con sus intervenciones.
 
 ## 🛠️ Formato de Salida
 
