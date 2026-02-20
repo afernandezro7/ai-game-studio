@@ -1,0 +1,123 @@
+name: Release Preview 🔮
+
+concurrency:
+  group: release-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [labeled, synchronize, opened]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    name: Preview Release Version
+    if: >
+      github.event.pull_request.draft == false
+      && (contains(join(github.event.pull_request.labels.*.name, ', '), 'release:major')
+       || contains(join(github.event.pull_request.labels.*.name, ', '), 'release:minor')
+       || contains(join(github.event.pull_request.labels.*.name, ', '), 'release:patch'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect Release Type 🔍
+        id: release-type
+        run: |
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'release:major') }}" == "true" ]]; then
+            BUMP_TYPE="major"
+          elif [[ "${{ contains(github.event.pull_request.labels.*.name, 'release:minor') }}" == "true" ]]; then
+            BUMP_TYPE="minor"
+          elif [[ "${{ contains(github.event.pull_request.labels.*.name, 'release:patch') }}" == "true" ]]; then
+            BUMP_TYPE="patch"
+          fi
+          echo "BUMP_TYPE=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+
+      - name: Calculate Next Version 🧮
+        id: next-version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          BUMP_TYPE="${{ steps.release-type.outputs.BUMP_TYPE }}"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          case "$BUMP_TYPE" in
+            major)
+              NEXT_VERSION="$((MAJOR+1)).0.0"
+              ;;
+            minor)
+              NEXT_VERSION="${MAJOR}.$((MINOR+1)).0"
+              ;;
+            patch)
+              NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH+1))"
+              ;;
+          esac
+
+          echo "CURRENT=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "NEXT=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "## Release Preview: v${CURRENT_VERSION} → v${NEXT_VERSION} ($BUMP_TYPE)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Generate Changes Summary 📋
+        id: changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the latest release tag
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+
+          if [[ "$LATEST_TAG" == "none" ]]; then
+            COMMIT_COUNT=$(git rev-list --count HEAD)
+            CHANGES="All $COMMIT_COUNT commits (first release)"
+          else
+            COMMIT_COUNT=$(git rev-list --count "${LATEST_TAG}..HEAD")
+            CHANGES=$(git log "${LATEST_TAG}..HEAD" --pretty=format:"- %s" --no-merges | head -20)
+            if [[ $COMMIT_COUNT -gt 20 ]]; then
+              CHANGES="${CHANGES}
+          - ... and $((COMMIT_COUNT - 20)) more commits"
+            fi
+          fi
+
+          {
+            echo "CHANGES<<EOF"
+            echo "$CHANGES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "LATEST_TAG=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+          echo "COMMIT_COUNT=$COMMIT_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Comment Preview on PR 💬
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: release-preview
+          message: |
+            ## 🔮 Release Preview
+
+            | | |
+            |---|---|
+            | **Current version** | `v${{ steps.next-version.outputs.CURRENT }}` |
+            | **Next version** | `v${{ steps.next-version.outputs.NEXT }}` |
+            | **Bump type** | `${{ steps.release-type.outputs.BUMP_TYPE }}` |
+            | **Since last release** | ${{ steps.changes.outputs.COMMIT_COUNT }} commits (from `${{ steps.changes.outputs.LATEST_TAG }}`) |
+
+            ### 📋 Changes included
+            ${{ steps.changes.outputs.CHANGES }}
+
+            ---
+
+            ### 🚀 What will happen when this PR is merged:
+            1. Version bumped to `v${{ steps.next-version.outputs.NEXT }}`
+            2. Git tag `v${{ steps.next-version.outputs.NEXT }}` created and pushed
+            3. GitHub Release created with auto-generated notes
+            4. Project built and deployed to GitHub Pages
+            5. Sync PR created: `main` → `develop`
+
+            > _To change the bump type, update the `release:*` label on this PR._

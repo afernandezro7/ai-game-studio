@@ -1,4 +1,9 @@
 name: Release Manager 🏷️🚀
+run-name: "Release ${{ github.event.pull_request.title }}"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 on:
   pull_request:
@@ -12,13 +17,21 @@ permissions:
 
 jobs:
   release-and-deploy:
-    if: github.event.pull_request.merged == true
+    if: >
+      github.event.pull_request.merged == true
+      && !contains(join(github.event.pull_request.labels.*.name, ', '), 'skip-release')
+      && (contains(join(github.event.pull_request.labels.*.name, ', '), 'release:major')
+       || contains(join(github.event.pull_request.labels.*.name, ', '), 'release:minor')
+       || contains(join(github.event.pull_request.labels.*.name, ', '), 'release:patch'))
     runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version.outputs.NEW_VERSION }}
+      bump_type: ${{ steps.bump.outputs.BUMP_TYPE }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Need full history for versioning
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js 🔧
@@ -26,7 +39,7 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
-          cache-dependency-path: client-web/package-lock.json
+          cache-dependency-path: ./package-lock.json
 
       - name: Determine Version Bump 🔍
         id: bump
@@ -40,19 +53,23 @@ jobs:
             BUMP_TYPE="patch"
           fi
 
-          echo "BUMP_TYPE=$BUMP_TYPE" >> $GITHUB_ENV
-          echo "Detected bump type: $BUMP_TYPE"
+          echo "BUMP_TYPE=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+          echo "BUMP_TYPE=$BUMP_TYPE" >> "$GITHUB_ENV"
+          echo "## Version Bump: \`$BUMP_TYPE\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Configure Git User 👤
-        if: env.BUMP_TYPE != 'none'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump Version & Push Tag 📦
-        if: env.BUMP_TYPE != 'none'
+        id: version
         run: |
-          # Bump root package.json
+          # Get current version before bump
+          OLD_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $OLD_VERSION"
+
+          # Bump root package.json (creates commit + tag)
           npm version $BUMP_TYPE -m "chore(release): v%s [skip ci]"
 
           # Sync client-web version to match root
@@ -65,25 +82,111 @@ jobs:
           git add client-web/package.json
           git commit --amend --no-edit
 
-          # Push commit and tags back to main
-          git push origin main --follow-tags
+          # Force update the tag to point to amended commit
+          git tag -f "v${NEW_VERSION}"
 
-      - name: Install Dependencies (Client) 📦
-        if: env.BUMP_TYPE != 'none'
+          # Push commit and tags back to main
+          git push origin main --follow-tags --force
+
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "## Released: v$OLD_VERSION → v$NEW_VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create GitHub Release 🏷️
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd client-web
-          npm ci
+          NEW_VERSION="${{ steps.version.outputs.NEW_VERSION }}"
+          gh release create "v${NEW_VERSION}" \
+            --title "v${NEW_VERSION}" \
+            --generate-notes \
+            --target main
+          echo "## [GitHub Release v${NEW_VERSION}](https://github.com/${{ github.repository }}/releases/tag/v${NEW_VERSION})" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install Dependencies 📦
+        run: npm ci
 
       - name: Build Project 🏗️
-        if: env.BUMP_TYPE != 'none'
         run: |
           cd client-web
           npm run build
 
       - name: Deploy to GitHub Pages 🚀
-        if: env.BUMP_TYPE != 'none'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: client-web/dist
           branch: gh-pages
           clean: true
+
+      - name: Comment Release in PR 💬
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.NEW_VERSION }}"
+          gh pr comment ${{ github.event.pull_request.number }} --body \
+            "## 🚀 Release v${NEW_VERSION} published!
+
+            - **Tag**: [\`v${NEW_VERSION}\`](https://github.com/${{ github.repository }}/releases/tag/v${NEW_VERSION})
+            - **Deploy**: [GitHub Pages](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
+            - **Bump type**: \`$BUMP_TYPE\`"
+
+  sync-develop:
+    name: Sync main → develop 🔄
+    needs: release-and-deploy
+    if: always() && needs.release-and-deploy.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git User 👤
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Sync PR main → develop 🔄
+        id: sync-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION="${{ needs.release-and-deploy.outputs.new_version }}"
+          SYNC_BRANCH="automated/sync-v${NEW_VERSION}-to-develop"
+
+          # Check if develop exists
+          if ! git ls-remote --heads origin develop | grep -q develop; then
+            echo "develop branch does not exist. Skipping sync."
+            exit 0
+          fi
+
+          # Create sync branch from main
+          git checkout -b "$SYNC_BRANCH"
+          git push -u origin "$SYNC_BRANCH"
+
+          # Create PR
+          gh pr create \
+            --base develop \
+            --head "$SYNC_BRANCH" \
+            --title "🔄 Sync release v${NEW_VERSION} to develop" \
+            --body "**Automated Pull Request**
+
+            Syncs release \`v${NEW_VERSION}\` changes from \`main\` back to \`develop\`.
+
+            This PR was created automatically after the release. Please review and merge to keep \`develop\` up to date.
+
+            ---
+            _Created by Release Manager workflow_" \
+            --label "sync"
+
+      - name: Comment if sync failed ⚠️
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body \
+            "⚠️ **Sync to develop failed**
+
+            The automatic sync PR from \`main\` to \`develop\` could not be created.
+            Please manually create a branch from \`main\` and open a PR against \`develop\` to sync the release changes."
