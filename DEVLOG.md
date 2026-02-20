@@ -45,8 +45,18 @@ Este documento sirve como registro histórico (changelog narrativo) de todas las
 - **Fase:** Pre-producción / Prototipado de Datos
 - **Agentes Activos:** 7 (Producer, GameDesign, Archivist, QA, Release, Developer, ArtDirector)
 - **Siguientes Pasos Pendientes:**
-  - Implementar GitHub Actions para validación automática (`CHECK-01`).
   - Prototipar el cliente de juego (Unity/Godot) usando los JSONs generados.
+
+### [2026-02-20] - Implementación de CI/CD completa
+
+**Autor:** `@developer`
+
+1.  **Infraestructura de Automatización:**
+    - Se ha implementado `sanity-check.yml` en `.github/workflows/`.
+    - Ahora cada Push verifica automáticamente:
+      - Validez JSON de los archivos `src/config/*.json`.
+      - Links rotos en la documentación `docs/*.md`.
+    - Estado: **COMPLETADO**.
 
 ---
 
