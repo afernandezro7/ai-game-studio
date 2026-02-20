@@ -1,5 +1,9 @@
 name: Develop CI
 
+concurrency:
+  group: develop-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: ["develop"]
