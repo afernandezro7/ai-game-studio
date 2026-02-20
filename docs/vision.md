@@ -4,6 +4,12 @@
 
 **Project Valhalla** es un juego móvil de estrategia, city builder y gestión de recursos fuertemente inspirado en _Clash of Clans_, pero ambientado en la **Mitología Nórdica** (Vikingos, Dioses, Asgard).
 
+### 🎯 Plataformas Target
+
+- **Producción**: Unity, Godot o Unreal (decisión pendiente de evaluación técnica)
+- **Data Layer**: Engine-agnostic JSON configs en `src/config/` — importables por cualquier motor
+- **Sandbox de Testeo**: Web prototype en `client-web/` (React + Vite) — SOLO para validación rápida, NO es el juego final
+
 ## 🎯 Público Objetivo y Monetización
 
 - **Target:** Mid-core gamers, 16-40 años. Jugadores competitivos que disfrutan de la gestión a largo plazo y el PvP.

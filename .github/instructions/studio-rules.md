@@ -2,7 +2,9 @@
 
 ## 🎯 Objetivo del Estudio
 
-Somos un estudio de desarrollo de videojuegos impulsado por IA. Nuestro objetivo principal es diseñar, documentar y preparar para producción juegos móviles de estrategia y gestión de recursos, fuertemente inspirados en títulos como **Clash of Clans** y **Rise of Kingdoms**.
+Somos un estudio de desarrollo de videojuegos impulsado por IA. Nuestro objetivo principal es diseñar, documentar y producir **game data y configs listos para producción** que alimenten juegos móviles de estrategia en **cualquier motor** (Unity, Godot, Unreal), fuertemente inspirados en títulos como **Clash of Clans** y **Rise of Kingdoms**.
+
+> **⚠️ IMPORTANTE**: El prototipo web (`client-web/`) es un SANDBOX de testeo rápido. El producto real son los JSON configs en `src/config/` — diseñados para ser engine-agnostic e importables por Unity, Godot u otro motor.
 
 ## 🧠 Principios de Diseño
 
@@ -10,19 +12,49 @@ Somos un estudio de desarrollo de videojuegos impulsado por IA. Nuestro objetivo
 2. **Escalabilidad:** Los sistemas (economía, combate, progresión) deben estar diseñados para soportar años de contenido.
 3. **Documentación First:** Ninguna mecánica existe si no está documentada por el Archivist.
 
-## 🔄 Flujo de Trabajo (Workflow)
+## 🔄 Flujo de Trabajo (Pipeline de Agentes)
 
-El ciclo de vida de una idea en nuestro estudio sigue este orden estricto:
+El ciclo de vida de una idea sigue este orden estricto:
 
-1. **Producer:** Define la visión, el público objetivo y los KPIs. Crea el Pitch.
-2. **GameDesign:** Toma el Pitch y diseña las mecánicas, la economía y el balanceo.
-3. **Archivist:** Toma los diseños y los estructura en el Game Design Document (GDD) oficial.
-4. **QA:** Revisa el GDD en busca de lagunas lógicas, exploits en la economía o mecánicas aburridas.
-5. **Developer:** Implementa lógica y genera archivos de configuración JSON a partir del GDD.
-6. **ArtDirector:** Visualiza (Mermaid) y diseña (Prompts).
-7. **Release:** Prepara los assets, el roadmap de lanzamiento y las notas de la versión.
-8. **Todos:** Actualizan el `DEVLOG.md` con sus intervenciones.
+```
+Producer → GameDesign → Archivist → QA → Developer → ArtDirector → Release
+```
 
-## 🛠️ Formato de Salida
+1. **@producer:** Define la visión, el público objetivo y los KPIs. Crea el Pitch.
+2. **@gamedesign:** Toma el Pitch y diseña las mecánicas con tablas numéricas exactas.
+3. **@archivist:** Documenta los diseños en `docs/` y verifica consistencia.
+4. **@qa:** Valida con el checklist de 5 puntos. Busca exploits y soft-locks.
+5. **@developer:** Implementa configs JSON y código en el prototipo web.
+6. **@artdirector:** Crea diagramas Mermaid y prompts de arte para IA generativa.
+7. **@release:** Prepara el release, changelog y deploy.
 
-Todos los agentes deben comunicarse de forma estructurada usando Markdown. Cuando se requiera crear tareas, deben sugerir la creación de GitHub Issues siguiendo las plantillas de `.github/ISSUE_TEMPLATE`.
+## 📂 Estructura del Proyecto
+
+```
+docs/                    → Game Design Document (GDD) — SOURCE OF TRUTH
+src/config/              → Engine-agnostic JSON configs — THE REAL PRODUCT (Unity/Godot/any)
+client-web/src/          → Web SANDBOX for rapid testing — NOT the final game
+.github/agents/          → Agent definitions (this file's siblings)
+.github/prompts/         → Reusable workflow prompts (1-click pipelines)
+.github/workflows/       → CI/CD automation
+DEVLOG.md                → Development log — EVERY action gets logged here
+```
+
+## 📜 Reglas Universales para TODOS los agentes
+
+1. **Lee antes de actuar**: Siempre lee los archivos de contexto listados en tu agent file.
+2. **Números, no palabras**: "50 DPS con 1.2s cooldown" en vez de "hace bastante daño".
+3. **DEVLOG obligatorio**: Al terminar una tarea, añade entrada a `DEVLOG.md`.
+4. **Siguiente paso claro**: Indica qué agente debe actuar después y qué debe hacer.
+5. **Sin inventar**: No asumas datos. Si no está en docs/ o src/config/, no existe.
+6. **Formato Markdown**: Toda comunicación en Markdown estructurado con tablas cuando aplique.
+
+## 🚀 Prompts Disponibles (Workflows rápidos)
+
+| Prompt            | Descripción                                        | Uso                                      |
+| ----------------- | -------------------------------------------------- | ---------------------------------------- |
+| `new-mechanic`    | Pipeline completo para diseñar una nueva mecánica  | `@workspace /new-mechanic [descripción]` |
+| `add-building`    | Diseñar e implementar un nuevo edificio end-to-end | `@workspace /add-building [concepto]`    |
+| `balance-audit`   | Auditoría QA completa de la economía actual        | `@workspace /balance-audit`              |
+| `prepare-release` | Coordinar un release completo                      | `@workspace /prepare-release`            |
+| `studio-status`   | Reporte de estado del estudio y proyecto           | `@workspace /studio-status`              |

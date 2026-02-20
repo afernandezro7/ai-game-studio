@@ -7,11 +7,19 @@ Construir un sistema de agentes de IA que colaboren para crear juegos móviles t
 - Clash of Clans
 - Rise of Kingdoms
 
-## 🎮 Prototipo Jugable
+## 🎮 Sandbox de Testeo (Web)
 
-Puedes probar la última versión del juego aquí:  
-👉 **[Jugar Ahora](https://afernandezro7.github.io/ai-game-studio/)**  
-_(Actualizado automáticamente con cada commit a `main`)_
+Puedes probar la visualización del juego aquí:  
+👉 **[Sandbox Web](https://afernandezro7.github.io/ai-game-studio/)**  
+_(Actualizado automáticamente con cada release a `main`)_
+
+> ⚠️ **Esto NO es el juego final.** Es un sandbox React para validar rápidamente los JSON configs. El target real es Unity/Godot/Unreal.
+
+## 🎯 Plataformas Target
+
+- **`src/config/`** — Engine-agnostic JSON configs: EL PRODUCTO REAL. Diseñado para importar en Unity, Godot, o cualquier motor.
+- **`client-web/`** — Web sandbox: SOLO para visualización y testeo rápido.
+- **`docs/`** — Game Design Document: La fuente de verdad de todo el juego.
 
 El sistema debe ser:
 

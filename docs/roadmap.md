@@ -5,13 +5,27 @@
 ### Fase 1: Prototipo Interno (v0.1.0)
 
 **Objetivo:** Validar el Core Loop y la economía inicial.
+**Plataforma:** Web Sandbox (React) para testeo rápido + JSON configs engine-agnostic.
 
 - **Contenido:**
   - Gran Salón (Niveles 1-3).
   - Aserradero de Yggdrasil y Mina de Acero Enano (Niveles 1-3).
   - Economía base (Madera, Acero, Runas).
   - Producción pasiva del Gran Salón implementada (Fix QA).
+  - C# data models y game systems listos para Unity (`src/unity/`).
 - **Audiencia:** Equipo de desarrollo y QA interno.
+
+### Fase 1.5: Unity Setup (v0.2.0)
+
+**Objetivo:** Migrar el core loop validado en web a Unity.
+
+- **Contenido:**
+  - Proyecto Unity 2D (URP) creado.
+  - JSON configs importados en `Assets/Resources/Config/`.
+  - ConfigLoader, ProductionSystem, BuildingSystem integrados.
+  - UI básica: Resource bar + Building cards + Upgrade panel.
+  - Save/Load con PlayerPrefs (offline earnings).
+- **Audiencia:** Equipo interno. Builds de Android para testing.
 
 ### Fase 2: Soft Launch (v0.5.0)
 
