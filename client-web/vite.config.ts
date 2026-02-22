@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@config": path.resolve(__dirname, "../src/config"),
+      "@games": path.resolve(__dirname, "../games"),
     },
   },
 });

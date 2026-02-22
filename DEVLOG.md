@@ -146,4 +146,38 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 ---
 
+### [2026-02-21] - Multi-Game + Multi-Engine Restructure
+
+**Autor:** `@developer`, `@producer`
+
+1.  **Arquitectura Multi-Juego:**
+    - Nuevo directorio `games/` — cada juego es un subfolder con su propio `game.json`, configs, docs y código por motor.
+    - Project Valhalla migrado a `games/valhalla/` con estructura: `config/`, `docs/`, `roblox/`, `unity/`.
+    - `game.json` actualizado con soporte multi-motor: `engines.roblox` (active) + `engines.unity` (planned).
+
+2.  **Agentes Específicos por Motor:**
+    - `@developer` convertido en **router/arquitecto** — delega a agentes especializados.
+    - `@developer-roblox` — Nuevo agente para Luau, Roblox Studio MCP, DataStoreService, RemoteEvents.
+    - `@developer-unity` — Nuevo agente para C#, ScriptableObjects, mobile optimization.
+    - La arquitectura permite añadir `@developer-godot` en el futuro sin acoplamiento.
+
+3.  **Roblox Luau Scripts (`games/valhalla/roblox/src/`):**
+    - `ConfigLoader.luau` — Carga JSON configs desde StringValues en ServerStorage.
+    - `ProductionSystem.luau` — Producción de recursos en tiempo real, offline earnings (cap 8h), storage caps.
+    - `BuildingSystem.luau` — Upgrades, validación de costes, timers, speed-up con Runas.
+    - `GameServer.luau` — Script principal del servidor: DataStoreService, RemoteEvents, tick loop (1s), auto-save (60s).
+    - `GameClient.luau` — UI completa: barra de recursos, tarjetas de edificios, popup de ganancias offline.
+
+4.  **Actualización de Agentes Core:**
+    - Todos los agentes (`@producer`, `@gamedesign`, `@archivist`, `@qa`, `@artdirector`) actualizados con rutas `games/<game-id>/`.
+    - Rutas antiguas (`src/config/`, `docs/`) eliminadas de todos los agentes.
+    - `copilot-instructions.md` reescrito para reflejar la nueva arquitectura.
+
+5.  **Integración Roblox Studio MCP:**
+    - MCP `robloxstudio-mcp` configurado en VS Code para comunicación directa con Roblox Studio.
+    - `@developer-roblox` documenta workflow completo: create_object → set_script_source → start_playtest → validate.
+    - Objetivo: desarrollo con mínima interacción humana.
+
+---
+
 _Fin del registro actual. Añade nuevas entradas debajo._

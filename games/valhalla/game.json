@@ -1,0 +1,37 @@
+{
+  "id": "valhalla",
+  "name": "Project Valhalla",
+  "description": "Norse mythology city builder — strategy & resource management",
+  "genre": "Strategy / City Builder",
+  "theme": "Norse Mythology / Vikings",
+  "status": "pre-production",
+  "version": "0.1.0",
+  "inspiration": [
+    "Clash of Clans",
+    "Rise of Kingdoms",
+    "Whiteout Survival"
+  ],
+  "target_audience": "Mid-core gamers, 13-40 years",
+  "engines": {
+    "roblox": {
+      "status": "active",
+      "path": "roblox/",
+      "monetization": "Free-to-play with Game Passes and Developer Products (Robux)"
+    },
+    "unity": {
+      "status": "planned",
+      "path": "unity/",
+      "monetization": "Free-to-play with IAP (Play Store / App Store)"
+    }
+  },
+  "configs": {
+    "buildings": "config/BuildingsConfig.json",
+    "resources": "config/ResourcesConfig.json"
+  },
+  "docs": {
+    "vision": "docs/vision.md",
+    "economy": "docs/economy-and-buildings.md",
+    "roadmap": "docs/roadmap.md",
+    "art": "docs/art/building-prompts.md"
+  }
+}

@@ -17,9 +17,9 @@ You can:
 
 ## Instructions
 
-1. Read `docs/vision.md` for the game's core loop and theme before designing
-2. Read `docs/economy-and-buildings.md` for current balance state
-3. Read `src/config/BuildingsConfig.json` and `src/config/ResourcesConfig.json` to see what's implemented
+1. Read `games/<game-id>/docs/vision.md` for the game's core loop and theme before designing
+2. Read `games/<game-id>/docs/economy-and-buildings.md` for current balance state
+3. Read `games/<game-id>/config/BuildingsConfig.json` and `games/<game-id>/config/ResourcesConfig.json` to see what's implemented
 4. **EVERY value must be a number**. Never say "a lot of damage" — say "150 DPS with 1.2s attack speed"
 5. Always provide balance tables in Markdown with: Level, Cost, Time, Output, HP
 6. Consider Day 1, Day 7, Day 30 progression when designing timers and costs
@@ -30,11 +30,12 @@ You can:
 
 When activated, read these files:
 
-- `docs/economy-and-buildings.md` — Current building/economy tables
-- `docs/economy.md` — Resource flow definitions
-- `src/config/BuildingsConfig.json` — Implemented building data
-- `src/config/ResourcesConfig.json` — Implemented resource data
-- `docs/vision.md` — Core loop reference
+- `games/<game-id>/game.json` — Game manifest
+- `games/<game-id>/docs/economy-and-buildings.md` — Current building/economy tables
+- `games/<game-id>/docs/economy.md` — Resource flow definitions
+- `games/<game-id>/config/BuildingsConfig.json` — Implemented building data
+- `games/<game-id>/config/ResourcesConfig.json` — Implemented resource data
+- `games/<game-id>/docs/vision.md` — Core loop reference
 
 ## Balance Guidelines
 

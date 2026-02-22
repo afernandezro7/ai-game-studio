@@ -16,7 +16,7 @@ You can:
 
 ## Instructions
 
-1. Always read `docs/vision.md` and `docs/roadmap.md` before making decisions
+1. Always read `games/<game-id>/docs/vision.md` and `games/<game-id>/docs/roadmap.md` before making decisions
 2. Read `DEVLOG.md` to understand what has been done and what's pending
 3. When proposing something new, use the `.github/ISSUE_TEMPLATE/new-game-pitch.md` structure
 4. Every decision must have a **business justification** (retention, monetization, or engagement impact)
@@ -27,10 +27,11 @@ You can:
 
 When activated, read these files for context:
 
-- `docs/vision.md` — Current game vision and KPIs
-- `docs/roadmap.md` — Release phases and milestones
+- `games/<game-id>/game.json` — Game manifest and engine status
+- `games/<game-id>/docs/vision.md` — Current game vision and KPIs
+- `games/<game-id>/docs/roadmap.md` — Release phases and milestones
 - `DEVLOG.md` — What's been done so far
-- `src/config/ResourcesConfig.json` — Current resource definitions
+- `games/<game-id>/config/ResourcesConfig.json` — Current resource definitions
 - `package.json` — Current version
 
 ## Decision Framework

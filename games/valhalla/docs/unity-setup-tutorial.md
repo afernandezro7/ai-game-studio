@@ -6,24 +6,24 @@
 
 ## Paso 1: Instalar Unity
 
-- [ ] Ve a [unity.com/download](https://unity.com/download) → descarga **Unity Hub**
-- [ ] Abre Unity Hub → pestaña **Installs** → **Install Editor**
-- [ ] Elige **Unity 6 LTS** (o la última LTS disponible)
-- [ ] En módulos, marca:
+- [x] Ve a [unity.com/download](https://unity.com/download) → descarga **Unity Hub**
+- [x] Abre Unity Hub → pestaña **Installs** → **Install Editor**
+- [x] Elige **Unity 6 LTS** (o la última LTS disponible)
+- [x] En módulos, marca:
   - ✅ Android Build Support (incluye SDK & NDK)
   - ✅ iOS Build Support (solo funciona en Mac)
-- [ ] Dale a Install (~5GB, tarda un rato)
+- [x] Dale a Install (~5GB, tarda un rato)
 
 ---
 
 ## Paso 2: Crear el proyecto
 
-- [ ] Unity Hub → pestaña **Projects** → **New Project**
-- [ ] Template: **2D (URP)** — Universal Render Pipeline
-- [ ] Configurar:
+- [x] Unity Hub → pestaña **Projects** → **New Project**
+- [x] Template: **2D (URP)** — Universal Render Pipeline
+- [x] Configurar:
   - **Project name**: `valhalla-unity`
   - **Location**: `~/Desktop/Cursos/`
-- [ ] Click **Create Project** → espera que abra el editor
+- [x] Click **Create Project** → espera que abra el editor
 
 ---
 
@@ -62,13 +62,12 @@ mkdir -p ~/Desktop/Cursos/valhalla-unity/Assets/Prefabs
 
 ---
 
-## Paso 4: Instalar TextMeshPro
+## Paso 4: Importar TextMeshPro
 
-Los scripts de UI necesitan TextMeshPro para texto de alta calidad:
+Los scripts de UI usan TextMeshPro (viene incluido en Unity 6, pero hay que importar sus recursos):
 
-- [ ] En Unity → menú **Window → Package Manager**
-- [ ] Busca **TextMeshPro** → si no está instalado, dale **Install**
-- [ ] Si pide "Import TMP Essential Resources" → dale **Import**
+- [ ] En Unity → menú **Window → TextMeshPro → Import TMP Essential Resources** → click **Import**
+- [ ] Si no ves ese menú: Hierarchy → click derecho → **UI → Text - TextMeshPro** → Unity te pedirá importar automáticamente → dale **Import TMP Essentials**
 
 ---
 

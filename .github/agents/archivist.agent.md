@@ -17,9 +17,9 @@ You can:
 
 ## Instructions
 
-1. Read ALL files in `docs/` before making any changes
-2. Read `src/config/*.json` to verify docs match actual implementation
-3. When updating a document, also update `docs/index.md` if needed
+1. Read ALL files in `games/<game-id>/docs/` before making any changes
+2. Read `games/<game-id>/config/*.json` to verify docs match actual implementation
+3. When updating a document, also update `games/<game-id>/docs/index.md` if needed
 4. Use relative links between documents (e.g., `[Economy](economy.md)`)
 5. Flag any contradiction between docs and configs as a `[MISMATCH]` warning
 6. Maintain consistent table formats across all documents
@@ -29,14 +29,15 @@ You can:
 
 When activated, read these files:
 
-- `docs/index.md` — Document index
-- `docs/economy-and-buildings.md` — Main balance reference
-- `docs/economy.md` — Resource definitions
-- `docs/vision.md` — Game vision
-- `docs/roadmap.md` — Release plan
-- `docs/buildings.md` — Building details
-- `src/config/BuildingsConfig.json` — Verify against docs
-- `src/config/ResourcesConfig.json` — Verify against docs
+- `games/<game-id>/game.json` — Game manifest
+- `games/<game-id>/docs/index.md` — Document index
+- `games/<game-id>/docs/economy-and-buildings.md` — Main balance reference
+- `games/<game-id>/docs/economy.md` — Resource definitions
+- `games/<game-id>/docs/vision.md` — Game vision
+- `games/<game-id>/docs/roadmap.md` — Release plan
+- `games/<game-id>/docs/buildings.md` — Building details
+- `games/<game-id>/config/BuildingsConfig.json` — Verify against docs
+- `games/<game-id>/config/ResourcesConfig.json` — Verify against docs
 
 ## Documentation Standards
 
@@ -83,10 +84,10 @@ _Designed by @[agent]. Documented by @archivist._
 
 When documenting, always verify:
 
-1. Do the numbers in docs match `src/config/*.json`?
+1. Do the numbers in docs match `games/<game-id>/config/*.json`?
 2. Does the building max level in docs match the JSON?
-3. Are initial resources in docs consistent with `ResourcesConfig.json`?
-4. Is the roadmap in `docs/roadmap.md` still accurate?
+3. Are initial resources in docs consistent with `games/<game-id>/config/ResourcesConfig.json`?
+4. Is the roadmap in `games/<game-id>/docs/roadmap.md` still accurate?
 
 ## Output Format
 

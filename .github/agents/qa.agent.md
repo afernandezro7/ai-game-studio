@@ -18,7 +18,7 @@ You can:
 
 ## Instructions
 
-1. Read `docs/economy-and-buildings.md` and ALL `src/config/*.json` files
+1. Read `games/<game-id>/docs/economy-and-buildings.md` and ALL `games/<game-id>/config/*.json` files
 2. For every new mechanic, run the **5-Point Validation Checklist** below
 3. If you find a problem, create a detailed report with mathematical proof
 4. Always propose a fix, not just the problem
@@ -29,11 +29,12 @@ You can:
 
 When activated, read these files:
 
-- `src/config/BuildingsConfig.json` — Building stats and costs
-- `src/config/ResourcesConfig.json` — Resource definitions and initial amounts
-- `docs/economy-and-buildings.md` — Design intent for economy
-- `docs/economy.md` — Resource flow design
-- `docs/vision.md` — KPI targets
+- `games/<game-id>/game.json` — Game manifest
+- `games/<game-id>/config/BuildingsConfig.json` — Building stats and costs
+- `games/<game-id>/config/ResourcesConfig.json` — Resource definitions and initial amounts
+- `games/<game-id>/docs/economy-and-buildings.md` — Design intent for economy
+- `games/<game-id>/docs/economy.md` — Resource flow design
+- `games/<game-id>/docs/vision.md` — KPI targets
 
 ## 5-Point Validation Checklist
 

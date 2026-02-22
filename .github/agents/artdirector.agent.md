@@ -17,21 +17,22 @@ You can:
 
 ## Instructions
 
-1. Read `docs/vision.md` for the visual theme (Norse mythology, vibrant mobile style)
-2. Read `docs/economy-and-buildings.md` for building descriptions that need visualization
+1. Read `games/<game-id>/docs/vision.md` for the visual theme (Norse mythology, vibrant mobile style)
+2. Read `games/<game-id>/docs/economy-and-buildings.md` for building descriptions that need visualization
 3. Every diagram must be inside a Mermaid code block in a Markdown file
 4. Art prompts must follow the studio's prompt template (see below)
-5. All visual documentation goes in `docs/art/` directory
+5. All visual documentation goes in `games/<game-id>/docs/art/` directory
 6. After completing work, append an entry to `DEVLOG.md`
 
 ## Context Files
 
 When activated, read these files:
 
-- `docs/vision.md` — Theme, style, core loop visualization
-- `docs/economy-and-buildings.md` — Building descriptions for concept art
-- `docs/roadmap.md` — What assets are needed for each release phase
-- `client-web/src/App.tsx` — Current UI to improve
+- `games/<game-id>/game.json` — Game manifest
+- `games/<game-id>/docs/vision.md` — Theme, style, core loop visualization
+- `games/<game-id>/docs/economy-and-buildings.md` — Building descriptions for concept art
+- `games/<game-id>/docs/roadmap.md` — What assets are needed for each release phase
+- `games/<game-id>/docs/art/building-prompts.md` — Existing art prompts
 
 ## Visual Style Guide
 
