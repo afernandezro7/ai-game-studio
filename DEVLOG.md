@@ -353,3 +353,29 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 ---
 
 _Fin del registro actual. Añade nuevas entradas debajo._
+
+
+### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
+
+**Autor:** @archivist
+
+3 nuevos documentos creados: roadmap.md, tech-stack.md, index.md.
+6 documentos verificados sin mismatches contra configs JSON.
+Siguiente paso: @qa auditar documentacion completa.
+
+
+### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
+
+**Autor:** `@archivist`
+
+**Resultado:** GDD completo — 9 de 9 documentos creados o verificados.
+
+1. **Documentos Verificados (sin mismatches vs. configs):** economy.md, buildings.md, troops.md, combat.md, map.md, alliances.md
+
+2. **Documentos Creados:**
+   - `roadmap.md` — 4 fases (v0.1.0–v1.0.0), features P0/P1, criterios de aceptacion, player journey
+   - `tech-stack.md` — React/Node.js/PostgreSQL/Socket.io, esquema DB 11 tablas, API REST endpoints, logica de produccion por tick
+   - `index.md` — Indice navegable, resumen de todos los sistemas, verificacion de consistencia
+
+3. **Siguiente Paso:** `@qa` debe ejecutar auditoria completa de documentacion.
+
