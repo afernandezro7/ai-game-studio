@@ -1,0 +1,1879 @@
+{
+  "version": "0.2.0",
+  "description": "Configuración de edificios para Midgard Online — Fase 1 (Recursos + Infraestructura) + Fase 2 (Militar)",
+  "formulas": {
+    "production": "round(baseProd × 1.405^(level - 1))",
+    "cost": "round(baseCost × 1.585^(level - 1))",
+    "buildTime": "round(baseTimeSec × 1.55^(level - 1))",
+    "effectiveTime": "buildTime × (1 - 0.03 × mainBuildingLevel)"
+  },
+  "villageLayout": {
+    "resourceSlots": 18,
+    "distribution": {
+      "wood": 4,
+      "clay": 4,
+      "iron": 4,
+      "wheat": 6
+    },
+    "innerBuildingSlots": 20
+  },
+  "buildings": {
+    "woodcutter": {
+      "id": "woodcutter",
+      "name": "Leñador de Yggdrasil",
+      "nameEnglish": "Woodcutter",
+      "description": "Tala madera de los bosques sagrados de Yggdrasil",
+      "category": "resource",
+      "produces": "wood",
+      "maxPerVillage": 4,
+      "maxLevel": 10,
+      "baseProd": 30,
+      "baseTimeSec": 180,
+      "baseCosts": {
+        "wood": 40,
+        "clay": 100,
+        "iron": 50,
+        "wheat": 60
+      },
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 40,
+            "clay": 100,
+            "iron": 50,
+            "wheat": 60
+          },
+          "totalCost": 250,
+          "timeSec": 180,
+          "timeDisplay": "3m",
+          "productionPerHour": 30,
+          "population": 1
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 65,
+            "clay": 160,
+            "iron": 80,
+            "wheat": 95
+          },
+          "totalCost": 400,
+          "timeSec": 279,
+          "timeDisplay": "5m",
+          "productionPerHour": 42,
+          "population": 1
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 100,
+            "clay": 250,
+            "iron": 125,
+            "wheat": 150
+          },
+          "totalCost": 625,
+          "timeSec": 433,
+          "timeDisplay": "7m",
+          "productionPerHour": 59,
+          "population": 2
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 160,
+            "clay": 400,
+            "iron": 200,
+            "wheat": 240
+          },
+          "totalCost": 1000,
+          "timeSec": 671,
+          "timeDisplay": "11m",
+          "productionPerHour": 83,
+          "population": 2
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 255,
+            "clay": 630,
+            "iron": 315,
+            "wheat": 380
+          },
+          "totalCost": 1580,
+          "timeSec": 1040,
+          "timeDisplay": "17m",
+          "productionPerHour": 117,
+          "population": 3
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 400,
+            "clay": 1000,
+            "iron": 500,
+            "wheat": 600
+          },
+          "totalCost": 2500,
+          "timeSec": 1612,
+          "timeDisplay": "27m",
+          "productionPerHour": 164,
+          "population": 3
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 635,
+            "clay": 1585,
+            "iron": 795,
+            "wheat": 950
+          },
+          "totalCost": 3965,
+          "timeSec": 2498,
+          "timeDisplay": "42m",
+          "productionPerHour": 231,
+          "population": 4
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 1005,
+            "clay": 2515,
+            "iron": 1255,
+            "wheat": 1510
+          },
+          "totalCost": 6285,
+          "timeSec": 3872,
+          "timeDisplay": "1h 5m",
+          "productionPerHour": 324,
+          "population": 4
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 1595,
+            "clay": 3985,
+            "iron": 1990,
+            "wheat": 2390
+          },
+          "totalCost": 9960,
+          "timeSec": 6002,
+          "timeDisplay": "1h 40m",
+          "productionPerHour": 456,
+          "population": 5
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 2525,
+            "clay": 6315,
+            "iron": 3155,
+            "wheat": 3790
+          },
+          "totalCost": 15785,
+          "timeSec": 9303,
+          "timeDisplay": "2h 35m",
+          "productionPerHour": 640,
+          "population": 5
+        }
+      ]
+    },
+    "claypit": {
+      "id": "claypit",
+      "name": "Cantera de Midgard",
+      "nameEnglish": "Claypit",
+      "description": "Extrae arcilla de las riberas de los fiordos",
+      "category": "resource",
+      "produces": "clay",
+      "maxPerVillage": 4,
+      "maxLevel": 10,
+      "baseProd": 30,
+      "baseTimeSec": 180,
+      "baseCosts": {
+        "wood": 80,
+        "clay": 40,
+        "iron": 80,
+        "wheat": 50
+      },
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 80,
+            "clay": 40,
+            "iron": 80,
+            "wheat": 50
+          },
+          "totalCost": 250,
+          "timeSec": 180,
+          "timeDisplay": "3m",
+          "productionPerHour": 30,
+          "population": 1
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 125,
+            "clay": 65,
+            "iron": 125,
+            "wheat": 80
+          },
+          "totalCost": 395,
+          "timeSec": 279,
+          "timeDisplay": "5m",
+          "productionPerHour": 42,
+          "population": 1
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 200,
+            "clay": 100,
+            "iron": 200,
+            "wheat": 125
+          },
+          "totalCost": 625,
+          "timeSec": 433,
+          "timeDisplay": "7m",
+          "productionPerHour": 59,
+          "population": 2
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 320,
+            "clay": 160,
+            "iron": 320,
+            "wheat": 200
+          },
+          "totalCost": 1000,
+          "timeSec": 671,
+          "timeDisplay": "11m",
+          "productionPerHour": 83,
+          "population": 2
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 505,
+            "clay": 255,
+            "iron": 505,
+            "wheat": 315
+          },
+          "totalCost": 1580,
+          "timeSec": 1040,
+          "timeDisplay": "17m",
+          "productionPerHour": 117,
+          "population": 3
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 800,
+            "clay": 400,
+            "iron": 800,
+            "wheat": 500
+          },
+          "totalCost": 2500,
+          "timeSec": 1612,
+          "timeDisplay": "27m",
+          "productionPerHour": 164,
+          "population": 3
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 1270,
+            "clay": 635,
+            "iron": 1270,
+            "wheat": 795
+          },
+          "totalCost": 3970,
+          "timeSec": 2498,
+          "timeDisplay": "42m",
+          "productionPerHour": 231,
+          "population": 4
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 2010,
+            "clay": 1005,
+            "iron": 2010,
+            "wheat": 1255
+          },
+          "totalCost": 6280,
+          "timeSec": 3872,
+          "timeDisplay": "1h 5m",
+          "productionPerHour": 324,
+          "population": 4
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 3185,
+            "clay": 1595,
+            "iron": 3185,
+            "wheat": 1990
+          },
+          "totalCost": 9955,
+          "timeSec": 6002,
+          "timeDisplay": "1h 40m",
+          "productionPerHour": 456,
+          "population": 5
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 5050,
+            "clay": 2525,
+            "iron": 5050,
+            "wheat": 3155
+          },
+          "totalCost": 15780,
+          "timeSec": 9303,
+          "timeDisplay": "2h 35m",
+          "productionPerHour": 640,
+          "population": 5
+        }
+      ]
+    },
+    "ironMine": {
+      "id": "ironMine",
+      "name": "Mina de Hierro Enano",
+      "nameEnglish": "Iron Mine",
+      "description": "Extrae hierro de las montañas de los enanos",
+      "category": "resource",
+      "produces": "iron",
+      "maxPerVillage": 4,
+      "maxLevel": 10,
+      "baseProd": 25,
+      "baseTimeSec": 210,
+      "baseCosts": {
+        "wood": 100,
+        "clay": 80,
+        "iron": 30,
+        "wheat": 60
+      },
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 100,
+            "clay": 80,
+            "iron": 30,
+            "wheat": 60
+          },
+          "totalCost": 270,
+          "timeSec": 210,
+          "timeDisplay": "4m",
+          "productionPerHour": 25,
+          "population": 1
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 160,
+            "clay": 125,
+            "iron": 50,
+            "wheat": 95
+          },
+          "totalCost": 430,
+          "timeSec": 326,
+          "timeDisplay": "5m",
+          "productionPerHour": 35,
+          "population": 1
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 250,
+            "clay": 200,
+            "iron": 75,
+            "wheat": 150
+          },
+          "totalCost": 675,
+          "timeSec": 505,
+          "timeDisplay": "8m",
+          "productionPerHour": 49,
+          "population": 2
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 400,
+            "clay": 320,
+            "iron": 120,
+            "wheat": 240
+          },
+          "totalCost": 1080,
+          "timeSec": 782,
+          "timeDisplay": "13m",
+          "productionPerHour": 69,
+          "population": 2
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 630,
+            "clay": 505,
+            "iron": 190,
+            "wheat": 380
+          },
+          "totalCost": 1705,
+          "timeSec": 1213,
+          "timeDisplay": "20m",
+          "productionPerHour": 97,
+          "population": 3
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 1000,
+            "clay": 800,
+            "iron": 300,
+            "wheat": 600
+          },
+          "totalCost": 2700,
+          "timeSec": 1880,
+          "timeDisplay": "31m",
+          "productionPerHour": 137,
+          "population": 3
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 1585,
+            "clay": 1270,
+            "iron": 475,
+            "wheat": 950
+          },
+          "totalCost": 4280,
+          "timeSec": 2914,
+          "timeDisplay": "49m",
+          "productionPerHour": 192,
+          "population": 4
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 2515,
+            "clay": 2010,
+            "iron": 755,
+            "wheat": 1510
+          },
+          "totalCost": 6790,
+          "timeSec": 4517,
+          "timeDisplay": "1h 15m",
+          "productionPerHour": 270,
+          "population": 4
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 3985,
+            "clay": 3185,
+            "iron": 1195,
+            "wheat": 2390
+          },
+          "totalCost": 10755,
+          "timeSec": 7001,
+          "timeDisplay": "1h 57m",
+          "productionPerHour": 380,
+          "population": 5
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 6315,
+            "clay": 5050,
+            "iron": 1895,
+            "wheat": 3790
+          },
+          "totalCost": 17050,
+          "timeSec": 10852,
+          "timeDisplay": "3h 1m",
+          "productionPerHour": 533,
+          "population": 5
+        }
+      ]
+    },
+    "farm": {
+      "id": "farm",
+      "name": "Granja de Freya",
+      "nameEnglish": "Farm",
+      "description": "Cultiva trigo en los campos bendecidos por Freya",
+      "category": "resource",
+      "produces": "wheat",
+      "maxPerVillage": 6,
+      "maxLevel": 10,
+      "baseProd": 30,
+      "baseTimeSec": 150,
+      "baseCosts": {
+        "wood": 70,
+        "clay": 90,
+        "iron": 70,
+        "wheat": 20
+      },
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 70,
+            "clay": 90,
+            "iron": 70,
+            "wheat": 20
+          },
+          "totalCost": 250,
+          "timeSec": 150,
+          "timeDisplay": "3m",
+          "productionPerHour": 30,
+          "population": 0
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 110,
+            "clay": 145,
+            "iron": 110,
+            "wheat": 30
+          },
+          "totalCost": 395,
+          "timeSec": 233,
+          "timeDisplay": "4m",
+          "productionPerHour": 42,
+          "population": 0
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 175,
+            "clay": 225,
+            "iron": 175,
+            "wheat": 50
+          },
+          "totalCost": 625,
+          "timeSec": 361,
+          "timeDisplay": "6m",
+          "productionPerHour": 59,
+          "population": 1
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 280,
+            "clay": 360,
+            "iron": 280,
+            "wheat": 80
+          },
+          "totalCost": 1000,
+          "timeSec": 559,
+          "timeDisplay": "9m",
+          "productionPerHour": 83,
+          "population": 1
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 445,
+            "clay": 570,
+            "iron": 445,
+            "wheat": 125
+          },
+          "totalCost": 1585,
+          "timeSec": 867,
+          "timeDisplay": "14m",
+          "productionPerHour": 117,
+          "population": 1
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 700,
+            "clay": 900,
+            "iron": 700,
+            "wheat": 200
+          },
+          "totalCost": 2500,
+          "timeSec": 1344,
+          "timeDisplay": "22m",
+          "productionPerHour": 164,
+          "population": 1
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 1110,
+            "clay": 1425,
+            "iron": 1110,
+            "wheat": 315
+          },
+          "totalCost": 3960,
+          "timeSec": 2083,
+          "timeDisplay": "35m",
+          "productionPerHour": 231,
+          "population": 2
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 1760,
+            "clay": 2260,
+            "iron": 1760,
+            "wheat": 500
+          },
+          "totalCost": 6280,
+          "timeSec": 3229,
+          "timeDisplay": "54m",
+          "productionPerHour": 324,
+          "population": 2
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 2790,
+            "clay": 3580,
+            "iron": 2790,
+            "wheat": 795
+          },
+          "totalCost": 9955,
+          "timeSec": 5005,
+          "timeDisplay": "1h 23m",
+          "productionPerHour": 456,
+          "population": 2
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 4420,
+            "clay": 5675,
+            "iron": 4420,
+            "wheat": 1260
+          },
+          "totalCost": 15775,
+          "timeSec": 7758,
+          "timeDisplay": "2h 10m",
+          "productionPerHour": 640,
+          "population": 2
+        }
+      ]
+    },
+    "mainBuilding": {
+      "id": "mainBuilding",
+      "name": "Gran Salón",
+      "nameEnglish": "Main Building",
+      "description": "Edificio principal de la aldea. Reduce tiempos de construcción y desbloquea edificios.",
+      "category": "infrastructure",
+      "produces": null,
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "baseTimeSec": 300,
+      "baseCosts": {
+        "wood": 70,
+        "clay": 40,
+        "iron": 60,
+        "wheat": 20
+      },
+      "specialEffect": {
+        "type": "buildTimeReduction",
+        "formula": "-3% por nivel",
+        "maxReduction": -30
+      },
+      "unlocks": {
+        "1": [
+          "woodcutter",
+          "claypit",
+          "ironMine",
+          "farm",
+          "warehouse",
+          "granary"
+        ],
+        "3": [
+          "marketplace",
+          "embassy"
+        ],
+        "5": [
+          "barracks"
+        ],
+        "7": [
+          "stable"
+        ],
+        "10": [
+          "workshop",
+          "academy"
+        ]
+      },
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 70,
+            "clay": 40,
+            "iron": 60,
+            "wheat": 20
+          },
+          "totalCost": 190,
+          "timeSec": 300,
+          "timeDisplay": "5m",
+          "buildTimeReduction": -3,
+          "population": 2
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 110,
+            "clay": 65,
+            "iron": 95,
+            "wheat": 30
+          },
+          "totalCost": 300,
+          "timeSec": 465,
+          "timeDisplay": "8m",
+          "buildTimeReduction": -6,
+          "population": 2
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 175,
+            "clay": 100,
+            "iron": 150,
+            "wheat": 50
+          },
+          "totalCost": 475,
+          "timeSec": 721,
+          "timeDisplay": "12m",
+          "buildTimeReduction": -9,
+          "population": 3
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 280,
+            "clay": 160,
+            "iron": 240,
+            "wheat": 80
+          },
+          "totalCost": 760,
+          "timeSec": 1117,
+          "timeDisplay": "19m",
+          "buildTimeReduction": -12,
+          "population": 3
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 445,
+            "clay": 255,
+            "iron": 380,
+            "wheat": 125
+          },
+          "totalCost": 1205,
+          "timeSec": 1732,
+          "timeDisplay": "29m",
+          "buildTimeReduction": -15,
+          "population": 4
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 700,
+            "clay": 400,
+            "iron": 600,
+            "wheat": 200
+          },
+          "totalCost": 1900,
+          "timeSec": 2684,
+          "timeDisplay": "45m",
+          "buildTimeReduction": -18,
+          "population": 4
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 1110,
+            "clay": 635,
+            "iron": 950,
+            "wheat": 315
+          },
+          "totalCost": 3010,
+          "timeSec": 4161,
+          "timeDisplay": "1h 9m",
+          "buildTimeReduction": -21,
+          "population": 5
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 1760,
+            "clay": 1005,
+            "iron": 1510,
+            "wheat": 500
+          },
+          "totalCost": 4775,
+          "timeSec": 6449,
+          "timeDisplay": "1h 47m",
+          "buildTimeReduction": -24,
+          "population": 5
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 2790,
+            "clay": 1595,
+            "iron": 2390,
+            "wheat": 795
+          },
+          "totalCost": 7570,
+          "timeSec": 9996,
+          "timeDisplay": "2h 47m",
+          "buildTimeReduction": -27,
+          "population": 6
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 4420,
+            "clay": 2525,
+            "iron": 3790,
+            "wheat": 1260
+          },
+          "totalCost": 11995,
+          "timeSec": 15494,
+          "timeDisplay": "4h 18m",
+          "buildTimeReduction": -30,
+          "population": 6
+        }
+      ]
+    },
+    "warehouse": {
+      "id": "warehouse",
+      "name": "Almacén",
+      "nameEnglish": "Warehouse",
+      "description": "Almacena Madera, Arcilla y Hierro. Capacidad aplica a CADA recurso.",
+      "category": "infrastructure",
+      "produces": null,
+      "maxPerVillage": 2,
+      "maxLevel": 10,
+      "baseTimeSec": 240,
+      "baseCosts": {
+        "wood": 130,
+        "clay": 160,
+        "iron": 90,
+        "wheat": 40
+      },
+      "stores": [
+        "wood",
+        "clay",
+        "iron"
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 130,
+            "clay": 160,
+            "iron": 90,
+            "wheat": 40
+          },
+          "totalCost": 420,
+          "timeSec": 240,
+          "timeDisplay": "4m",
+          "capacityPerResource": 1200,
+          "population": 1
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 205,
+            "clay": 255,
+            "iron": 145,
+            "wheat": 65
+          },
+          "totalCost": 670,
+          "timeSec": 372,
+          "timeDisplay": "6m",
+          "capacityPerResource": 1700,
+          "population": 1
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 325,
+            "clay": 400,
+            "iron": 225,
+            "wheat": 100
+          },
+          "totalCost": 1050,
+          "timeSec": 577,
+          "timeDisplay": "10m",
+          "capacityPerResource": 2350,
+          "population": 1
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 515,
+            "clay": 640,
+            "iron": 360,
+            "wheat": 160
+          },
+          "totalCost": 1675,
+          "timeSec": 894,
+          "timeDisplay": "15m",
+          "capacityPerResource": 3250,
+          "population": 1
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 820,
+            "clay": 1010,
+            "iron": 570,
+            "wheat": 255
+          },
+          "totalCost": 2655,
+          "timeSec": 1386,
+          "timeDisplay": "23m",
+          "capacityPerResource": 4400,
+          "population": 2
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 1300,
+            "clay": 1600,
+            "iron": 900,
+            "wheat": 400
+          },
+          "totalCost": 4200,
+          "timeSec": 2148,
+          "timeDisplay": "36m",
+          "capacityPerResource": 5900,
+          "population": 2
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 2060,
+            "clay": 2535,
+            "iron": 1425,
+            "wheat": 635
+          },
+          "totalCost": 6655,
+          "timeSec": 3329,
+          "timeDisplay": "55m",
+          "capacityPerResource": 7900,
+          "population": 2
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 3265,
+            "clay": 4020,
+            "iron": 2260,
+            "wheat": 1005
+          },
+          "totalCost": 10550,
+          "timeSec": 5160,
+          "timeDisplay": "1h 26m",
+          "capacityPerResource": 10500,
+          "population": 2
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 5175,
+            "clay": 6370,
+            "iron": 3580,
+            "wheat": 1595
+          },
+          "totalCost": 16720,
+          "timeSec": 7998,
+          "timeDisplay": "2h 13m",
+          "capacityPerResource": 13900,
+          "population": 3
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 8200,
+            "clay": 10100,
+            "iron": 5675,
+            "wheat": 2525
+          },
+          "totalCost": 26500,
+          "timeSec": 12397,
+          "timeDisplay": "3h 27m",
+          "capacityPerResource": 18400,
+          "population": 3
+        }
+      ]
+    },
+    "granary": {
+      "id": "granary",
+      "name": "Granero",
+      "nameEnglish": "Granary",
+      "description": "Almacena Trigo (Korn). Esencial para mantener tropas.",
+      "category": "infrastructure",
+      "produces": null,
+      "maxPerVillage": 2,
+      "maxLevel": 10,
+      "baseTimeSec": 210,
+      "baseCosts": {
+        "wood": 80,
+        "clay": 100,
+        "iron": 70,
+        "wheat": 20
+      },
+      "stores": [
+        "wheat"
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 80,
+            "clay": 100,
+            "iron": 70,
+            "wheat": 20
+          },
+          "totalCost": 270,
+          "timeSec": 210,
+          "timeDisplay": "4m",
+          "capacityWheat": 1200,
+          "population": 1
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 125,
+            "clay": 160,
+            "iron": 110,
+            "wheat": 30
+          },
+          "totalCost": 425,
+          "timeSec": 326,
+          "timeDisplay": "5m",
+          "capacityWheat": 1700,
+          "population": 1
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 200,
+            "clay": 250,
+            "iron": 175,
+            "wheat": 50
+          },
+          "totalCost": 675,
+          "timeSec": 505,
+          "timeDisplay": "8m",
+          "capacityWheat": 2350,
+          "population": 1
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 320,
+            "clay": 400,
+            "iron": 280,
+            "wheat": 80
+          },
+          "totalCost": 1080,
+          "timeSec": 782,
+          "timeDisplay": "13m",
+          "capacityWheat": 3250,
+          "population": 1
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 505,
+            "clay": 630,
+            "iron": 445,
+            "wheat": 125
+          },
+          "totalCost": 1705,
+          "timeSec": 1213,
+          "timeDisplay": "20m",
+          "capacityWheat": 4400,
+          "population": 2
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 800,
+            "clay": 1000,
+            "iron": 700,
+            "wheat": 200
+          },
+          "totalCost": 2700,
+          "timeSec": 1880,
+          "timeDisplay": "31m",
+          "capacityWheat": 5900,
+          "population": 2
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 1270,
+            "clay": 1585,
+            "iron": 1110,
+            "wheat": 315
+          },
+          "totalCost": 4280,
+          "timeSec": 2914,
+          "timeDisplay": "49m",
+          "capacityWheat": 7900,
+          "population": 2
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 2010,
+            "clay": 2515,
+            "iron": 1760,
+            "wheat": 500
+          },
+          "totalCost": 6785,
+          "timeSec": 4517,
+          "timeDisplay": "1h 15m",
+          "capacityWheat": 10500,
+          "population": 2
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 3185,
+            "clay": 3985,
+            "iron": 2790,
+            "wheat": 795
+          },
+          "totalCost": 10755,
+          "timeSec": 7001,
+          "timeDisplay": "1h 57m",
+          "capacityWheat": 13900,
+          "population": 3
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 5050,
+            "clay": 6315,
+            "iron": 4420,
+            "wheat": 1260
+          },
+          "totalCost": 17045,
+          "timeSec": 10852,
+          "timeDisplay": "2h 58m",
+          "capacityWheat": 18400,
+          "population": 3
+        }
+      ]
+    },
+    "barracks": {
+      "id": "barracks",
+      "name": "Cuartel",
+      "nameEnglish": "Barracks",
+      "description": "Entrena infantería. Cada nivel reduce el tiempo de entrenamiento en 5%.",
+      "category": "military",
+      "trains": "infantry",
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "trainTimeReductionPerLevel": 0.05,
+      "requirement": {
+        "building": "mainBuilding",
+        "level": 5
+      },
+      "baseCosts": {
+        "wood": 210,
+        "clay": 140,
+        "iron": 260,
+        "wheat": 120
+      },
+      "baseTimeSec": 600,
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 210,
+            "clay": 140,
+            "iron": 260,
+            "wheat": 120
+          },
+          "totalCost": 730,
+          "timeSec": 600,
+          "timeDisplay": "10m",
+          "trainTimeReduction": 0.05,
+          "unlocks": "bondi",
+          "population": 2
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 335,
+            "clay": 220,
+            "iron": 410,
+            "wheat": 190
+          },
+          "totalCost": 1155,
+          "timeSec": 930,
+          "timeDisplay": "16m",
+          "trainTimeReduction": 0.10,
+          "unlocks": null,
+          "population": 2
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 530,
+            "clay": 350,
+            "iron": 650,
+            "wheat": 300
+          },
+          "totalCost": 1830,
+          "timeSec": 1440,
+          "timeDisplay": "24m",
+          "trainTimeReduction": 0.15,
+          "unlocks": "berserker",
+          "population": 3
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 840,
+            "clay": 555,
+            "iron": 1035,
+            "wheat": 475
+          },
+          "totalCost": 2905,
+          "timeSec": 2280,
+          "timeDisplay": "38m",
+          "trainTimeReduction": 0.20,
+          "unlocks": null,
+          "population": 3
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 1335,
+            "clay": 880,
+            "iron": 1640,
+            "wheat": 755
+          },
+          "totalCost": 4610,
+          "timeSec": 3480,
+          "timeDisplay": "58m",
+          "trainTimeReduction": 0.25,
+          "unlocks": "skjaldmaer",
+          "population": 4
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 2115,
+            "clay": 1395,
+            "iron": 2600,
+            "wheat": 1195
+          },
+          "totalCost": 7305,
+          "timeSec": 5400,
+          "timeDisplay": "1h 30m",
+          "trainTimeReduction": 0.30,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 3350,
+            "clay": 2210,
+            "iron": 4120,
+            "wheat": 1895
+          },
+          "totalCost": 11575,
+          "timeSec": 8400,
+          "timeDisplay": "2h 20m",
+          "trainTimeReduction": 0.35,
+          "unlocks": "huskarl",
+          "population": 5
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 5310,
+            "clay": 3505,
+            "iron": 6530,
+            "wheat": 3000
+          },
+          "totalCost": 18345,
+          "timeSec": 13020,
+          "timeDisplay": "3h 37m",
+          "trainTimeReduction": 0.40,
+          "unlocks": null,
+          "population": 5
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 8420,
+            "clay": 5555,
+            "iron": 10350,
+            "wheat": 4760
+          },
+          "totalCost": 29085,
+          "timeSec": 20220,
+          "timeDisplay": "5h 37m",
+          "trainTimeReduction": 0.45,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 13345,
+            "clay": 8805,
+            "iron": 16400,
+            "wheat": 7545
+          },
+          "totalCost": 46095,
+          "timeSec": 31320,
+          "timeDisplay": "8h 42m",
+          "trainTimeReduction": 0.50,
+          "unlocks": null,
+          "population": 6
+        }
+      ]
+    },
+    "stable": {
+      "id": "stable",
+      "name": "Establo",
+      "nameEnglish": "Stable",
+      "description": "Entrena caballería. Cada nivel reduce el tiempo de entrenamiento en 5%.",
+      "category": "military",
+      "trains": "cavalry",
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "trainTimeReductionPerLevel": 0.05,
+      "requirement": {
+        "building": "mainBuilding",
+        "level": 7,
+        "additionalRequirement": {
+          "building": "barracks",
+          "level": 3
+        }
+      },
+      "baseCosts": {
+        "wood": 320,
+        "clay": 260,
+        "iron": 420,
+        "wheat": 180
+      },
+      "baseTimeSec": 900,
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 320,
+            "clay": 260,
+            "iron": 420,
+            "wheat": 180
+          },
+          "totalCost": 1180,
+          "timeSec": 900,
+          "timeDisplay": "15m",
+          "trainTimeReduction": 0.05,
+          "unlocks": "ulfhednar",
+          "population": 3
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 510,
+            "clay": 410,
+            "iron": 665,
+            "wheat": 285
+          },
+          "totalCost": 1870,
+          "timeSec": 1380,
+          "timeDisplay": "23m",
+          "trainTimeReduction": 0.10,
+          "unlocks": null,
+          "population": 3
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 805,
+            "clay": 655,
+            "iron": 1055,
+            "wheat": 455
+          },
+          "totalCost": 2970,
+          "timeSec": 2160,
+          "timeDisplay": "36m",
+          "trainTimeReduction": 0.15,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 1275,
+            "clay": 1035,
+            "iron": 1675,
+            "wheat": 720
+          },
+          "totalCost": 4705,
+          "timeSec": 3360,
+          "timeDisplay": "56m",
+          "trainTimeReduction": 0.20,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 2025,
+            "clay": 1640,
+            "iron": 2655,
+            "wheat": 1140
+          },
+          "totalCost": 7460,
+          "timeSec": 5220,
+          "timeDisplay": "1h 27m",
+          "trainTimeReduction": 0.25,
+          "unlocks": "valkyria",
+          "population": 5
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 3210,
+            "clay": 2600,
+            "iron": 4210,
+            "wheat": 1810
+          },
+          "totalCost": 11830,
+          "timeSec": 8100,
+          "timeDisplay": "2h 15m",
+          "trainTimeReduction": 0.30,
+          "unlocks": null,
+          "population": 5
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 5085,
+            "clay": 4125,
+            "iron": 6670,
+            "wheat": 2865
+          },
+          "totalCost": 18745,
+          "timeSec": 12540,
+          "timeDisplay": "3h 29m",
+          "trainTimeReduction": 0.35,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 8060,
+            "clay": 6535,
+            "iron": 10575,
+            "wheat": 4545
+          },
+          "totalCost": 29715,
+          "timeSec": 19440,
+          "timeDisplay": "5h 24m",
+          "trainTimeReduction": 0.40,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 12775,
+            "clay": 10360,
+            "iron": 16760,
+            "wheat": 7200
+          },
+          "totalCost": 47095,
+          "timeSec": 30180,
+          "timeDisplay": "8h 23m",
+          "trainTimeReduction": 0.45,
+          "unlocks": null,
+          "population": 7
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 20250,
+            "clay": 16420,
+            "iron": 26565,
+            "wheat": 11415
+          },
+          "totalCost": 74650,
+          "timeSec": 46800,
+          "timeDisplay": "13h 0m",
+          "trainTimeReduction": 0.50,
+          "unlocks": null,
+          "population": 7
+        }
+      ]
+    },
+    "workshop": {
+      "id": "workshop",
+      "name": "Taller de Asedio",
+      "nameEnglish": "Workshop",
+      "description": "Construye máquinas de asedio. Cada nivel reduce el tiempo de entrenamiento en 5%.",
+      "category": "military",
+      "trains": "siege",
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "trainTimeReductionPerLevel": 0.05,
+      "requirement": {
+        "building": "mainBuilding",
+        "level": 10,
+        "additionalRequirement": {
+          "building": "barracks",
+          "level": 5
+        }
+      },
+      "baseCosts": {
+        "wood": 460,
+        "clay": 510,
+        "iron": 600,
+        "wheat": 230
+      },
+      "baseTimeSec": 1200,
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 460,
+            "clay": 510,
+            "iron": 600,
+            "wheat": 230
+          },
+          "totalCost": 1800,
+          "timeSec": 1200,
+          "timeDisplay": "20m",
+          "trainTimeReduction": 0.05,
+          "unlocks": "ram",
+          "population": 3
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 730,
+            "clay": 810,
+            "iron": 950,
+            "wheat": 365
+          },
+          "totalCost": 2855,
+          "timeSec": 1860,
+          "timeDisplay": "31m",
+          "trainTimeReduction": 0.10,
+          "unlocks": null,
+          "population": 3
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 1155,
+            "clay": 1280,
+            "iron": 1505,
+            "wheat": 580
+          },
+          "totalCost": 4520,
+          "timeSec": 2880,
+          "timeDisplay": "48m",
+          "trainTimeReduction": 0.15,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 1835,
+            "clay": 2030,
+            "iron": 2390,
+            "wheat": 920
+          },
+          "totalCost": 7175,
+          "timeSec": 4500,
+          "timeDisplay": "1h 15m",
+          "trainTimeReduction": 0.20,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 2905,
+            "clay": 3220,
+            "iron": 3790,
+            "wheat": 1455
+          },
+          "totalCost": 11370,
+          "timeSec": 6960,
+          "timeDisplay": "1h 56m",
+          "trainTimeReduction": 0.25,
+          "unlocks": "catapult",
+          "population": 5
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 4605,
+            "clay": 5100,
+            "iron": 6005,
+            "wheat": 2310
+          },
+          "totalCost": 18020,
+          "timeSec": 10800,
+          "timeDisplay": "3h 0m",
+          "trainTimeReduction": 0.30,
+          "unlocks": null,
+          "population": 5
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 7300,
+            "clay": 8085,
+            "iron": 9520,
+            "wheat": 3660
+          },
+          "totalCost": 28565,
+          "timeSec": 16740,
+          "timeDisplay": "4h 39m",
+          "trainTimeReduction": 0.35,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 11570,
+            "clay": 12815,
+            "iron": 15090,
+            "wheat": 5800
+          },
+          "totalCost": 45275,
+          "timeSec": 25920,
+          "timeDisplay": "7h 12m",
+          "trainTimeReduction": 0.40,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 18340,
+            "clay": 20315,
+            "iron": 23920,
+            "wheat": 9195
+          },
+          "totalCost": 71770,
+          "timeSec": 40260,
+          "timeDisplay": "11h 11m",
+          "trainTimeReduction": 0.45,
+          "unlocks": null,
+          "population": 7
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 29080,
+            "clay": 32200,
+            "iron": 37920,
+            "wheat": 14580
+          },
+          "totalCost": 113780,
+          "timeSec": 62460,
+          "timeDisplay": "17h 21m",
+          "trainTimeReduction": 0.50,
+          "unlocks": null,
+          "population": 7
+        }
+      ]
+    },
+    "wall": {
+      "id": "wall",
+      "name": "Muralla",
+      "nameEnglish": "Wall",
+      "description": "Edificio defensivo que aumenta el poder de defensa de todas las tropas. No consume trigo.",
+      "category": "military",
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "bonusPerLevel": 0.08,
+      "requirement": {
+        "building": "mainBuilding",
+        "level": 3
+      },
+      "baseCosts": {
+        "wood": 50,
+        "clay": 100,
+        "iron": 30,
+        "wheat": 10
+      },
+      "baseTimeSec": 480,
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 50,
+            "clay": 100,
+            "iron": 30,
+            "wheat": 10
+          },
+          "totalCost": 190,
+          "timeSec": 480,
+          "timeDisplay": "8m",
+          "defenseBonus": 0.08,
+          "defenseBase": 20,
+          "population": 0
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 80,
+            "clay": 160,
+            "iron": 50,
+            "wheat": 15
+          },
+          "totalCost": 305,
+          "timeSec": 720,
+          "timeDisplay": "12m",
+          "defenseBonus": 0.16,
+          "defenseBase": 40,
+          "population": 0
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 125,
+            "clay": 250,
+            "iron": 75,
+            "wheat": 25
+          },
+          "totalCost": 475,
+          "timeSec": 1140,
+          "timeDisplay": "19m",
+          "defenseBonus": 0.24,
+          "defenseBase": 60,
+          "population": 0
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 200,
+            "clay": 400,
+            "iron": 120,
+            "wheat": 40
+          },
+          "totalCost": 760,
+          "timeSec": 1800,
+          "timeDisplay": "30m",
+          "defenseBonus": 0.32,
+          "defenseBase": 80,
+          "population": 0
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 315,
+            "clay": 630,
+            "iron": 190,
+            "wheat": 65
+          },
+          "totalCost": 1200,
+          "timeSec": 2760,
+          "timeDisplay": "46m",
+          "defenseBonus": 0.40,
+          "defenseBase": 100,
+          "population": 0
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 500,
+            "clay": 1000,
+            "iron": 300,
+            "wheat": 100
+          },
+          "totalCost": 1900,
+          "timeSec": 4320,
+          "timeDisplay": "1h 12m",
+          "defenseBonus": 0.48,
+          "defenseBase": 130,
+          "population": 0
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 795,
+            "clay": 1585,
+            "iron": 475,
+            "wheat": 160
+          },
+          "totalCost": 3015,
+          "timeSec": 6660,
+          "timeDisplay": "1h 51m",
+          "defenseBonus": 0.56,
+          "defenseBase": 160,
+          "population": 0
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 1260,
+            "clay": 2515,
+            "iron": 755,
+            "wheat": 255
+          },
+          "totalCost": 4785,
+          "timeSec": 10380,
+          "timeDisplay": "2h 53m",
+          "defenseBonus": 0.64,
+          "defenseBase": 200,
+          "population": 0
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 1995,
+            "clay": 3985,
+            "iron": 1195,
+            "wheat": 400
+          },
+          "totalCost": 7575,
+          "timeSec": 16080,
+          "timeDisplay": "4h 28m",
+          "defenseBonus": 0.72,
+          "defenseBase": 240,
+          "population": 0
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 3165,
+            "clay": 6315,
+            "iron": 1895,
+            "wheat": 635
+          },
+          "totalCost": 12010,
+          "timeSec": 24960,
+          "timeDisplay": "6h 56m",
+          "defenseBonus": 0.80,
+          "defenseBase": 300,
+          "population": 0
+        }
+      ]
+    }
+  }
+}

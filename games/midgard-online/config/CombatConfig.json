@@ -1,0 +1,252 @@
+{
+  "version": "0.1.0",
+  "description": "Configuración del sistema de combate para Midgard Online — fórmulas, misiones, muralla y reglas",
+  "combatFormulas": {
+    "attackTotal": "SUM(troopCount_i × troopAttack_i)",
+    "defenseTotal": {
+      "formula": "SUM(defenderCount_j × (defInf_j × ratioInf + defCav_j × ratioCav))",
+      "ratioInfantry": "infantryAttackers / (infantryAttackers + cavalryAttackers)",
+      "ratioCavalry": "cavalryAttackers / (infantryAttackers + cavalryAttackers)",
+      "note": "Siege units are excluded from ratio calculation (ignored in denominator)"
+    },
+    "wallBonus": {
+      "formula": "DEF_effective = (DEF_total + wall.defenseBase) × (1 + effectiveWallLevel × 0.08)",
+      "effectiveWallLevel": "max(0, wallLevel - ramReduction)",
+      "ramReduction": "min(wallLevel, sentRams × 0.5)",
+      "bonusPerLevel": 0.08,
+      "maxBonus": 0.80
+    },
+    "result": {
+      "attackerWins": {
+        "condition": "ATK_total > DEF_effective",
+        "victoryRatio": "(ATK_total - DEF_effective) / ATK_total",
+        "attackerLosses": "1 - victoryRatio^1.5",
+        "defenderLosses": 1.0
+      },
+      "defenderWins": {
+        "condition": "DEF_effective > ATK_total",
+        "victoryRatio": "(DEF_effective - ATK_total) / DEF_effective",
+        "defenderLosses": "1 - victoryRatio^1.5",
+        "attackerLosses": 1.0
+      },
+      "draw": {
+        "condition": "ATK_total == DEF_effective",
+        "attackerLosses": 1.0,
+        "defenderLosses": 1.0
+      },
+      "lossExponent": 1.5,
+      "lossExponentNote": "1.5 smooths losses — decisive victories have low casualties, close fights are bloody for both sides"
+    },
+    "survivors": "round(troopCount × (1 - lossRatio))"
+  },
+  "looting": {
+    "totalCarry": "SUM(survivingAttackers_i × carryCapacity_i)",
+    "availableResources": "min(villageResources, storageCapacity × 0.5)",
+    "lootAmount": "min(totalCarry, availableResources)",
+    "distribution": "proportional to available resources per type",
+    "note": "Siege units have 0 carry — they contribute nothing to loot"
+  },
+  "travel": {
+    "groupSpeed": "min(troopSpeed_i for all troops in group)",
+    "travelTimeHours": "distance / groupSpeed",
+    "distanceFormula": "sqrt((x2 - x1)² + (y2 - y1)²)"
+  },
+  "missionTypes": {
+    "attack": {
+      "id": "attack",
+      "name": "Ataque",
+      "description": "Ataque normal — combate completo + saqueo",
+      "combatModifier": 1.0,
+      "canLoot": true,
+      "canDestroy": false,
+      "retreatOnLoss": false
+    },
+    "raid": {
+      "id": "raid",
+      "name": "Raid",
+      "description": "Saqueo seguro — ATK completo, pero botín reducido a la mitad",
+      "combatModifier": 1.0,
+      "canLoot": true,
+      "lootModifier": 0.5,
+      "canDestroy": false,
+      "retreatOnLoss": true,
+      "maxLossOnWin": 0.10,
+      "retreatLoss": 0.15,
+      "note": "Full ATK. Loot × 0.5. If attacker wins: max 10% losses. If loses: troops flee with only 15% casualties instead of 100%"
+    },
+    "siege": {
+      "id": "siege",
+      "name": "Asedio",
+      "description": "Ataque con catapultas — puede destruir edificios enemigos",
+      "combatModifier": 1.0,
+      "canLoot": true,
+      "canDestroy": true,
+      "retreatOnLoss": false,
+      "requiresTroop": "catapult"
+    },
+    "reinforce": {
+      "id": "reinforce",
+      "name": "Refuerzo",
+      "description": "Envía tropas a defender la aldea de un aliado",
+      "canLoot": false,
+      "canDestroy": false,
+      "note": "Troops stay at ally village and defend as if they were local defenders"
+    }
+  },
+  "wall": {
+    "id": "wall",
+    "name": "Muralla",
+    "nameEnglish": "Wall",
+    "description": "Edificio defensivo que aumenta el poder de defensa de todas las tropas de la aldea",
+    "category": "military",
+    "maxLevel": 10,
+    "requirement": {
+      "building": "mainBuilding",
+      "level": 3
+    },
+    "bonusPerLevel": 0.08,
+    "population": 0,
+    "levels": [
+      {
+        "level": 1,
+        "costs": {
+          "wood": 50,
+          "clay": 100,
+          "iron": 30,
+          "wheat": 10
+        },
+        "totalCost": 190,
+        "timeSec": 480,
+        "timeDisplay": "8m",
+        "defenseBonus": 0.08,
+        "defenseBase": 20
+      },
+      {
+        "level": 2,
+        "costs": {
+          "wood": 80,
+          "clay": 160,
+          "iron": 50,
+          "wheat": 15
+        },
+        "totalCost": 305,
+        "timeSec": 720,
+        "timeDisplay": "12m",
+        "defenseBonus": 0.16,
+        "defenseBase": 40
+      },
+      {
+        "level": 3,
+        "costs": {
+          "wood": 125,
+          "clay": 250,
+          "iron": 75,
+          "wheat": 25
+        },
+        "totalCost": 475,
+        "timeSec": 1140,
+        "timeDisplay": "19m",
+        "defenseBonus": 0.24,
+        "defenseBase": 60
+      },
+      {
+        "level": 4,
+        "costs": {
+          "wood": 200,
+          "clay": 400,
+          "iron": 120,
+          "wheat": 40
+        },
+        "totalCost": 760,
+        "timeSec": 1800,
+        "timeDisplay": "30m",
+        "defenseBonus": 0.32,
+        "defenseBase": 80
+      },
+      {
+        "level": 5,
+        "costs": {
+          "wood": 315,
+          "clay": 630,
+          "iron": 190,
+          "wheat": 65
+        },
+        "totalCost": 1200,
+        "timeSec": 2760,
+        "timeDisplay": "46m",
+        "defenseBonus": 0.40,
+        "defenseBase": 100
+      },
+      {
+        "level": 6,
+        "costs": {
+          "wood": 500,
+          "clay": 1000,
+          "iron": 300,
+          "wheat": 100
+        },
+        "totalCost": 1900,
+        "timeSec": 4320,
+        "timeDisplay": "1h 12m",
+        "defenseBonus": 0.48,
+        "defenseBase": 130
+      },
+      {
+        "level": 7,
+        "costs": {
+          "wood": 795,
+          "clay": 1585,
+          "iron": 475,
+          "wheat": 160
+        },
+        "totalCost": 3015,
+        "timeSec": 6660,
+        "timeDisplay": "1h 51m",
+        "defenseBonus": 0.56,
+        "defenseBase": 160
+      },
+      {
+        "level": 8,
+        "costs": {
+          "wood": 1260,
+          "clay": 2515,
+          "iron": 755,
+          "wheat": 255
+        },
+        "totalCost": 4785,
+        "timeSec": 10380,
+        "timeDisplay": "2h 53m",
+        "defenseBonus": 0.64,
+        "defenseBase": 200
+      },
+      {
+        "level": 9,
+        "costs": {
+          "wood": 1995,
+          "clay": 3985,
+          "iron": 1195,
+          "wheat": 400
+        },
+        "totalCost": 7575,
+        "timeSec": 16080,
+        "timeDisplay": "4h 28m",
+        "defenseBonus": 0.72,
+        "defenseBase": 240
+      },
+      {
+        "level": 10,
+        "costs": {
+          "wood": 3165,
+          "clay": 6315,
+          "iron": 1895,
+          "wheat": 635
+        },
+        "totalCost": 12010,
+        "timeSec": 24960,
+        "timeDisplay": "6h 56m",
+        "defenseBonus": 0.80,
+        "defenseBase": 300
+      }
+    ]
+  }
+}

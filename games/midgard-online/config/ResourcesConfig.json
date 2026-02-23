@@ -1,0 +1,145 @@
+{
+  "version": "0.1.0",
+  "description": "Definición de recursos para Midgard Online",
+  "resources": {
+    "wood": {
+      "id": "wood",
+      "name": "Madera",
+      "nameNorse": "Viðr",
+      "nameEnglish": "Yggdrasil Wood",
+      "description": "Madera de los bosques cercanos a Yggdrasil",
+      "icon": "wood",
+      "colorUI": "#8B4513",
+      "category": "basic",
+      "storedIn": "warehouse",
+      "baseProductionPerHour": 30,
+      "fieldsPerVillage": 4,
+      "role": "Construcción civil — edificios y mejoras generales"
+    },
+    "clay": {
+      "id": "clay",
+      "name": "Arcilla",
+      "nameNorse": "Leir",
+      "nameEnglish": "Midgard Clay",
+      "description": "Arcilla de las riberas de los fiordos",
+      "icon": "clay",
+      "colorUI": "#CD853F",
+      "category": "basic",
+      "storedIn": "warehouse",
+      "baseProductionPerHour": 30,
+      "fieldsPerVillage": 4,
+      "role": "Construcción defensiva — murallas y fortificaciones"
+    },
+    "iron": {
+      "id": "iron",
+      "name": "Hierro",
+      "nameNorse": "Járn",
+      "nameEnglish": "Dwarven Iron",
+      "description": "Mineral extraído de las montañas, forjado por herreros enanos",
+      "icon": "iron",
+      "colorUI": "#708090",
+      "category": "basic",
+      "storedIn": "warehouse",
+      "baseProductionPerHour": 25,
+      "fieldsPerVillage": 4,
+      "role": "Militar — tropas avanzadas y mejoras de armamento"
+    },
+    "wheat": {
+      "id": "wheat",
+      "name": "Trigo",
+      "nameNorse": "Korn",
+      "nameEnglish": "Freya's Wheat",
+      "description": "Grano de los campos de Midgard",
+      "icon": "wheat",
+      "colorUI": "#DAA520",
+      "category": "basic",
+      "storedIn": "granary",
+      "baseProductionPerHour": 30,
+      "fieldsPerVillage": 6,
+      "role": "Mantenimiento — consumido por tropas y población cada hora"
+    }
+  },
+  "premiumCurrency": {
+    "id": "runes",
+    "name": "Runas de Odín",
+    "colorUI": "#9B59B6",
+    "icon": "rune_stone",
+    "earnFreePerDay": 5,
+    "startingAmount": 50,
+    "conversions": {
+      "speedUpMinuteRate": 1,
+      "speedUpMinuteRateAfter60": 0.5,
+      "buyResourcesPerRune": 150,
+      "secondBuilderCostPerDay": 25
+    }
+  },
+  "startingResources": {
+    "wood": 750,
+    "clay": 750,
+    "iron": 750,
+    "wheat": 750,
+    "runes": 50
+  },
+  "beginnerBonus": {
+    "protectionShieldHours": 72,
+    "productionBonusPercent": 25,
+    "productionBonusDays": 7,
+    "tutorialBonusResources": {
+      "wood": 500,
+      "clay": 500,
+      "iron": 500,
+      "wheat": 500
+    }
+  },
+  "wheatConsumption": {
+    "populationPerHour": 1,
+    "basicInfantryPerHour": 1,
+    "heavyInfantryPerHour": 2,
+    "cavalryPerHour": 3,
+    "siegePerHour": 4,
+    "desertionOnNegative": {
+      "enabled": true,
+      "rateFormula": "0.01 × |deficit| / total_production per hour",
+      "description": "Tropas desertan proporcionalmente al déficit de trigo"
+    }
+  },
+  "storageCapacityByLevel": [
+    1200,
+    1700,
+    2350,
+    3250,
+    4400,
+    5900,
+    7900,
+    10500,
+    13900,
+    18400
+  ],
+  "maxWarehousesPerVillage": 2,
+  "maxGranariesPerVillage": 2,
+  "antiExploit": {
+    "maxRaidPercent": 50,
+    "inactiveDecayPercentPerDay": 10,
+    "inactiveDecayStartDays": 7,
+    "maxTradeRatio": 3,
+    "productionStopsOnFullStorage": true
+  },
+  "formulas": {
+    "production": {
+      "formula": "round(baseProd × 1.405^(level - 1))",
+      "growthFactor": 1.405,
+      "description": "×21.3 de nivel 1 a nivel 10"
+    },
+    "cost": {
+      "formula": "round(baseCost × 1.585^(level - 1))",
+      "growthFactor": 1.585,
+      "description": "×63.1 de nivel 1 a nivel 10 — costes crecen 3× más rápido que producción"
+    },
+    "buildTime": {
+      "formula": "round(baseTime × 1.55^(level - 1))",
+      "growthFactor": 1.55,
+      "mainBuildingReduction": "×(1 - 0.03 × mainBuildingLevel)",
+      "description": "×51.6 de nivel 1 a nivel 10"
+    }
+  }
+}

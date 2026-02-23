@@ -1,0 +1,270 @@
+{
+  "version": "0.1.0",
+  "description": "Configuración de tropas para Midgard Online — 8 unidades militares (3 infantería + 2 caballería + 2 asedio + 1 defensor mixto)",
+  "formulas": {
+    "trainTimeReduction": "baseTimeSec × (1 - buildingLevel × 0.05)",
+    "notes": "Cada nivel del edificio militar reduce el tiempo de entrenamiento en 5%. Max -50% a nivel 10."
+  },
+  "troopCategories": {
+    "infantry": {
+      "trainedIn": "barracks",
+      "wheatRange": "1-2 per troop",
+      "speedRange": "5-6 fields/hour"
+    },
+    "cavalry": {
+      "trainedIn": "stable",
+      "wheatRange": "3 per troop",
+      "speedRange": "12-14 fields/hour"
+    },
+    "siege": {
+      "trainedIn": "workshop",
+      "wheatRange": "4 per troop",
+      "speedRange": "2-3 fields/hour",
+      "canLoot": false
+    }
+  },
+  "troops": {
+    "bondi": {
+      "id": "bondi",
+      "name": "Bóndi",
+      "nameEnglish": "Farmer Warrior",
+      "description": "Guerrero granjero básico. Barato, versátil, buen saqueador.",
+      "type": "infantry",
+      "trainedIn": "barracks",
+      "unlockedAt": {
+        "building": "barracks",
+        "level": 1
+      },
+      "stats": {
+        "attack": 40,
+        "defenseInfantry": 20,
+        "defenseCavalry": 25,
+        "speed": 6,
+        "carryCapacity": 50,
+        "wheatConsumption": 1
+      },
+      "costs": {
+        "wood": 95,
+        "clay": 75,
+        "iron": 40,
+        "wheat": 30
+      },
+      "totalCost": 240,
+      "baseTrainTimeSec": 1080,
+      "trainTimeDisplay": "18m"
+    },
+    "berserker": {
+      "id": "berserker",
+      "name": "Berserker",
+      "nameEnglish": "Frenzied Warrior",
+      "description": "Unidad ofensiva de élite. Daño devastador, defensa mediocre.",
+      "type": "infantry",
+      "trainedIn": "barracks",
+      "unlockedAt": {
+        "building": "barracks",
+        "level": 3
+      },
+      "stats": {
+        "attack": 80,
+        "defenseInfantry": 40,
+        "defenseCavalry": 20,
+        "speed": 5,
+        "carryCapacity": 30,
+        "wheatConsumption": 2
+      },
+      "costs": {
+        "wood": 150,
+        "clay": 100,
+        "iron": 200,
+        "wheat": 50
+      },
+      "totalCost": 500,
+      "baseTrainTimeSec": 1680,
+      "trainTimeDisplay": "28m"
+    },
+    "skjaldmaer": {
+      "id": "skjaldmaer",
+      "name": "Skjaldmær",
+      "nameEnglish": "Shield Maiden",
+      "description": "Guerrera defensiva especializada. Mejor defensa de infantería del juego.",
+      "type": "infantry",
+      "trainedIn": "barracks",
+      "unlockedAt": {
+        "building": "barracks",
+        "level": 5
+      },
+      "stats": {
+        "attack": 30,
+        "defenseInfantry": 65,
+        "defenseCavalry": 50,
+        "speed": 5,
+        "carryCapacity": 35,
+        "wheatConsumption": 1
+      },
+      "costs": {
+        "wood": 120,
+        "clay": 160,
+        "iron": 100,
+        "wheat": 40
+      },
+      "totalCost": 420,
+      "baseTrainTimeSec": 1440,
+      "trainTimeDisplay": "24m"
+    },
+    "huskarl": {
+      "id": "huskarl",
+      "name": "Huskarl",
+      "nameEnglish": "Jarl's Guardian",
+      "description": "Guerrero de élite defensivo. Insuperable contra infantería.",
+      "type": "infantry",
+      "trainedIn": "barracks",
+      "unlockedAt": {
+        "building": "barracks",
+        "level": 7
+      },
+      "stats": {
+        "attack": 60,
+        "defenseInfantry": 80,
+        "defenseCavalry": 40,
+        "speed": 5,
+        "carryCapacity": 40,
+        "wheatConsumption": 2
+      },
+      "costs": {
+        "wood": 200,
+        "clay": 180,
+        "iron": 220,
+        "wheat": 80
+      },
+      "totalCost": 680,
+      "baseTrainTimeSec": 2100,
+      "trainTimeDisplay": "35m"
+    },
+    "ulfhednar": {
+      "id": "ulfhednar",
+      "name": "Ulfhednar",
+      "nameEnglish": "Wolf Rider",
+      "description": "Caballería de ataque rápida. El raider perfecto: velocidad, ataque y carga.",
+      "type": "cavalry",
+      "trainedIn": "stable",
+      "unlockedAt": {
+        "building": "stable",
+        "level": 1
+      },
+      "stats": {
+        "attack": 100,
+        "defenseInfantry": 25,
+        "defenseCavalry": 30,
+        "speed": 14,
+        "carryCapacity": 80,
+        "wheatConsumption": 3
+      },
+      "costs": {
+        "wood": 280,
+        "clay": 180,
+        "iron": 340,
+        "wheat": 100
+      },
+      "totalCost": 900,
+      "baseTrainTimeSec": 2400,
+      "trainTimeDisplay": "40m"
+    },
+    "valkyria": {
+      "id": "valkyria",
+      "name": "Valkyria",
+      "nameEnglish": "Rider of the Fallen",
+      "description": "Caballería defensiva. Excelente contra otras caballerías.",
+      "type": "cavalry",
+      "trainedIn": "stable",
+      "unlockedAt": {
+        "building": "stable",
+        "level": 5
+      },
+      "stats": {
+        "attack": 70,
+        "defenseInfantry": 50,
+        "defenseCavalry": 70,
+        "speed": 12,
+        "carryCapacity": 60,
+        "wheatConsumption": 3
+      },
+      "costs": {
+        "wood": 250,
+        "clay": 220,
+        "iron": 280,
+        "wheat": 120
+      },
+      "totalCost": 870,
+      "baseTrainTimeSec": 2280,
+      "trainTimeDisplay": "38m"
+    },
+    "ram": {
+      "id": "ram",
+      "name": "Ariete de Jörmungandr",
+      "nameEnglish": "Battering Ram",
+      "description": "Máquina de asedio que reduce el bonus defensivo de la Muralla.",
+      "type": "siege",
+      "trainedIn": "workshop",
+      "unlockedAt": {
+        "building": "workshop",
+        "level": 1
+      },
+      "stats": {
+        "attack": 60,
+        "defenseInfantry": 10,
+        "defenseCavalry": 10,
+        "speed": 3,
+        "carryCapacity": 0,
+        "wheatConsumption": 4
+      },
+      "costs": {
+        "wood": 500,
+        "clay": 400,
+        "iron": 300,
+        "wheat": 100
+      },
+      "totalCost": 1300,
+      "baseTrainTimeSec": 3000,
+      "trainTimeDisplay": "50m",
+      "specialAbility": {
+        "name": "Destruir Muralla",
+        "formula": "wallReduction = min(wallLevel, sentRams × 0.5)",
+        "description": "Reduce el nivel efectivo de la muralla ANTES del combate (usa arietes enviados, no supervivientes)"
+      }
+    },
+    "catapult": {
+      "id": "catapult",
+      "name": "Catapulta de Surtr",
+      "nameEnglish": "Catapult",
+      "description": "Máquina de destrucción que puede destruir edificios enemigos.",
+      "type": "siege",
+      "trainedIn": "workshop",
+      "unlockedAt": {
+        "building": "workshop",
+        "level": 5
+      },
+      "stats": {
+        "attack": 40,
+        "defenseInfantry": 10,
+        "defenseCavalry": 10,
+        "speed": 2,
+        "carryCapacity": 0,
+        "wheatConsumption": 4
+      },
+      "costs": {
+        "wood": 600,
+        "clay": 500,
+        "iron": 450,
+        "wheat": 150
+      },
+      "totalCost": 1700,
+      "baseTrainTimeSec": 3600,
+      "trainTimeDisplay": "60m",
+      "specialAbility": {
+        "name": "Destruir Edificio",
+        "formula": "P_destroy = min(0.80, survivingCatapults × 0.07)",
+        "description": "Probabilidad de reducir 1 nivel al edificio objetivo. El atacante elige el edificio antes del ataque."
+      }
+    }
+  }
+}

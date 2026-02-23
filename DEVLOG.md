@@ -180,4 +180,112 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 ---
 
+### [2026-02-23] - Midgard Online: Concepto Aprobado por Producer
+
+**Autor:** `@producer`
+
+1.  **Análisis de Mercado Completado:**
+    - Se evaluaron 5 competidores directos (Travian, Tribal Wars, Ikariam, OGame, Grepolis).
+    - Oportunidad identificada: todos los competidores usan tech de 2004-2010. Stack moderno (React + Node.js + WebSocket) como diferenciador clave.
+    - Temática nórdica en pico de resonancia cultural (Vikings, God of War, AC Valhalla).
+
+2.  **Vision Document Creado (`games/midgard-online/docs/vision.md`):**
+    - Core Loop definido: Producir → Construir → Entrenar → Atacar → Saquear → Expandir.
+    - X-Factor Score: **17/20** (aprobado, umbral 12/20).
+    - Producer Score: **75.5%** (aprobado, umbral 70%).
+
+3.  **KPIs Target Definidos:**
+    - Retención: D1 35%, D7 18%, D30 10%.
+    - Monetización: ARPDAU $0.08, Conversion 3%, LTV $8.
+    - Modelo F2P ético: Runas de Odín como premium currency, nunca pay-to-win.
+
+4.  **Roadmap en 4 Fases:**
+    - Fase 1 (v0.1.0): Fundación — recursos y edificios de producción.
+    - Fase 2 (v0.2.0): Combate — tropas, PvP, mapa del mundo.
+    - Fase 3 (v0.3.0): Social — alianzas, chat, diplomacia, segunda aldea.
+    - Fase 4 (v1.0.0): Monetización & Polish — premium currency, Battle Pass, onboarding.
+
+5.  **Siguiente Paso:** `@gamedesign` debe diseñar el sistema de recursos y edificios de producción (Paso 2 del pipeline-playbook).
+
+---
+
+### [2026-02-23] - Midgard Online: Sistema de Recursos y Edificios Completo (Paso 2)
+
+**Autor:** `@gamedesign`
+
+1.  **Sistema de 4 Recursos Diseñado:**
+    - Madera (Viðr), Arcilla (Leir), Hierro (Járn), Trigo (Korn).
+    - Asimetría intencional: Hierro produce 17% menos (base 25/h vs 30/h) — se convierte en recurso estratégico.
+    - Trigo es recurso de mantenimiento: consumido por población y tropas cada hora.
+    - Distribución Travian-style: 4-4-4-6 campos por aldea (18 resource slots).
+
+2.  **7 Edificios con Tablas de Balance (Niveles 1-10):**
+    - **Campos de recursos:** Leñador de Yggdrasil, Cantera de Midgard, Mina de Hierro Enano, Granja de Freya.
+    - **Infraestructura:** Gran Salón (reduce -3% tiempo/nivel, desbloquea edificios), Almacén (cap W/C/I), Granero (cap Trigo).
+    - Cada tabla incluye: 4 costes, tiempo de construcción, producción/h, población.
+
+3.  **Fórmulas Explícitas:**
+    - Producción: `base × 1.405^(nivel-1)` — ×21.3 de L1 a L10.
+    - Costes: `base × 1.585^(nivel-1)` — ×63.1 de L1 a L10 (costes crecen 3× más rápido que producción).
+    - Tiempo: `base × 1.55^(nivel-1)` — L1=3m a L10=2h35m para campos.
+    - Gran Salón: -3% por nivel (máx -30% a L10).
+
+4.  **Análisis de Progresión:**
+    - Day 1: 6+ acciones en primeros 25 min. Campos L1-2.
+    - Day 3-5: Todos los campos L5 (~16h de build time).
+    - Day 25-40: Todos los campos L10 (~112h con GS L10).
+    - Balance de trigo: Se vuelve negativo a ~2,000 tropas — intencional, fuerza multi-aldea.
+
+5.  **Archivos Creados:**
+    - `games/midgard-online/docs/economy.md` — Sistema económico completo.
+    - `games/midgard-online/docs/buildings.md` — Tablas de todos los edificios.
+    - `games/midgard-online/config/ResourcesConfig.json` — JSON config de recursos.
+    - `games/midgard-online/config/BuildingsConfig.json` — JSON config de 7 edificios × 10 niveles.
+
+6.  **Siguiente Paso:** `@archivist` debe integrar en documentación oficial. `@qa` debe validar balance, soft-locks, y progresión temporal.
+
+---
+
+### [2026-02-23] - Paso 3: Tropas y Sistema de Combate — Midgard Online
+
+**Autor:** `@gamedesign`
+**Pipeline:** Paso 3 de `pipeline-playbook.md`
+
+1.  **8 Tropas Nórdicas Diseñadas:**
+    - **Infantería (Cuartel):** Bóndi (ATK 40, raider económico), Berserker (ATK 80, ofensivo), Skjaldmær (DEF 65/50, defensora), Huskarl (DEF 80/40, élite defensivo).
+    - **Caballería (Establo):** Ulfhednar (ATK 100, vel 14, raider élite), Valkyria (DEF cab 70, contra-raids).
+    - **Asedio (Taller):** Ariete de Jörmungandr (reduce muralla), Catapulta de Surtr (destruye edificios).
+    - Consumo de trigo consistente con `economy.md`: básico=1, pesado=2, cab=3, asedio=4.
+
+2.  **3 Edificios Militares (Niveles 1-10):**
+    - **Cuartel:** GS L5 → -5% entreno/nivel → desbloquea Bóndi(L1), Berserker(L3), Skjaldmær(L5), Huskarl(L7).
+    - **Establo:** GS L7 + Cuartel L3 → -5% entreno/nivel → desbloquea Ulfhednar(L1), Valkyria(L5).
+    - **Taller:** GS L10 + Cuartel L5 → -5% entreno/nivel → desbloquea Ariete(L1), Catapulta(L5).
+
+3.  **Muralla (10 niveles):**
+    - GS L3 requerido. +8% defensa/nivel (max +80% a L10). DEF base 20→300.
+    - Pop = 0 (no consume trigo). Inversión defensiva más eficiente del juego.
+    - Arcilla como coste principal (alineado con economy.md: arcilla = construcción defensiva).
+
+4.  **Sistema de Combate Completo:**
+    - **Fórmula:** ATK total vs DEF ponderada por ratio inf/cab del atacante.
+    - **Pérdidas:** Exponente 1.5 — victoria aplastante = pocas bajas, victoria ajustada = sangrienta.
+    - **Muralla:** Multiplica DEF × (1 + nivel × 0.08). Arietes reducen nivel efectivo.
+    - **Misiones:** Ataque, Raid (ATK×0.5, max 10% bajas), Asedio (destruye edificios), Refuerzo.
+
+5.  **2 Simulaciones de Combate:**
+    - 50 Berserkers + 5 Arietes vs 30 Huskarl + Muralla L3 → Atacante gana con 75.5% pérdidas. Saquea 360 recursos.
+    - 30 Ulfhednar vs aldea sin defensores + Muralla L2 → Pierde 1 jinete, saquea 2,320 recursos.
+
+6.  **Archivos Creados/Actualizados:**
+    - `games/midgard-online/docs/troops.md` — 8 tropas con stats, costes, desbloqueos, comparativas.
+    - `games/midgard-online/docs/combat.md` — Fórmulas, muralla, simulaciones, reglas especiales.
+    - `games/midgard-online/config/TroopsConfig.json` — JSON config de 8 tropas.
+    - `games/midgard-online/config/CombatConfig.json` — JSON config de combate + muralla.
+    - `games/midgard-online/config/BuildingsConfig.json` — Actualizado a v0.2.0 con 4 edificios militares.
+
+7.  **Siguiente Paso:** `@archivist` debe integrar tropas y combate en documentación GDD. `@qa` debe validar: fórmula de combate, balance entre tropas, ausencia de estrategia dominante, y consistencia de trigo con economy.md.
+
+---
+
 _Fin del registro actual. Añade nuevas entradas debajo._
