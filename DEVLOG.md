@@ -564,4 +564,76 @@ Siguiente paso: @qa auditar documentacion completa.
 
 **Siguiente Paso:** @qa debe validar las correcciones aplicadas.
 
+---
+
+### [2026-02-23] - Release Plan v0.1.0 — Midgard Online Pipeline Completo
+
+**Autor:** `@release`
+**Juego:** Midgard Online (`games/midgard-online/`)
+
+#### Pipeline Ejecutado (Pasos 1–9 completos)
+
+El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamente:
+
+| Paso | Agente         | Entregable                                                                            | Estado |
+| ---- | -------------- | ------------------------------------------------------------------------------------- | ------ |
+| 1    | `@producer`    | `docs/vision.md` — Análisis de mercado, KPIs, roadmap 4 fases                         | ✅     |
+| 2    | `@gamedesign`  | `docs/economy.md`, `docs/buildings.md`, configs ResourcesConfig + BuildingsConfig     | ✅     |
+| 3    | `@gamedesign`  | `docs/troops.md`, `docs/combat.md`, configs TroopsConfig + CombatConfig               | ✅     |
+| 4    | `@gamedesign`  | `docs/map.md`, `docs/alliances.md`, configs MapConfig + AlliancesConfig               | ✅     |
+| 4b   | `@gamedesign`  | QA Fixes: spawn overflow, Residencia L1=0%, coordination bonus definido               | ✅     |
+| 5    | `@archivist`   | `docs/roadmap.md`, `docs/tech-stack.md`, `docs/index.md` — GDD completo               | ✅     |
+| 6    | `@qa`          | `docs/qa-audit-report.md` — 6 PASS, 2 WARNING. Resultado: NEEDS REVISION              | ✅     |
+| 6b   | `@gamedesign`  | Fixes QA: Valkyria rebalance, sistema de moral, anti-exploit                          | ✅     |
+| 6c   | `@qa`          | Re-audit: los 3 issues resueltos → **✅ QA APPROVED**                                 | ✅     |
+| 7    | `@developer`   | Validación 0 discrepancias configs↔docs. tech-stack.md verificado (458 líneas)        | ✅     |
+| 8    | `@artdirector` | `docs/art/style-guide.md` — paleta 50+ tokens, 5 wireframes, iconografía, nav Mermaid | ✅     |
+| 8b   | `@artdirector` | Fixes O1-O4: WCAG AA fix, wireframe alianzas, notas de accesibilidad                  | ✅     |
+| 9    | `@release`     | Plan de release v0.1.0 + 8 issues GitHub creados                                      | ✅     |
+
+#### Estado del Pre-Release Checklist
+
+**Documentación:**
+
+- [x] `docs/vision.md` ✅
+- [x] `docs/economy.md` ✅
+- [x] `docs/buildings.md` ✅
+- [x] `docs/troops.md` ✅
+- [x] `docs/combat.md` ✅
+- [x] `docs/map.md` ✅
+- [x] `docs/alliances.md` ✅
+- [x] `docs/roadmap.md` ✅
+- [x] `docs/tech-stack.md` ✅
+- [x] `docs/index.md` ✅
+- [x] `docs/art/style-guide.md` ✅
+- [x] `docs/qa-audit-report.md` ✅
+
+**Configs JSON:**
+
+- [x] `config/ResourcesConfig.json` ✅
+- [x] `config/BuildingsConfig.json` ✅
+- [x] `config/TroopsConfig.json` ✅
+- [x] `config/CombatConfig.json` ✅
+- [x] `config/MapConfig.json` ✅
+- [x] `config/AlliancesConfig.json` ✅
+
+**QA:** ✅ QA APPROVED (re-audit tras 3 fixes)
+
+#### Issues GitHub Creados para v0.1.0
+
+| Issue | Título                                                            | URL                                                       |
+| ----- | ----------------------------------------------------------------- | --------------------------------------------------------- |
+| #7    | [MO-01] Project Setup: React + Vite + Node.js + PostgreSQL        | https://github.com/afernandezro7/ai-game-studio/issues/7  |
+| #8    | [MO-02] Autenticación: Registro + Login JWT                       | https://github.com/afernandezro7/ai-game-studio/issues/8  |
+| #9    | [MO-03] Aldeas: Creación automática + CRUD + recursos iniciales   | https://github.com/afernandezro7/ai-game-studio/issues/9  |
+| #10   | [MO-04] Producción en tiempo real: tick loop + acumulación        | https://github.com/afernandezro7/ai-game-studio/issues/10 |
+| #11   | [MO-05] Edificios: Upgrade + Cola de construcción + Gran Salón    | https://github.com/afernandezro7/ai-game-studio/issues/11 |
+| #12   | [MO-06] UI de Aldea: Grid + Barra de Recursos + Panel de Edificio | https://github.com/afernandezro7/ai-game-studio/issues/12 |
+| #13   | [MO-07] WebSocket: Socket.io + eventos production:tick            | https://github.com/afernandezro7/ai-game-studio/issues/13 |
+| #14   | [MO-08] QA E2E + Deploy: Validación final de v0.1.0               | https://github.com/afernandezro7/ai-game-studio/issues/14 |
+
+#### Siguiente Paso
+
+`@developer` debe implementar los issues en orden MO-01 → MO-02 → MO-03 → MO-04 → MO-05 → MO-06 → MO-07 → MO-08.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
