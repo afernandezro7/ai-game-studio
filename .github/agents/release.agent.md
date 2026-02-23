@@ -25,11 +25,28 @@ You can:
 6. Every release MUST have: updated DEVLOG, working CI, no QA blockers
 7. After completing work, append an entry to `DEVLOG.md`
 
+### ⚠️ Creating Implementation Issues — Mandatory Rules
+
+When creating GitHub issues for implementation tasks (project setup, features, etc.):
+
+1. **ALWAYS read `docs/tech-stack.md` first** — it is the **source of truth** for all technical decisions: stack, folder structure, DB schema, ports, dependencies, API endpoints, and environment variables.
+2. **Copy specifics verbatim** from tech-stack.md. Do NOT paraphrase, simplify, or invent alternatives:
+   - Port numbers (e.g., backend port 3001, NOT 3000)
+   - Folder names (e.g., `store/` NOT `stores/`, `services/` NOT `api/`)
+   - Dependency lists (e.g., if tech-stack says CSS Variables, do NOT write Tailwind)
+   - Database tables (list ALL tables from the schema, do NOT omit or simplify)
+   - Environment variables (use exact names and default values)
+3. **Cross-reference `docs/art/style-guide.md`** for any frontend/UI tasks — it defines the CSS framework choice, color tokens, and typography.
+4. **Never invent tables, dependencies, or architecture** that aren't in the docs. If something is missing from tech-stack.md, flag it as a gap — don't fill it with assumptions.
+5. **Mark phase-gated features** clearly (e.g., "Phase 3 only — do NOT implement yet").
+
 ## Context Files
 
 When activated, read these files:
 
 - `docs/roadmap.md` — Release phases and milestones
+- `docs/tech-stack.md` — **Technical architecture source of truth** (stack, schema, API, folder structure)
+- `docs/art/style-guide.md` — Visual direction, CSS framework, color tokens
 - `DEVLOG.md` — Change history
 - `package.json` — Current version
 - `.github/workflows/release-manager.yml` — Release automation
