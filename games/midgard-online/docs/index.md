@@ -99,7 +99,7 @@ Ver detalles completos en [vision.md](vision.md).
 | 3   | **Skjaldmær**              | Infantería | 30  | 65      | 50      | 5   | 35    | 1       | 420         |
 | 4   | **Huskarl**                | Infantería | 60  | 80      | 40      | 5   | 40    | 2       | 680         |
 | 5   | **Ulfhednar**              | Caballería | 100 | 25      | 30      | 14  | 80    | 3       | 900         |
-| 6   | **Valkyria**               | Caballería | 70  | 50      | 70      | 12  | 60    | 3       | 870         |
+| 6   | **Valkyria**               | Caballería | 70  | 40      | 95      | 12  | 60    | 2       | 800         |
 | 7   | **Ariete de Jörmungandr**  | Asedio     | 60  | 10      | 10      | 3   | 0     | 4       | 1,300       |
 | 8   | **Catapulta de Surtr**     | Asedio     | 40  | 10      | 10      | 2   | 0     | 4       | 1,700       |
 | 9   | **Landnámsmaður** (Colono) | Civil      | 0   | 0       | 0       | 4   | 0     | 1       | 16,000      |
@@ -207,7 +207,7 @@ Los siguientes valores deben ser idénticos en docs y configs:
 | Recursos iniciales   | economy.md: 750 c/u | ResourcesConfig: 750 | ✅         |
 | Colonos para fundar  | map.md: 3           | MapConfig: 3         | ✅         |
 
-> **[MISMATCH]:** Ninguno detectado. Todos los valores son consistentes entre docs y configs.
+> **[MISMATCH]:** Ninguno tras auditoría completa (2026-02-23). Valkyria corregida en esta revisión.
 
 ---
 

@@ -529,4 +529,39 @@ Siguiente paso: @qa auditar documentacion completa.
 
 5. **Siguiente Paso:** `@release` debe preparar el plan de release.
 
+---
+
+### 🔍 Auditoría Completa de Documentación — Midgard Online (@archivist)
+
+**Fecha:** 2026-02-23  
+**Agente:** @archivist  
+**Alcance:** Revisión cruzada de 9 documentos + 6 JSON configs
+
+#### Archivos Auditados (15)
+
+- **Docs:** vision.md, economy.md, buildings.md, troops.md, combat.md, map.md, alliances.md, roadmap.md, tech-stack.md, index.md
+- **Configs:** BuildingsConfig.json, ResourcesConfig.json, TroopsConfig.json, CombatConfig.json, MapConfig.json, AlliancesConfig.json
+
+#### Problemas Encontrados y Corregidos
+
+| #   | Severidad | Problema                                                                                             | Archivos          | Corrección                               |
+| --- | --------- | ---------------------------------------------------------------------------------------------------- | ----------------- | ---------------------------------------- |
+| M1  | ALTA      | Valkyria en index.md tenía stats incorrectos: DEF Inf 50→40, DEF Cab 70→95, Trigo 3→2, Coste 870→800 | index.md          | Alineado con TroopsConfig.json           |
+| G1  | MEDIA     | Residencia ausente de buildings.md (tabla Centro y desbloqueos)                                      | buildings.md      | Añadida a tabla Centro + Gran Salón Lv10 |
+| G2  | BAJA      | Muralla no aparecía en tabla de desbloqueos del Gran Salón                                           | buildings.md      | Añadida en Gran Salón Lv3                |
+| G3  | COSMÉTICA | TroopsConfig cavalry wheatRange decía "3" pero Valkyria consume 2                                    | TroopsConfig.json | Cambiado a "2-3 per troop"               |
+
+#### Verificaciones Pasadas (sin errores)
+
+- Todas las stats de 9 tropas en troops.md coinciden con TroopsConfig.json ✅
+- Muralla niveles 1-10 en combat.md coinciden con CombatConfig.json ✅
+- Recursos iniciales (750 c/u + 50 runas) consistentes en economy.md y ResourcesConfig.json ✅
+- Mapa 401×401 = 160,801 celdas consistente en map.md y MapConfig.json ✅
+- Alianzas max 60 miembros consistente en alliances.md y AlliancesConfig.json ✅
+- Fórmulas de producción/coste/tiempo consistentes entre economy.md, buildings.md y configs ✅
+- Cross-references entre todos los docs funcionan correctamente ✅
+- index.md actualizado con nota de auditoría ✅
+
+**Siguiente Paso:** @qa debe validar las correcciones aplicadas.
+
 _Fin del registro actual. Añade nuevas entradas debajo._

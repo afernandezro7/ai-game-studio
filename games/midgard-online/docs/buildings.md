@@ -32,6 +32,7 @@ Cada aldea tiene dos zonas:
 | Establo          | 1                | Militar (Fase 2)  |
 | Taller de Asedio | 1                | Militar (Fase 2)  |
 | Muralla          | 1                | Defensa (Fase 2)  |
+| Residencia       | 1                | Civil (Fase 3)    |
 | Mercado          | 1                | Comercio (Fase 3) |
 | Embajada         | 1                | Social (Fase 3)   |
 | Academia         | 1                | Avanzado (Fase 3) |
@@ -245,14 +246,14 @@ La cantera requiere proporcionalmente más madera y hierro (vs. el leñador que 
 
 ### Desbloqueo de Edificios
 
-| Nivel Gran Salón | Edificios Desbloqueados              |
-| ---------------- | ------------------------------------ |
-| 1                | Campos de recursos, Almacén, Granero |
-| 2                | —                                    |
-| 3                | Mercado, Embajada                    |
-| 5                | Cuartel (infantería)                 |
-| 7                | Establo (caballería)                 |
-| 10               | Taller de Asedio, Academia           |
+| Nivel Gran Salón | Edificios Desbloqueados                |
+| ---------------- | -------------------------------------- |
+| 1                | Campos de recursos, Almacén, Granero   |
+| 2                | —                                      |
+| 3                | Muralla, Mercado, Embajada             |
+| 5                | Cuartel (infantería)                   |
+| 7                | Establo (caballería)                   |
+| 10               | Taller de Asedio, Residencia, Academia |
 
 ### Reducción de Tiempo — Ejemplos
 
