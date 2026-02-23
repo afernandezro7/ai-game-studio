@@ -487,4 +487,46 @@ Siguiente paso: @qa auditar documentacion completa.
 
 3. **Siguiente Paso:** `@artdirector` debe definir la dirección visual (paleta, wireframes, iconografía) en `games/midgard-online/docs/art/style-guide.md`.
 
+### [2026-02-23] - Art Direction: Midgard Online — Dirección Visual Completa
+
+**Autor:** `@artdirector`
+**Juego:** Midgard Online (`games/midgard-online/`)
+
+1. **Archivo creado:** `games/midgard-online/docs/art/style-guide.md` (~700 líneas)
+
+2. **Contenido entregado:**
+   - **Paleta de colores completa:** 50+ tokens de color con hex codes — fondos (noche nórdica), recursos (madera/arcilla/hierro/trigo/runas), estados (success/warning/danger/info/premium), CTAs (4 variantes de botón), facciones en mapa (propia/aliado/neutral/enemigo/NPC).
+   - **Style guide web:** Tipografía (Cinzel Decorative/Cinzel/Inter/JetBrains Mono), componentes (botones, cards, tablas, resource bar), espaciado, layout 3-column, animaciones y transiciones, responsive breakpoints (4 niveles).
+   - **5 wireframes ASCII:** Vista de aldea (anillo exterior + centro), Vista de mapa del mundo (grid coordenadas), Panel de edificio (info + upgrade + tabla niveles), Panel de cuartel (entrenar tropas + cola), Panel de ataque (selección tropas + target + resumen misión).
+   - **Iconografía completa:** Iconos para 5 recursos, 14 edificios, 8 tropas, 12 estados/acciones — con descripción visual, silueta, y color identificativo.
+   - **Diagramas Mermaid:** Flowchart de navegación (~30 pantallas), sequence diagram de flujos críticos (mejorar edificio, enviar ataque), state machine de edificio.
+   - **CSS variables:** Bloque completo de custom properties listo para implementar en React.
+   - **AI art prompts:** Templates Midjourney/DALL-E para iconos de edificios y retratos de tropas.
+   - **Checklist de implementación:** 16 tareas priorizadas por fase.
+
+3. **Skills aplicados:**
+   - `visual-language.skill.md` — Legibilidad, progresión visual por nivel, semáforo de colores funcionales.
+   - `readability-landmarks.skill.md` — Jerarquía de contraste (fondo < edificios < UI < feedback), sistema de landmarks (micro/meso/macro).
+   - `ui-complexity.skill.md` — 3 capas de información (esencial/interactuar/profundidad), ocultación de reglas, modelo de cámara web.
+
+4. **Siguiente Paso:** `@release` debe preparar el plan de release basándose en la dirección visual, el roadmap y todos los documentos aprobados del pipeline.
+
+### [2026-02-23] - Art Direction: QA Fixes — Observaciones O1-O4
+
+**Autor:** `@artdirector`
+**Juego:** Midgard Online (`games/midgard-online/`)
+
+1. **O1 — Progresión visual vs config:** Añadida nota en sección 6.3 indicando que los tiers visuales (Lv1-2, 3-4, etc.) son guía para `@developer` y que un `UIConfig.json` futuro puede formalizar el mapeo nivel→tier visual. No se requiere config JSON para Fase 1-2.
+
+2. **O2 — Contraste WCAG AA:** Fix crítico.
+   - `--text-muted` cambiado de `#6b6158` (ratio 3.1:1 — NO pasaba AA) a `#857667` (ratio 4.6:1 — pasa AA).
+   - Añadida nueva sección **1.1b Accesibilidad (WCAG 2.1 AA)** con tabla de ratios de contraste para cada token de texto sobre cada fondo, reglas de uso y recomendación de test `axe-core` en CI.
+   - CSS variables actualizadas con el nuevo valor.
+
+3. **O3 — Stats de tropas en wireframes:** Añadida nota explícita bajo el wireframe de ataque indicando que los stats son ilustrativos y que la fuente de verdad son `troops.md` y `config/TroopsConfig.json`.
+
+4. **O4 — Wireframe de Alianza:** Añadido nuevo wireframe ASCII **3.6 Vista de Alianza (Fase 3)** con: tabla de miembros (roles, pop, aldeas), panel de diplomacia (aliados/NAP/enemigos con semáforo), tabs internas, panel lateral de info de miembro con acciones.
+
+5. **Siguiente Paso:** `@release` debe preparar el plan de release.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
