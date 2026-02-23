@@ -47,6 +47,9 @@ When activated, read these files:
 - `.github/skills/gamedesign/pacing-structure.skill.md` — Pacing, Freytag, bottlenecks, modelos de progresión
 - `.github/skills/gamedesign/strategic-planning.skill.md` — Planificación estratégica, Critical/Golden Path, blockout
 - `.github/skills/gamedesign/metrics-standards.skill.md` — Métricas espaciales, grid, escalas, gym de validación
+- `.github/skills/gamedesign/session-temporal-design.skill.md` — Unidades temporales, heurísticas, sweet spot de jugadores
+- `.github/skills/gamedesign/emergent-balance.skill.md` — Snowball/Catch-up, colapso estratégico, subjuegos, azar
+- `.github/skills/gamedesign/player-centric-design.skill.md` — Diseño centrado en jugador, taxonomía de desafíos, elegancia, círculo mágico
 
 ## Balance Guidelines
 

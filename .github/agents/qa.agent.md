@@ -41,6 +41,8 @@ When activated, read these files:
 - `.github/skills/qa/game-feel-checklist.skill.md` — Checklist extendido de game feel
 - `.github/skills/qa/trust-validation.skill.md` — Validación del vínculo de confianza con el jugador
 - `.github/skills/qa/playtest-methodology.skill.md` — Playtesting, sesgos cognitivos, priorización de feedback
+- `.github/skills/qa/systemic-balance.skill.md` — Balance sistémico, Power Score, snowball/catch-up, kingmaking
+- `.github/skills/qa/elegance-validation.skill.md` — Validación de elegancia, features gratuitas, círculo mágico
 
 ## 5-Point Validation Checklist
 

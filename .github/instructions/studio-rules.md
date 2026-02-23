@@ -58,28 +58,30 @@ Reglas **globales** que Copilot carga automáticamente para TODOS los agentes. S
 
 Conocimiento **modular y especializado** por agente. Cada skill es un archivo `.skill.md` que el agente lee cuando necesita expertise específico.
 
-| Agente        | Skill                            | Contenido                                     | Fuente            |
-| ------------- | -------------------------------- | --------------------------------------------- | ----------------- |
-| `producer`    | `concept-validation.skill.md`    | Validación de pitch y concepto                | Level Up!         |
-| `producer`    | `success-definition.skill.md`    | Definición de éxito, X-Factor, Why/What/How   | Level Design Book |
-| `gamedesign`  | `three-cs.skill.md`              | Framework Character, Camera, Controls         | Level Up!         |
-| `gamedesign`  | `world-architecture.skill.md`    | Diseño de niveles, sign language, combate     | Level Up!         |
-| `gamedesign`  | `economy-psychology.skill.md`    | Loops económicos, dopamina, anti-patterns     | Level Up!         |
-| `gamedesign`  | `level-pedagogy.skill.md`        | Pedagogía de niveles, skill gates, confianza  | Level Design Book |
-| `gamedesign`  | `objective-hierarchy.skill.md`   | Pirámide Why/What/How, X-Factor               | Level Design Book |
-| `gamedesign`  | `pacing-structure.skill.md`      | Pacing, Freytag, bottlenecks, progresión      | Level Design Book |
-| `gamedesign`  | `strategic-planning.skill.md`    | Planificación, Critical/Golden Path, blockout | Pursuit of Levels |
-| `gamedesign`  | `metrics-standards.skill.md`     | Métricas espaciales, grid, escalas            | Pursuit of Levels |
-| `qa`          | `game-feel-checklist.skill.md`   | Checklist extendido de game feel              | Level Up!         |
-| `qa`          | `trust-validation.skill.md`      | Vínculo de confianza con el jugador           | Level Design Book |
-| `qa`          | `playtest-methodology.skill.md`  | Playtesting, sesgos cognitivos, feedback      | Pursuit of Levels |
-| `archivist`   | `gdd-standards.skill.md`         | Estándares profesionales de GDD               | Level Up!         |
-| `archivist`   | `annotated-maps.skill.md`        | Mapas anotados y documentación multi-capa     | Level Design Book |
-| `developer`   | `config-architecture.skill.md`   | Arquitectura config-driven, mapping GDD→JSON  | Level Up!         |
-| `developer`   | `prototyping-spatial.skill.md`   | Prototipado espacial, métricas, escala        | Pursuit of Levels |
-| `artdirector` | `visual-language.skill.md`       | Lenguaje visual, legibilidad, progresión      | Level Up!         |
-| `artdirector` | `readability-landmarks.skill.md` | Readability, landmarks, navegación            | Pursuit of Levels |
-| `release`     | `release-readiness.skill.md`     | Checklist de release readiness                | Level Up!         |
+| Agente        | Skill                            | Contenido                                                 | Fuente             |
+| ------------- | -------------------------------- | --------------------------------------------------------- | ------------------ | --- | ------------ | ---------------------------------- | -------------------------------------------- | --------------- | --- | ------------ | ------------------------ | ------------------------------------- | --------- |
+| `producer`    | `concept-validation.skill.md`    | Validación de pitch y concepto                            | Level Up!          |
+| `producer`    | `success-definition.skill.md`    | Definición de éxito, X-Factor, Why/What/How               | Level Design Book  |     | `producer`   | `audience-scale.skill.md`          | Audiencia, sweet spot, escala, reglas género | Characteristics |     | `gamedesign` | `three-cs.skill.md`      | Framework Character, Camera, Controls | Level Up! |
+| `gamedesign`  | `world-architecture.skill.md`    | Diseño de niveles, sign language, combate                 | Level Up!          |
+| `gamedesign`  | `economy-psychology.skill.md`    | Loops económicos, dopamina, anti-patterns                 | Level Up!          |
+| `gamedesign`  | `level-pedagogy.skill.md`        | Pedagogía de niveles, skill gates, confianza              | Level Design Book  |
+| `gamedesign`  | `objective-hierarchy.skill.md`   | Pirámide Why/What/How, X-Factor                           | Level Design Book  |
+| `gamedesign`  | `pacing-structure.skill.md`      | Pacing, Freytag, bottlenecks, progresión                  | Level Design Book  |
+| `gamedesign`  | `strategic-planning.skill.md`    | Planificación, Critical/Golden Path, blockout             | Pursuit of Levels  |
+| `gamedesign`  | `metrics-standards.skill.md`     | Métricas espaciales, grid, escalas                        | Pursuit of Levels  |     | `gamedesign` | `session-temporal-design.skill.md` | Unidades temporales, heurísticas, sweet spot | Characteristics |
+| `gamedesign`  | `emergent-balance.skill.md`      | Snowball/Catch-up, colapso, subjuegos, azar               | Characteristics    |     | `qa`         | `game-feel-checklist.skill.md`     | Checklist extendido de game feel             | Level Up!       |
+| `qa`          | `trust-validation.skill.md`      | Vínculo de confianza con el jugador                       | Level Design Book  |
+| `qa`          | `playtest-methodology.skill.md`  | Playtesting, sesgos cognitivos, feedback                  | Pursuit of Levels  |     | `qa`         | `systemic-balance.skill.md`        | Balance sistémico, Power Score, kingmaking   | Characteristics |     | `archivist`  | `gdd-standards.skill.md` | Estándares profesionales de GDD       | Level Up! |
+| `archivist`   | `annotated-maps.skill.md`        | Mapas anotados y documentación multi-capa                 | Level Design Book  |
+| `developer`   | `config-architecture.skill.md`   | Arquitectura config-driven, mapping GDD→JSON              | Level Up!          |
+| `developer`   | `prototyping-spatial.skill.md`   | Prototipado espacial, métricas, escala                    | Pursuit of Levels  |
+| `artdirector` | `visual-language.skill.md`       | Lenguaje visual, legibilidad, progresión                  | Level Up!          |
+| `artdirector` | `readability-landmarks.skill.md` | Readability, landmarks, navegación                        | Pursuit of Levels  |
+| `release`     | `release-readiness.skill.md`     | Checklist de release readiness                            | Level Up!          |
+| `gamedesign`  | `player-centric-design.skill.md` | Diseño centrado en jugador, taxonomía desafíos, elegancia | Fundamentals of GD |
+| `producer`    | `elegance-audit.skill.md`        | Auditoría de elegancia, perfil jugador, desafío→acción    | Fundamentals of GD |
+| `qa`          | `elegance-validation.skill.md`   | Validación elegancia, features gratuitas, círculo mágico  | Fundamentals of GD |
+| `artdirector` | `ui-complexity.skill.md`         | Complejidad UI, ocultación de reglas, interacción         | Fundamentals of GD |
 
 ### ¿Cómo agregar un nuevo Skill?
 

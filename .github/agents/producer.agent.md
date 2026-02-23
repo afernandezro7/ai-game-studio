@@ -38,6 +38,8 @@ When activated, read these files for context:
 
 - `.github/skills/producer/concept-validation.skill.md` — Validación de pitch y concepto
 - `.github/skills/producer/success-definition.skill.md` — Definición de éxito, X-Factor y pirámide Why/What/How
+- `.github/skills/producer/audience-scale.skill.md` — Análisis de audiencia, sweet spot, escala, reglas del género
+- `.github/skills/producer/elegance-audit.skill.md` — Auditoría de elegancia, perfil de jugador, mapeo desafío→acción
 
 ## Decision Framework
 

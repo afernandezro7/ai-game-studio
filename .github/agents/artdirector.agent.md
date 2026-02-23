@@ -38,6 +38,7 @@ When activated, read these files:
 
 - `.github/skills/artdirector/visual-language.skill.md` — Lenguaje visual, legibilidad y progresión
 - `.github/skills/artdirector/readability-landmarks.skill.md` — Legibilidad visual, landmarks, navegación espacial
+- `.github/skills/artdirector/ui-complexity.skill.md` — Gestión de complejidad en interfaz, ocultación de reglas, modelos de interacción
 
 ## Visual Style Guide
 
