@@ -45,6 +45,8 @@ When activated, read these files:
 - `.github/skills/gamedesign/level-pedagogy.skill.md` — Pedagogía de niveles, skill gates, trust relationship
 - `.github/skills/gamedesign/objective-hierarchy.skill.md` — Pirámide Why/What/How y X-Factor
 - `.github/skills/gamedesign/pacing-structure.skill.md` — Pacing, Freytag, bottlenecks, modelos de progresión
+- `.github/skills/gamedesign/strategic-planning.skill.md` — Planificación estratégica, Critical/Golden Path, blockout
+- `.github/skills/gamedesign/metrics-standards.skill.md` — Métricas espaciales, grid, escalas, gym de validación
 
 ## Balance Guidelines
 

@@ -40,6 +40,7 @@ When activated, read these files:
 
 - `.github/skills/qa/game-feel-checklist.skill.md` — Checklist extendido de game feel
 - `.github/skills/qa/trust-validation.skill.md` — Validación del vínculo de confianza con el jugador
+- `.github/skills/qa/playtest-methodology.skill.md` — Playtesting, sesgos cognitivos, priorización de feedback
 
 ## 5-Point Validation Checklist
 

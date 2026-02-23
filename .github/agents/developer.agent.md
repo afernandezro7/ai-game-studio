@@ -41,6 +41,7 @@ When activated, read these files:
 ### Skills (conocimiento especializado)
 
 - `.github/skills/developer/config-architecture.skill.md` — Arquitectura config-driven y mapping GDD→JSON
+- `.github/skills/developer/prototyping-spatial.skill.md` — Prototipado espacial, métricas en config, validación de escala
 
 ## Architecture Guidelines
 

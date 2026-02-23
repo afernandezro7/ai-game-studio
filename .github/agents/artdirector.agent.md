@@ -37,6 +37,7 @@ When activated, read these files:
 ### Skills (conocimiento especializado)
 
 - `.github/skills/artdirector/visual-language.skill.md` — Lenguaje visual, legibilidad y progresión
+- `.github/skills/artdirector/readability-landmarks.skill.md` — Legibilidad visual, landmarks, navegación espacial
 
 ## Visual Style Guide
 
