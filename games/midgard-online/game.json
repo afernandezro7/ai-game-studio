@@ -1,0 +1,46 @@
+{
+  "id": "midgard-online",
+  "name": "Midgard Online",
+  "description": "Browser-based multiplayer strategy game inspired by Travian — Norse mythology themed",
+  "genre": "Strategy / City Builder / MMO",
+  "theme": "Norse Mythology / Vikings",
+  "status": "pre-production",
+  "version": "0.0.1",
+  "inspiration": [
+    "Travian",
+    "Tribal Wars",
+    "Ikariam",
+    "OGame"
+  ],
+  "target_audience": "Mid-core strategy gamers, 16-40 years, browser/mobile web",
+  "platform": "Web (browser-based)",
+  "engines": {
+    "web": {
+      "status": "active",
+      "frontend": "sandbox-web/",
+      "backend": "backend/",
+      "notes": "Full-stack web game — React frontend + Node.js backend + database"
+    }
+  },
+  "configs": {
+    "buildings": "config/BuildingsConfig.json",
+    "resources": "config/ResourcesConfig.json",
+    "troops": "config/TroopsConfig.json",
+    "research": "config/ResearchConfig.json",
+    "combat": "config/CombatConfig.json",
+    "alliances": "config/AlliancesConfig.json",
+    "map": "config/MapConfig.json"
+  },
+  "docs": {
+    "vision": "docs/vision.md",
+    "economy": "docs/economy.md",
+    "buildings": "docs/buildings.md",
+    "troops": "docs/troops.md",
+    "combat": "docs/combat.md",
+    "alliances": "docs/alliances.md",
+    "map": "docs/map.md",
+    "roadmap": "docs/roadmap.md",
+    "tech-stack": "docs/tech-stack.md",
+    "art": "docs/art/style-guide.md"
+  }
+}
