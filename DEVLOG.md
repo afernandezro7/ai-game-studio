@@ -354,7 +354,6 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 _Fin del registro actual. Añade nuevas entradas debajo._
 
-
 ### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
 
 **Autor:** @archivist
@@ -362,7 +361,6 @@ _Fin del registro actual. Añade nuevas entradas debajo._
 3 nuevos documentos creados: roadmap.md, tech-stack.md, index.md.
 6 documentos verificados sin mismatches contra configs JSON.
 Siguiente paso: @qa auditar documentacion completa.
-
 
 ### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
 
@@ -379,3 +377,31 @@ Siguiente paso: @qa auditar documentacion completa.
 
 3. **Siguiente Paso:** `@qa` debe ejecutar auditoria completa de documentacion.
 
+### [2026-02-23] - QA Paso 6: Auditoría Completa de Midgard Online
+
+**Autor:** `@qa`
+
+**Resultado:** ⚠️ NEEDS REVISION — 6 PASS, 2 WARNING, 0 BLOCKER
+
+1. **Checks Ejecutados:**
+   - ✅ 5-Point Validation Checklist (soft-lock, inflation, time walls, cross-resource, FTUE)
+   - ✅ Soft-Lock Deep Analysis — F2P path always recoverable
+   - ✅ Inflation Check — Cost exponent 1.585 > Production exponent 1.405 (3× scarcity)
+   - ⚠️ Exploit Check — Missing: anti-multi-account rules + morale system for anti-grief
+   - ✅ Wheat Balance — Buildings never cause deficit; troops create healthy late-game pressure
+   - ⚠️ Combat Balance — Skjaldmær dominates ALL defense categories; Valkyria is dead content
+   - ✅ Temporal Progression — Day 1/7/14/30 matches Travian benchmarks, no dead zones
+   - ✅ Elegance Validation — 0% parasitic features, strong Norse theme, ethical monetization
+
+2. **Issues Encontrados:**
+   - **Valkyria Balance:** Skjaldmær superior en DEF inf (0.155 vs 0.118) Y DEF cav (0.119 vs 0.081). Fix propuesto: Valkyria → DEF inf 40 / DEF cav 95 / cost 800 / wheat 2
+   - **Anti-Grief:** Sin sistema de moral (veteranos pueden griefear indefinidamente a novatos). Fix propuesto: morale = min(100, defPop/atkPop × 100), mínimo 33%
+   - **Multi-Account:** Sin reglas anti-farm en configs. Fix propuesto: cooldown 60m mismo target, max 3 raids/día/target
+
+3. **Herramientas Usadas:** Simulación Python con datos de los 6 configs JSON. Day 1 sim: 12 builds en 57min. Combat sim: 50 Berserkers vs 30 Huskarl + Wall L3 validado.
+
+4. **Herramientas Usadas:** Simulación Python con datos de los 6 configs JSON. Day 1 sim: 12 builds en 57min. Combat sim: 50 Berserkers vs 30 Huskarl + Wall L3 validado.
+
+5. **Reporte completo:** `games/midgard-online/docs/qa-audit-report.md` — contiene todas las tablas, simulaciones, y fixes propuestos con números.
+
+6. **Siguiente Paso:** `@gamedesign` debe corregir stats de Valkyria y diseñar sistema de moral + anti-exploit.
