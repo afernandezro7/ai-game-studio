@@ -437,6 +437,31 @@ Siguiente paso: @qa auditar documentacion completa.
 
 5.  **Siguiente Paso:** `@archivist` debe integrar cambios en GDD. `@qa` debe re-validar que los 3 fixes resuelven los issues reportados.
 
----
+### [2026-02-23] - QA Re-Audit: 3 Issues RESUELTOS — ✅ QA APPROVED (Midgard Online)
+
+**Autor:** `@qa`
+
+**Resultado:** ✅ **QA APPROVED** — Los 3 issues del audit original están resueltos.
+
+1. **QA-001 Valkyria Balance → ✅ RESOLVED**
+   - Valkyria: DI=40, DC=95, cost=800, wh=2 (antes: DI=50, DC=70, cost=870, wh=3)
+   - DC/cost: Valkyria 0.1187 ≈ Skjaldmær 0.1190 (empate funcional)
+   - En stats absolutos: Valkyria DC=95 vs Skjaldmær DC=50 → **clara especialista anti-caballería**
+   - Decisión estratégica real: "¿Qué tropas trae mi enemigo?" → buen game design
+
+2. **QA-002 Morale System → ✅ RESOLVED**
+   - Formula: `min(100, defPop/atkPop × 100)`, mínimo 33%
+   - Pop 5000 vs Pop 200 → moral 33% → ATK y loot ×0.33 (protección efectiva)
+   - Documentado en CombatConfig.json + combat.md
+
+3. **QA-003 Anti-Exploit → ✅ RESOLVED**
+   - Cooldown: 60 min entre raids al mismo target
+   - Límite: 3 raids/día/target (ventana 24h)
+   - Pop mínima para ser atacado: 50
+   - Documentado en CombatConfig.json + combat.md
+
+4. **Cross-validation config ↔ docs:** 0 mismatches.
+
+5. **Siguiente Paso:** Pipeline continúa → `@developer` implementa (PASO 7 del playbook).
 
 _Fin del registro actual. Añade nuevas entradas debajo._
