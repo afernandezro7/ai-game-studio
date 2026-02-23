@@ -39,6 +39,7 @@ When activated, read these files:
 ### Skills (conocimiento especializado)
 
 - `.github/skills/qa/game-feel-checklist.skill.md` — Checklist extendido de game feel
+- `.github/skills/qa/trust-validation.skill.md` — Validación del vínculo de confianza con el jugador
 
 ## 5-Point Validation Checklist
 

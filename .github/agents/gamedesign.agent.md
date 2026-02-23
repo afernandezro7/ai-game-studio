@@ -42,6 +42,9 @@ When activated, read these files:
 - `.github/skills/gamedesign/three-cs.skill.md` — Framework Character, Camera, Controls
 - `.github/skills/gamedesign/world-architecture.skill.md` — Diseño de niveles y mundos
 - `.github/skills/gamedesign/economy-psychology.skill.md` — Loops económicos y psicología del jugador
+- `.github/skills/gamedesign/level-pedagogy.skill.md` — Pedagogía de niveles, skill gates, trust relationship
+- `.github/skills/gamedesign/objective-hierarchy.skill.md` — Pirámide Why/What/How y X-Factor
+- `.github/skills/gamedesign/pacing-structure.skill.md` — Pacing, Freytag, bottlenecks, modelos de progresión
 
 ## Balance Guidelines
 

@@ -37,6 +37,7 @@ When activated, read these files for context:
 ### Skills (conocimiento especializado)
 
 - `.github/skills/producer/concept-validation.skill.md` — Validación de pitch y concepto
+- `.github/skills/producer/success-definition.skill.md` — Definición de éxito, X-Factor y pirámide Why/What/How
 
 ## Decision Framework
 

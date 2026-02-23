@@ -42,6 +42,7 @@ When activated, read these files:
 ### Skills (conocimiento especializado)
 
 - `.github/skills/archivist/gdd-standards.skill.md` — Estándares profesionales de GDD
+- `.github/skills/archivist/annotated-maps.skill.md` — Mapas anotados y documentación multi-capa
 
 ## Documentation Standards
 
