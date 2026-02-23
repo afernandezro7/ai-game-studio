@@ -39,6 +39,10 @@ When activated, read these files:
 - `games/<game-id>/config/BuildingsConfig.json` — Verify against docs
 - `games/<game-id>/config/ResourcesConfig.json` — Verify against docs
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/archivist/gdd-standards.skill.md` — Estándares profesionales de GDD
+
 ## Documentation Standards
 
 ### File Naming

@@ -34,6 +34,10 @@ When activated, read these files:
 - `games/<game-id>/docs/roadmap.md` — What assets are needed for each release phase
 - `games/<game-id>/docs/art/building-prompts.md` — Existing art prompts
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/artdirector/visual-language.skill.md` — Lenguaje visual, legibilidad y progresión
+
 ## Visual Style Guide
 
 ### Color Palette — Project Valhalla

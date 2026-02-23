@@ -35,6 +35,10 @@ When activated, read these files:
 - `.github/workflows/release-manager.yml` — Release automation
 - `.github/workflows/release-preview.yml` — Release preview automation
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/release/release-readiness.skill.md` — Checklist de release readiness desde Level Up!
+
 ## Release Process
 
 ### Pre-Release Checklist

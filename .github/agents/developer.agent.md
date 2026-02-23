@@ -38,6 +38,10 @@ When activated, read these files:
 - `client-web/package.json` — Dependencies and scripts
 - `docs/economy-and-buildings.md` — Design source of truth
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/developer/config-architecture.skill.md` — Arquitectura config-driven y mapping GDD→JSON
+
 ## Architecture Guidelines
 
 ### Project Structure (Target)

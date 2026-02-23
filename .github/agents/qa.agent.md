@@ -36,6 +36,10 @@ When activated, read these files:
 - `games/<game-id>/docs/economy.md` — Resource flow design
 - `games/<game-id>/docs/vision.md` — KPI targets
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/qa/game-feel-checklist.skill.md` — Checklist extendido de game feel
+
 ## 5-Point Validation Checklist
 
 For every mechanic or balance change, verify:

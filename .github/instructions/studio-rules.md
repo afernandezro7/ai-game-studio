@@ -32,13 +32,51 @@ Producer → GameDesign → Archivist → QA → Developer → ArtDirector → R
 
 ```
 docs/                    → Game Design Document (GDD) — SOURCE OF TRUTH
+docs/books/              → Libros de referencia (PDFs) y resúmenes del equipo
 src/config/              → Engine-agnostic JSON configs — THE REAL PRODUCT (Unity/Godot/any)
 client-web/src/          → Web SANDBOX for rapid testing — NOT the final game
 .github/agents/          → Agent definitions (this file's siblings)
+.github/instructions/    → Reglas globales que aplican a TODOS los agentes
+.github/skills/          → Conocimiento especializado por agente (ver sección abajo)
 .github/prompts/         → Reusable workflow prompts (1-click pipelines)
 .github/workflows/       → CI/CD automation
 DEVLOG.md                → Development log — EVERY action gets logged here
 ```
+
+## 📚 Sistema de Conocimiento: Instructions + Skills
+
+### Instructions (`.github/instructions/`)
+
+Reglas **globales** que Copilot carga automáticamente para TODOS los agentes. Son principios universales que todo el estudio debe respetar.
+
+| Archivo                     | Contenido                             |
+| --------------------------- | ------------------------------------- |
+| `studio-rules.md`           | Este archivo — reglas operativas      |
+| `game-design-principles.md` | Principios de diseño (de "Level Up!") |
+
+### Skills (`.github/skills/<agente>/`)
+
+Conocimiento **modular y especializado** por agente. Cada skill es un archivo `.skill.md` que el agente lee cuando necesita expertise específico.
+
+| Agente        | Skill                          | Contenido                                    |
+| ------------- | ------------------------------ | -------------------------------------------- |
+| `producer`    | `concept-validation.skill.md`  | Validación de pitch y concepto               |
+| `gamedesign`  | `three-cs.skill.md`            | Framework Character, Camera, Controls        |
+| `gamedesign`  | `world-architecture.skill.md`  | Diseño de niveles, sign language, combate    |
+| `gamedesign`  | `economy-psychology.skill.md`  | Loops económicos, dopamina, anti-patterns    |
+| `qa`          | `game-feel-checklist.skill.md` | Checklist extendido de game feel             |
+| `archivist`   | `gdd-standards.skill.md`       | Estándares profesionales de GDD              |
+| `developer`   | `config-architecture.skill.md` | Arquitectura config-driven, mapping GDD→JSON |
+| `artdirector` | `visual-language.skill.md`     | Lenguaje visual, legibilidad, progresión     |
+| `release`     | `release-readiness.skill.md`   | Checklist de release readiness               |
+
+### ¿Cómo agregar un nuevo Skill?
+
+1. El usuario crea un resumen de un libro/recurso en `docs/books/`
+2. El asistente transforma el resumen en skills accionables
+3. Se crea el archivo `.skill.md` en `.github/skills/<agente>/`
+4. Se actualiza el agent `.agent.md` para referenciar el skill
+5. Se actualiza esta tabla
 
 ## 📜 Reglas Universales para TODOS los agentes
 

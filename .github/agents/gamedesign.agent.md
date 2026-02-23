@@ -37,6 +37,12 @@ When activated, read these files:
 - `games/<game-id>/config/ResourcesConfig.json` — Implemented resource data
 - `games/<game-id>/docs/vision.md` — Core loop reference
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/gamedesign/three-cs.skill.md` — Framework Character, Camera, Controls
+- `.github/skills/gamedesign/world-architecture.skill.md` — Diseño de niveles y mundos
+- `.github/skills/gamedesign/economy-psychology.skill.md` — Loops económicos y psicología del jugador
+
 ## Balance Guidelines
 
 ### Resource Production Rate Formula

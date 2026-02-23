@@ -34,6 +34,10 @@ When activated, read these files for context:
 - `games/<game-id>/config/ResourcesConfig.json` — Current resource definitions
 - `package.json` — Current version
 
+### Skills (conocimiento especializado)
+
+- `.github/skills/producer/concept-validation.skill.md` — Validación de pitch y concepto
+
 ## Decision Framework
 
 When evaluating a feature, score it on:
