@@ -405,3 +405,38 @@ Siguiente paso: @qa auditar documentacion completa.
 5. **Reporte completo:** `games/midgard-online/docs/qa-audit-report.md` — contiene todas las tablas, simulaciones, y fixes propuestos con números.
 
 6. **Siguiente Paso:** `@gamedesign` debe corregir stats de Valkyria y diseñar sistema de moral + anti-exploit.
+
+### [2026-02-23] - QA Audit Fixes: Valkyria + Moral + Anti-Exploit (Midgard Online)
+
+**Autor:** `@gamedesign` (en respuesta a QA Audit)
+
+1.  **QA-001 — Rebalance Valkyria:**
+    - DEF inf: 50 → 40, DEF cab: 70 → 95, Coste: 870 → 800, Trigo: 3/h → 2/h.
+    - Ahora es especialista anti-caballería pura (DEF cab 95, la más alta). Vulnerable a infantería (DEF inf 40).
+    - Triángulo estratégico: Infantería > Valkyria > Caballería > Infantería.
+    - Actualizada en TroopsConfig.json + troops.md (tabla resumen, sección detallada, tablas de eficiencia, tabla de trigo).
+
+2.  **QA-002 — Sistema de Moral (NUEVO):**
+    - `morale = min(100, defPop / atkPop × 100)`, mínimo 33%.
+    - Multiplica ATK y loot del atacante. Protege a jugadores pequeños de veteranos.
+    - Ejemplo: Pop 2,000 ataca Pop 500 → moral 25% → clamped a 33% → ATK y loot ×0.33.
+    - Insertado como Paso 3b en el flujo de combate (combat.md) + sección completa con tabla de referencia.
+    - Añadido a CombatConfig.json como sección `morale`.
+
+3.  **QA-003 — Protección Anti-Multi-Account (NUEVO):**
+    - Cooldown 60 minutos entre ataques al mismo objetivo (por par aldea→aldea).
+    - Máximo 3 raids/día por par aldea atacante → aldea defensora (ventana rodante 24h).
+    - Población mínima 50 para ser atacado (protección de novato).
+    - Añadido a CombatConfig.json como sección `antiExploit` + combat.md sección completa.
+
+4.  **Archivos Actualizados:**
+    - `games/midgard-online/config/TroopsConfig.json` — Valkyria rebalanceada.
+    - `games/midgard-online/docs/troops.md` — 6 secciones actualizadas con nuevos stats.
+    - `games/midgard-online/config/CombatConfig.json` — v0.2.0 con moral + antiExploit.
+    - `games/midgard-online/docs/combat.md` — Paso 3b (moral), edge cases, secciones de moral y anti-exploit.
+
+5.  **Siguiente Paso:** `@archivist` debe integrar cambios en GDD. `@qa` debe re-validar que los 3 fixes resuelven los issues reportados.
+
+---
+
+_Fin del registro actual. Añade nuevas entradas debajo._

@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "description": "Configuración del sistema de combate para Midgard Online — fórmulas, misiones, muralla y reglas",
+  "version": "0.2.0",
+  "description": "Configuración del sistema de combate para Midgard Online — fórmulas, moral, anti-exploit, misiones, muralla y reglas",
   "combatFormulas": {
     "attackTotal": "SUM(troopCount_i × troopAttack_i)",
     "defenseTotal": {
@@ -39,6 +39,15 @@
     },
     "survivors": "round(troopCount × (1 - lossRatio))"
   },
+  "morale": {
+    "formula": "min(100, defenderPopulation / attackerPopulation × 100)",
+    "minimum": 33,
+    "maximum": 100,
+    "effectOnATK": "ATK_effective = ATK_total × (morale / 100)",
+    "effectOnLoot": "loot_effective = loot_base × (morale / 100)",
+    "populationBasis": "Sum of population across ALL player villages",
+    "note": "Penalizes larger players attacking smaller ones. Min 33% ensures attacks still work but with reduced effectiveness."
+  },
   "looting": {
     "totalCarry": "SUM(survivingAttackers_i × carryCapacity_i)",
     "availableResources": "min(villageResources, storageCapacity × 0.5)",
@@ -50,6 +59,22 @@
     "groupSpeed": "min(troopSpeed_i for all troops in group)",
     "travelTimeHours": "distance / groupSpeed",
     "distanceFormula": "sqrt((x2 - x1)² + (y2 - y1)²)"
+  },
+  "antiExploit": {
+    "raidCooldown": {
+      "sameTargetMinutes": 60,
+      "description": "Minimum 60 minutes between attacks from same source village to same target village"
+    },
+    "raidLimit": {
+      "maxPerDayPerTarget": 3,
+      "rollingWindowHours": 24,
+      "description": "Maximum 3 raids per 24h rolling window from same source to same target"
+    },
+    "minimumPopulation": {
+      "toBeAttacked": 50,
+      "description": "Villages with total player population < 50 cannot be attacked"
+    },
+    "note": "Cooldown and limits are per source-village to target-village pair"
   },
   "missionTypes": {
     "attack": {

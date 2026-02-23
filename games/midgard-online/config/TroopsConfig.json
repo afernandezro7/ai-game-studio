@@ -180,7 +180,7 @@
       "id": "valkyria",
       "name": "Valkyria",
       "nameEnglish": "Rider of the Fallen",
-      "description": "Caballería defensiva. Excelente contra otras caballerías.",
+      "description": "Caballería defensiva especializada anti-caballería. DEF cab 95 — la mejor interceptora del juego.",
       "type": "cavalry",
       "trainedIn": "stable",
       "unlockedAt": {
@@ -189,19 +189,19 @@
       },
       "stats": {
         "attack": 70,
-        "defenseInfantry": 50,
-        "defenseCavalry": 70,
+        "defenseInfantry": 40,
+        "defenseCavalry": 95,
         "speed": 12,
         "carryCapacity": 60,
-        "wheatConsumption": 3
+        "wheatConsumption": 2
       },
       "costs": {
-        "wood": 250,
-        "clay": 220,
-        "iron": 280,
-        "wheat": 120
+        "wood": 230,
+        "clay": 200,
+        "iron": 260,
+        "wheat": 110
       },
-      "totalCost": 870,
+      "totalCost": 800,
       "baseTrainTimeSec": 2280,
       "trainTimeDisplay": "38m"
     },

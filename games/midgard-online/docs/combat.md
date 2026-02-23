@@ -65,7 +65,28 @@ Nota: Se usan los arietes ENVIADOS (pre-combate). La reducción se aplica
 antes del cálculo de combate principal. Los arietes luego participan y pueden morir.
 ```
 
+### Paso 3b — Moral del Atacante
+
+La moral penaliza a jugadores grandes que atacan a jugadores pequeños:
+
+```
+morale = min(100, defensor_poblacion / atacante_poblacion × 100)
+morale = max(33, morale)  // suelo: nunca baja de 33%
+
+ATK_efectivo = ATK_total × (morale / 100)
+```
+
+| Relación DEF Pop / ATK Pop | Moral | Efecto sobre ATK   |
+| -------------------------- | ----- | ------------------ |
+| ≥ 1.0                      | 100%  | Sin penalización   |
+| 0.5                        | 50%   | ATK ×0.50          |
+| 0.33 o menor               | 33%   | ATK ×0.33 (mínimo) |
+
+> **Nota:** La moral también reduce el loot en la misma proporción: `loot_efectivo = loot_base × (morale / 100)`. La población se calcula sumando TODAS las aldeas del jugador.
+
 ### Paso 4 — Calcular Resultado
+
+> **Nota:** Si se aplica Moral (Paso 3b), sustituir `ATK_total` por `ATK_efectivo` en las fórmulas siguientes.
 
 ```
 Si ATK_total > DEF_efectiva (Atacante gana):
@@ -383,7 +404,57 @@ Si la misión es "Asedio" y hay catapultas supervivientes:
 | Spam 1000 Bóndi vs Muralla L10    | ATK 40,000 vs DEF_muralla sola (300 × 1.8 = 540) → gana easy pero sin tropas defensoras pierde solo ~1.5% | ✅ Funciona — la muralla sola no basta |
 | Raid infinito a inactivo          | 50% cap + decaimiento de recursos de inactivo → rendimientos decrecientes                                 | ✅ Anti-granja funciona                |
 | Catapultas destruyen Gran Salón   | Posible pero requiere GS L10 + ejército enorme + 25h de viaje mínimo → costosísimo                        | ✅ Balanceado                          |
-| Defensor pone solo Valkyrias      | Excelente vs raids de Ulfhednar pero débil vs infantería masiva                                           | ✅ No hay defensa universal            |
+| Defensor pone solo Valkyrias      | Excelente vs raids de Ulfhednar (DEF cab 95) pero débil vs infantería masiva (DEF inf 40)                 | ✅ No hay defensa universal            |
+| Top 1 raidea a principiante       | Moral 33% → ATK ×0.33, loot ×0.33. Max 3 raids/día + cooldown 60m. Saqueo neto mínimo                     | ✅ Protección anti-bully               |
+| Multi-account raid cycling        | Cooldown 60m + max 3 raids/día/target + pop mínimo 50 → inviable farmear con alts                         | ✅ Anti-multi-account funciona         |
+
+---
+
+## 📊 Sistema de Moral
+
+La moral es un multiplicador que **protege a jugadores pequeños** de ataques desproporcionados.
+
+### Fórmula
+
+```
+morale = min(100, defensor_poblacion / atacante_poblacion × 100)
+morale = max(33, morale)  // suelo: nunca baja de 33%
+
+ATK_efectivo = ATK_total × (morale / 100)
+loot_efectivo = loot_base × (morale / 100)
+```
+
+### Tabla de Referencia
+
+| Población Atacante | Población Defensor | Ratio | Moral | Efecto                          |
+| ------------------ | ------------------ | ----- | ----- | ------------------------------- |
+| 500                | 500                | 1.00  | 100%  | Sin penalización                |
+| 1,000              | 500                | 0.50  | 50%   | ATK y loot ×0.50                |
+| 2,000              | 500                | 0.25  | 33%   | ATK y loot ×0.33 (mínimo)       |
+| 500                | 1,000              | 2.00  | 100%  | Sin penalización (capped a 100) |
+
+### Diseño
+
+- **Objetivo:** Evitar que veteranos "farmeen" a novatos sin consecuencia.
+- **Mínimo 33%:** Un ataque masivo no se anula completamente — sigue siendo peligroso, pero poco rentable.
+- **Solo afecta ATK y loot:** Las pérdidas del defensor se calculan con el `ATK_efectivo` reducido.
+- **Basado en población total:** Suma de población de TODAS las aldeas del jugador (no solo tropas).
+
+---
+
+## 🛡️ Protección Anti-Multi-Account
+
+Reglas para prevenir el abuso de cuentas alternas y el "farming" repetitivo:
+
+| Regla                       | Valor        | Descripción                                                                   |
+| --------------------------- | ------------ | ----------------------------------------------------------------------------- |
+| **Cooldown mismo objetivo** | 60 minutos   | Tras atacar/raidear una aldea, no puedes enviar otro ataque hasta pasados 60m |
+| **Max raids/día/objetivo**  | 3 por día    | Ventana rodante de 24h. Al 4º intento, el sistema bloquea el envío            |
+| **Población mínima**        | 50 población | Aldeas con < 50 pop no pueden ser atacadas (protección de novato)             |
+
+> **Nota:** El cooldown y el límite diario son **por aldea atacante → aldea defensora**. Un jugador con 3 aldeas puede enviar 3×3 = 9 raids/día al mismo objetivo, pero cada par aldea-aldea tiene su propio cooldown y límite.
+
+> **Combinación con Moral:** Un jugador grande (pop 5,000) que ataque a un novato (pop 100) recibe moral 33% + solo puede hacerlo 3 veces/día + cooldown 60m. El saqueo neto es mínimo.
 
 ---
 

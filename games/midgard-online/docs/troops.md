@@ -16,7 +16,7 @@
 | 3   | **Skjaldmær**             | Infantería | 30  | 65      | 50      | 5   | 35    | 1       | Cuartel L5 |
 | 4   | **Huskarl**               | Infantería | 60  | 80      | 40      | 5   | 40    | 2       | Cuartel L7 |
 | 5   | **Ulfhednar**             | Caballería | 100 | 25      | 30      | 14  | 80    | 3       | Establo L1 |
-| 6   | **Valkyria**              | Caballería | 70  | 50      | 70      | 12  | 60    | 3       | Establo L5 |
+| 6   | **Valkyria**              | Caballería | 70  | 40      | 95      | 12  | 60    | 2       | Establo L5 |
 | 7   | **Ariete de Jörmungandr** | Asedio     | 60  | 10      | 10      | 3   | 0     | 4       | Taller L1  |
 | 8   | **Catapulta de Surtr**    | Asedio     | 40  | 10      | 10      | 2   | 0     | 4       | Taller L5  |
 
@@ -159,25 +159,25 @@
 
 ### 6. Valkyria (Jinete de los Caídos)
 
-> Caballería defensiva. Excelente contra otras caballerías. Única unidad con DEF cab > DEF inf.
+> Caballería defensiva especializada anti-caballería. DEF cab 95 la convierte en la mejor interceptora del juego.
 
 | Stat                      | Valor          |
 | ------------------------- | -------------- |
 | **Tipo**                  | Caballería     |
 | **Ataque**                | 70             |
-| **Defensa vs Infantería** | 50             |
-| **Defensa vs Caballería** | 70             |
+| **Defensa vs Infantería** | 40             |
+| **Defensa vs Caballería** | 95             |
 | **Velocidad**             | 12 campos/hora |
 | **Carga (saqueo)**        | 60 recursos    |
-| **Consumo de trigo**      | 3/hora         |
+| **Consumo de trigo**      | 2/hora         |
 
 **Coste de entrenamiento:**
 
 | Madera | Arcilla | Hierro | Trigo | Total | Tiempo |
 | ------ | ------- | ------ | ----- | ----- | ------ |
-| 250    | 220     | 280    | 120   | 870   | 38 min |
+| 230    | 200     | 260    | 110   | 800   | 38 min |
 
-**Diseño:** La contra a las raids de Ulfhednar. DEF cab 70 la hace excelente interceptora. Su ataque (70) es decente para raids mixtas. El coste es comparable al Ulfhednar pero con mejor balance defensivo.
+**Diseño:** Especialista anti-caballería pura. DEF cab 95 (la más alta del juego) la convierte en la respuesta definitiva a raids de Ulfhednar. Pero su DEF inf baja (40) la hace vulnerable a ataques de infantería masiva, creando un triángulo estratégico claro: Infantería > Valkyria > Caballería > Infantería (en raids).
 
 ---
 
@@ -363,7 +363,7 @@ Gran Salón L10 + Cuartel L5
 | --------- | ------- | ----------- | ----------- | ------------------ |
 | Skjaldmær | 65      | 420         | 0.155       | 65.0               |
 | Huskarl   | 80      | 680         | 0.118       | 40.0               |
-| Valkyria  | 50      | 870         | 0.057       | 16.7               |
+| Valkyria  | 40      | 800         | 0.050       | 20.0               |
 | Bóndi     | 20      | 240         | 0.083       | 20.0               |
 
 > **Conclusión:** La Skjaldmær es la defensora más eficiente (65 DEF por 1 trigo/h). El Huskarl ofrece más DEF absoluta pero cuesta el doble de trigo.
@@ -374,7 +374,7 @@ Gran Salón L10 + Cuartel L5
 | --------- | ----- | --------- | --------- | ----- | -------------- |
 | Ulfhednar | 80    | 14        | 1,120     | 900   | 0.089          |
 | Bóndi     | 50    | 6         | 300       | 240   | 0.208          |
-| Valkyria  | 60    | 12        | 720       | 870   | 0.069          |
+| Valkyria  | 60    | 12        | 720       | 800   | 0.075          |
 | Berserker | 30    | 5         | 150       | 500   | 0.060          |
 
 > **Conclusión:** Para saqueo puro, el **Bóndi** tiene la mejor eficiencia por recurso gastado. El **Ulfhednar** es superior en saqueo×velocidad (golpe rápido y huida).
@@ -398,10 +398,11 @@ Gran Salón L10 + Cuartel L5
 | -------------------------- | --------- | ----------------------- |
 | Infantería básica = 1/h    | 1         | Bóndi, Skjaldmær        |
 | Infantería pesada = 2/h    | 2         | Berserker, Huskarl      |
-| Caballería = 3/h           | 3         | Ulfhednar, Valkyria     |
+| Caballería ligera = 2/h    | 2         | Valkyria                |
+| Caballería pesada = 3/h    | 3         | Ulfhednar               |
 | Maquinaria de asedio = 4/h | 4         | Ariete, Catapulta       |
 
-> ✅ Los consumos de trigo definidos aquí coinciden EXACTAMENTE con los ratios en [economy.md](economy.md).
+> ✅ Los consumos de trigo coinciden con los ratios en [economy.md](economy.md). Excepción: Valkyria rebalanceada a 2/h (vs 3/h genérico de caballería) para diferenciarla como defensora ligera más eficiente en trigo.
 
 ---
 
