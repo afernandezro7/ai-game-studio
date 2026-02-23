@@ -1,0 +1,345 @@
+{
+  "version": "0.1.0",
+  "description": "Configuración del mapa del mundo para Midgard Online — grid, celdas, oasis, colonización",
+  "grid": {
+    "rangeX": [
+      -200,
+      200
+    ],
+    "rangeY": [
+      -200,
+      200
+    ],
+    "totalCells": 160801,
+    "wrapAround": false,
+    "center": [
+      0,
+      0
+    ]
+  },
+  "distanceFormula": "sqrt((xB - xA)² + (yB - yA)²)",
+  "travelFormula": "distance / min(troopSpeed_i)",
+  "cellTypes": {
+    "empty": {
+      "id": "empty",
+      "name": "Vacía",
+      "description": "Terreno neutro disponible para colonización",
+      "interactable": true,
+      "actions": [
+        "colonize"
+      ]
+    },
+    "player_village": {
+      "id": "player_village",
+      "name": "Aldea de Jugador",
+      "description": "Aldea perteneciente a un jugador",
+      "interactable": true,
+      "actions": [
+        "attack",
+        "raid",
+        "siege",
+        "reinforce",
+        "scout"
+      ]
+    },
+    "oasis": {
+      "id": "oasis",
+      "name": "Oasis",
+      "description": "Celda especial con bonus de producción, protegida por fauna",
+      "interactable": true,
+      "actions": [
+        "claim"
+      ],
+      "maxDistanceToClaim": 7,
+      "maxPerVillage": {
+        "mainBuildingLevel1to4": 0,
+        "mainBuildingLevel5to7": 1,
+        "mainBuildingLevel8to9": 2,
+        "mainBuildingLevel10": 3
+      }
+    },
+    "npc_village": {
+      "id": "npc_village",
+      "name": "Aldea NPC (Natar)",
+      "description": "Aldea controlada por NPC, atacable y saqueable",
+      "interactable": true,
+      "actions": [
+        "attack",
+        "raid"
+      ],
+      "troopRegenRate": 0.10,
+      "troopRegenInterval": "daily",
+      "colonizable": false
+    },
+    "yggdrasil": {
+      "id": "yggdrasil",
+      "name": "Yggdrasil",
+      "description": "Centro del mapa. Objetivo de fin de servidor (Fase 4+).",
+      "position": [
+        0,
+        0
+      ],
+      "interactable": false,
+      "unlocksAfterDays": 90
+    }
+  },
+  "mapDensity": {
+    "empty": {
+      "count": 145000,
+      "percentage": 90.2
+    },
+    "oasis": {
+      "count": 4800,
+      "percentage": 3.0
+    },
+    "npc_village": {
+      "count": 800,
+      "percentage": 0.5
+    },
+    "spawn_reserved": {
+      "count": 10000,
+      "percentage": 6.2
+    },
+    "yggdrasil": {
+      "count": 1,
+      "percentage": 0.001
+    }
+  },
+  "zones": {
+    "center": {
+      "name": "Centro",
+      "distanceFromCenter": [
+        0,
+        30
+      ],
+      "npcDensity": "very_high",
+      "oasisDensity": "low",
+      "playerSpawn": false,
+      "notes": "Reserved for late-game. Strong NPC villages."
+    },
+    "inner": {
+      "name": "Interior",
+      "distanceFromCenter": [
+        30,
+        80
+      ],
+      "npcDensity": "high",
+      "oasisDensity": "medium",
+      "playerSpawn": false,
+      "notes": "Mid-to-advanced players expand here."
+    },
+    "mid": {
+      "name": "Media",
+      "distanceFromCenter": [
+        80,
+        160
+      ],
+      "npcDensity": "medium",
+      "oasisDensity": "high",
+      "playerSpawn": true,
+      "notes": "Default spawn zone. Most players start here."
+    },
+    "rim": {
+      "name": "Borde",
+      "distanceFromCenter": [
+        160,
+        200
+      ],
+      "npcDensity": "low",
+      "oasisDensity": "low",
+      "playerSpawn": true,
+      "notes": "Quiet zone. Overflow spawn for late joiners."
+    }
+  },
+  "spawn": {
+    "preferredZone": "mid",
+    "minDistanceBetweenPlayers": 5,
+    "overflowZones": [
+      "inner",
+      "rim"
+    ],
+    "neverSpawnIn": [
+      "center"
+    ],
+    "distributeAcrossQuadrants": true
+  },
+  "oasisTypes": {
+    "wood_forest": {
+      "id": "wood_forest",
+      "name": "Bosque de Robles",
+      "bonuses": {
+        "wood": 0.25
+      },
+      "rarity": "common",
+      "count": 900
+    },
+    "clay_river": {
+      "id": "clay_river",
+      "name": "Ribera Arcillosa",
+      "bonuses": {
+        "clay": 0.25
+      },
+      "rarity": "common",
+      "count": 900
+    },
+    "iron_vein": {
+      "id": "iron_vein",
+      "name": "Veta de Hierro",
+      "bonuses": {
+        "iron": 0.25
+      },
+      "rarity": "common",
+      "count": 900
+    },
+    "wheat_valley": {
+      "id": "wheat_valley",
+      "name": "Valle Fértil",
+      "bonuses": {
+        "wheat": 0.25
+      },
+      "rarity": "common",
+      "count": 900
+    },
+    "wood_wheat_clearing": {
+      "id": "wood_wheat_clearing",
+      "name": "Bosque + Pradera",
+      "bonuses": {
+        "wood": 0.25,
+        "wheat": 0.25
+      },
+      "rarity": "rare",
+      "count": 480
+    },
+    "iron_clay_canyon": {
+      "id": "iron_clay_canyon",
+      "name": "Minas + Ribera",
+      "bonuses": {
+        "iron": 0.25,
+        "clay": 0.25
+      },
+      "rarity": "rare",
+      "count": 480
+    },
+    "golden_plains": {
+      "id": "golden_plains",
+      "name": "Llanura Dorada",
+      "bonuses": {
+        "wheat": 0.50
+      },
+      "rarity": "very_rare",
+      "count": 240
+    }
+  },
+  "oasisDefenders": {
+    "animals": {
+      "wolf": {
+        "id": "wolf",
+        "name": "Lobo (Fenrir's Pup)",
+        "stats": {
+          "attack": 20,
+          "defenseInfantry": 15,
+          "defenseCavalry": 10
+        },
+        "countRange": [
+          5,
+          20
+        ]
+      },
+      "boar": {
+        "id": "boar",
+        "name": "Jabalí (Sæhrímnir)",
+        "stats": {
+          "attack": 15,
+          "defenseInfantry": 30,
+          "defenseCavalry": 15
+        },
+        "countRange": [
+          5,
+          15
+        ]
+      },
+      "bear": {
+        "id": "bear",
+        "name": "Oso (Björn)",
+        "stats": {
+          "attack": 40,
+          "defenseInfantry": 20,
+          "defenseCavalry": 25
+        },
+        "countRange": [
+          3,
+          10
+        ]
+      },
+      "troll": {
+        "id": "troll",
+        "name": "Troll",
+        "stats": {
+          "attack": 60,
+          "defenseInfantry": 40,
+          "defenseCavalry": 30
+        },
+        "countRange": [
+          2,
+          8
+        ]
+      },
+      "dragon": {
+        "id": "dragon",
+        "name": "Dragón Menor (Níðhöggr)",
+        "stats": {
+          "attack": 100,
+          "defenseInfantry": 60,
+          "defenseCavalry": 50
+        },
+        "countRange": [
+          1,
+          3
+        ],
+        "onlyIn": [
+          "rare",
+          "very_rare"
+        ]
+      }
+    },
+    "typicalCompositions": {
+      "common": "10 wolves + 5 boars (ATK ~275, DEF inf ~300)",
+      "rare": "8 bears + 3 trolls (ATK ~500, DEF inf ~280)",
+      "very_rare": "5 trolls + 2 dragons (ATK ~500, DEF inf ~320)"
+    },
+    "regeneration": {
+      "unclaimedOasis": "100% every 7 days",
+      "claimedOasis": "no regeneration while claimed"
+    }
+  },
+  "colonization": {
+    "requirements": {
+      "mainBuilding": 10,
+      "warehouse": 10,
+      "granary": 10,
+      "residence": 1
+    },
+    "settlersRequired": 3,
+    "settlerSpeed": 4,
+    "newVillageStartingResources": {
+      "wood": 500,
+      "clay": 500,
+      "iron": 500,
+      "wheat": 500
+    },
+    "newVillageStartingBuildings": {
+      "mainBuilding": 1,
+      "warehouse": 1,
+      "granary": 1
+    },
+    "newVillageBeginnerShield": false,
+    "maxVillagesPerPlayer": null,
+    "note": "No hard cap on villages — limited by economy (wheat drain per village)"
+  },
+  "inactivePlayerRules": {
+    "resourceDecayStartAfterDays": 7,
+    "resourceDecayRate": 0.10,
+    "villageConvertToNPCAfterDays": 30,
+    "note": "After 30 days inactive, village becomes NPC Natar village — can be attacked and eventually replaced"
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "description": "Configuración de tropas para Midgard Online — 8 unidades militares (3 infantería + 2 caballería + 2 asedio + 1 defensor mixto)",
+  "version": "0.2.0",
+  "description": "Configuración de tropas para Midgard Online — 8 unidades militares + 1 civil (Colono)",
   "formulas": {
     "trainTimeReduction": "baseTimeSec × (1 - buildingLevel × 0.05)",
     "notes": "Cada nivel del edificio militar reduce el tiempo de entrenamiento en 5%. Max -50% a nivel 10."
@@ -21,6 +21,13 @@
       "wheatRange": "4 per troop",
       "speedRange": "2-3 fields/hour",
       "canLoot": false
+    },
+    "civil": {
+      "trainedIn": "residence",
+      "wheatRange": "1 per troop",
+      "speedRange": "4 fields/hour",
+      "canLoot": false,
+      "canCombat": false
     }
   },
   "troops": {
@@ -265,6 +272,37 @@
         "formula": "P_destroy = min(0.80, survivingCatapults × 0.07)",
         "description": "Probabilidad de reducir 1 nivel al edificio objetivo. El atacante elige el edificio antes del ataque."
       }
+    },
+    "settler": {
+      "id": "settler",
+      "name": "Landnámsmaður",
+      "nameEnglish": "Settler",
+      "description": "Tropa civil que funda nuevas aldeas. No combate. Envía 3 colonos a una celda vacía para colonizar.",
+      "type": "civil",
+      "trainedIn": "residence",
+      "unlockedAt": {
+        "building": "residence",
+        "level": 1
+      },
+      "stats": {
+        "attack": 0,
+        "defenseInfantry": 0,
+        "defenseCavalry": 0,
+        "speed": 4,
+        "carryCapacity": 0,
+        "wheatConsumption": 1
+      },
+      "costs": {
+        "wood": 5800,
+        "clay": 4600,
+        "iron": 3500,
+        "wheat": 2100
+      },
+      "totalCost": 16000,
+      "baseTrainTimeSec": 12000,
+      "trainTimeDisplay": "3h 20m",
+      "requiredToColonize": 3,
+      "notes": "Cost reduced by -5% per Residence level (L2 onwards). L5: -20%, L10: -45%."
     }
   }
 }

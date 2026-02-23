@@ -288,4 +288,53 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 ---
 
+### [2026-02-23] - Paso 4: Mapa del Mundo y Sistema de Alianzas (Midgard Online)
+
+**Autor:** `@gamedesign`
+
+1.  **Mapa del Mundo — Grid 401×401:**
+    - Coordenadas de (-200, -200) a (200, 200) = 160.801 celdas.
+    - **5 tipos de celda:** vacía, aldea_jugador, oasis, aldea_NPC (Natar), yggdrasil (centro).
+    - **4 zonas radiales:** Centro (0-30, conflicto), Interior (30-80, competitiva), Media (80-160, spawn de jugadores), Borde (160-200, expansión).
+    - Fórmula de distancia: `d = √((x₂-x₁)² + (y₂-y₁)²)`.
+    - Tiempo de viaje: `t = d / velocidad_grupo` (velocidad limitada por tropa más lenta).
+
+2.  **Sistema de Oasis (7 tipos):**
+    - **Comunes (75%):** +25% Madera, +25% Arcilla, +25% Hierro, +25% Trigo.
+    - **Raros (20%):** +25% Madera & +25% Trigo, +25% Arcilla & +25% Hierro.
+    - **Muy raro (5%):** +50% Trigo.
+    - ~4.800 oasis en el mapa. Defendidos por fauna (Lobo ATK 20, Jabalí ATK 15, Oso ATK 40, Troll ATK 60, Dragón ATK 100).
+    - Claim: máx distancia 7 celdas. Oasis por aldea basados en nivel de GS: 0 (L1-4), 1 (L5-7), 2 (L8-9), 3 (L10).
+
+3.  **Colonización — Nueva Aldea:**
+    - **Requisitos:** Gran Salón L10 + Almacén L10 + Granero L10 + Residencia L1.
+    - **Colono (Landnámsmaður):** Tropa civil. Velocidad 4, ATK/DEF 0, coste 16.000 recursos, 3h 20m.
+    - Se necesitan 3 colonos (48.000 recursos total) para fundar una aldea nueva.
+    - **Residencia:** Nuevo edificio, 10 niveles. Reduce coste del Colono -5%/nivel (máx -45% en L10).
+    - Colonización es hito de ~Día 25 del servidor.
+
+4.  **Sistema de Alianzas:**
+    - **Máximo 60 miembros.** Creación gratuita por cualquier jugador sin alianza.
+    - **4 roles:** Jarl (líder, 1), Thane (oficial senior, máx 3), Hirdman (oficial, máx 10), Karl (miembro).
+    - **Matriz de permisos:** Invitar, expulsar, diplomacia, editar perfil, enviar broadcast, gestionar foro.
+    - **4 estados diplomáticos:** Aliado (máx 3), No-Agresión (máx 5), Neutral, Enemigo.
+    - Cooldowns: romper alianza 48h, romper NAP 24h.
+
+5.  **Rankings y Comunicación:**
+    - Rankings individuales (población, atacante, defensor, saqueador) y de alianza (población total, territorio).
+    - Chat de alianza + foro interno + mensajes broadcast + notificaciones automáticas.
+    - Sucesión: si Jarl inactivo 7 días → Thane más antiguo asciende.
+
+6.  **Archivos Creados/Actualizados:**
+    - `games/midgard-online/docs/map.md` — Diseño completo del mapa, oasis, colonización, zonas.
+    - `games/midgard-online/docs/alliances.md` — Sistema de alianzas, roles, diplomacia, rankings.
+    - `games/midgard-online/config/MapConfig.json` — Grid, celdas, oasis, fauna, zonas, spawn, colonización.
+    - `games/midgard-online/config/AlliancesConfig.json` — Roles, permisos, diplomacia, rankings, comunicación.
+    - `games/midgard-online/config/TroopsConfig.json` — Actualizado a v0.2.0 con Colono (Landnámsmaður).
+    - `games/midgard-online/config/BuildingsConfig.json` — Actualizado a v0.3.0 con Residencia (10 niveles).
+
+7.  **Siguiente Paso:** `@archivist` debe integrar mapa y alianzas en documentación GDD. `@qa` debe validar: consistencia de oasis con economía, balance de colonización, fórmulas de viaje con velocidades de tropas, y permisos de roles.
+
+---
+
 _Fin del registro actual. Añade nuevas entradas debajo._

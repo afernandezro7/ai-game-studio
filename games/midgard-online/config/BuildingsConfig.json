@@ -1,6 +1,6 @@
 {
-  "version": "0.2.0",
-  "description": "Configuración de edificios para Midgard Online — Fase 1 (Recursos + Infraestructura) + Fase 2 (Militar)",
+  "version": "0.3.0",
+  "description": "Configuración de edificios para Midgard Online — Fase 1 (Recursos + Infraestructura) + Fase 2 (Militar) + Fase 3 (Colonización)",
   "formulas": {
     "production": "round(baseProd × 1.405^(level - 1))",
     "cost": "round(baseCost × 1.585^(level - 1))",
@@ -1872,6 +1872,180 @@
           "defenseBonus": 0.80,
           "defenseBase": 300,
           "population": 0
+        }
+      ]
+    },
+    "residence": {
+      "id": "residence",
+      "name": "Residencia",
+      "nameEnglish": "Residence",
+      "description": "Edificio civil que permite entrenar Colonos para fundar nuevas aldeas. Cada nivel reduce el coste del Colono.",
+      "category": "civil",
+      "trains": "settler",
+      "maxPerVillage": 1,
+      "maxLevel": 10,
+      "settlerCostReductionPerLevel": 0.05,
+      "requirement": {
+        "building": "mainBuilding",
+        "level": 10
+      },
+      "baseCosts": {
+        "wood": 580,
+        "clay": 460,
+        "iron": 350,
+        "wheat": 180
+      },
+      "baseTimeSec": 1500,
+      "levels": [
+        {
+          "level": 1,
+          "costs": {
+            "wood": 580,
+            "clay": 460,
+            "iron": 350,
+            "wheat": 180
+          },
+          "totalCost": 1570,
+          "timeSec": 1500,
+          "timeDisplay": "25m",
+          "settlerCostReduction": 0.00,
+          "unlocks": "settler",
+          "population": 2
+        },
+        {
+          "level": 2,
+          "costs": {
+            "wood": 920,
+            "clay": 730,
+            "iron": 555,
+            "wheat": 285
+          },
+          "totalCost": 2490,
+          "timeSec": 2325,
+          "timeDisplay": "39m",
+          "settlerCostReduction": 0.05,
+          "unlocks": null,
+          "population": 2
+        },
+        {
+          "level": 3,
+          "costs": {
+            "wood": 1455,
+            "clay": 1155,
+            "iron": 880,
+            "wheat": 450
+          },
+          "totalCost": 3940,
+          "timeSec": 3600,
+          "timeDisplay": "1h 0m",
+          "settlerCostReduction": 0.10,
+          "unlocks": null,
+          "population": 3
+        },
+        {
+          "level": 4,
+          "costs": {
+            "wood": 2310,
+            "clay": 1835,
+            "iron": 1395,
+            "wheat": 715
+          },
+          "totalCost": 6255,
+          "timeSec": 5580,
+          "timeDisplay": "1h 33m",
+          "settlerCostReduction": 0.15,
+          "unlocks": null,
+          "population": 3
+        },
+        {
+          "level": 5,
+          "costs": {
+            "wood": 3660,
+            "clay": 2905,
+            "iron": 2210,
+            "wheat": 1135
+          },
+          "totalCost": 9910,
+          "timeSec": 8640,
+          "timeDisplay": "2h 24m",
+          "settlerCostReduction": 0.20,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 6,
+          "costs": {
+            "wood": 5805,
+            "clay": 4605,
+            "iron": 3505,
+            "wheat": 1800
+          },
+          "totalCost": 15715,
+          "timeSec": 13380,
+          "timeDisplay": "3h 43m",
+          "settlerCostReduction": 0.25,
+          "unlocks": null,
+          "population": 4
+        },
+        {
+          "level": 7,
+          "costs": {
+            "wood": 9200,
+            "clay": 7300,
+            "iron": 5555,
+            "wheat": 2850
+          },
+          "totalCost": 24905,
+          "timeSec": 20760,
+          "timeDisplay": "5h 46m",
+          "settlerCostReduction": 0.30,
+          "unlocks": null,
+          "population": 5
+        },
+        {
+          "level": 8,
+          "costs": {
+            "wood": 14585,
+            "clay": 11575,
+            "iron": 8805,
+            "wheat": 4520
+          },
+          "totalCost": 39485,
+          "timeSec": 32160,
+          "timeDisplay": "8h 56m",
+          "settlerCostReduction": 0.35,
+          "unlocks": null,
+          "population": 5
+        },
+        {
+          "level": 9,
+          "costs": {
+            "wood": 23120,
+            "clay": 18345,
+            "iron": 13955,
+            "wheat": 7165
+          },
+          "totalCost": 62585,
+          "timeSec": 49920,
+          "timeDisplay": "13h 52m",
+          "settlerCostReduction": 0.40,
+          "unlocks": null,
+          "population": 6
+        },
+        {
+          "level": 10,
+          "costs": {
+            "wood": 36650,
+            "clay": 29080,
+            "iron": 22120,
+            "wheat": 11355
+          },
+          "totalCost": 99205,
+          "timeSec": 77340,
+          "timeDisplay": "21h 29m",
+          "settlerCostReduction": 0.45,
+          "unlocks": null,
+          "population": 6
         }
       ]
     }

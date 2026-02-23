@@ -1,0 +1,302 @@
+{
+  "version": "0.1.0",
+  "description": "Configuración del sistema de alianzas para Midgard Online — roles, diplomacia, rankings, comunicación",
+  "alliance": {
+    "maxMembers": 60,
+    "creationCost": 0,
+    "maxAlliancesPerPlayer": 1,
+    "nameMinLength": 3,
+    "nameMaxLength": 30,
+    "tagMinLength": 2,
+    "tagMaxLength": 4,
+    "descriptionMaxLength": 500,
+    "nameUnique": true,
+    "tagUnique": true,
+    "tagAlphanumericOnly": true
+  },
+  "roles": {
+    "jarl": {
+      "id": "jarl",
+      "name": "Jarl (Líder)",
+      "nameEnglish": "Leader",
+      "maxCount": 1,
+      "priority": 1,
+      "permissions": [
+        "invite",
+        "kick_karl",
+        "kick_hirdman",
+        "kick_thane",
+        "promote_karl",
+        "promote_hirdman",
+        "promote_thane",
+        "demote",
+        "change_diplomacy",
+        "edit_description",
+        "send_broadcast",
+        "chat",
+        "view_ally_troops",
+        "dissolve_alliance",
+        "transfer_leadership"
+      ]
+    },
+    "thane": {
+      "id": "thane",
+      "name": "Thane (Consejero)",
+      "nameEnglish": "Counselor",
+      "maxCount": 3,
+      "priority": 2,
+      "permissions": [
+        "invite",
+        "kick_karl",
+        "kick_hirdman",
+        "promote_karl",
+        "promote_hirdman",
+        "demote",
+        "change_diplomacy",
+        "edit_description",
+        "send_broadcast",
+        "chat",
+        "view_ally_troops"
+      ]
+    },
+    "hirdman": {
+      "id": "hirdman",
+      "name": "Hirdman (Oficial)",
+      "nameEnglish": "Officer",
+      "maxCount": 10,
+      "priority": 3,
+      "permissions": [
+        "invite",
+        "kick_karl",
+        "send_broadcast",
+        "chat",
+        "view_ally_troops"
+      ]
+    },
+    "karl": {
+      "id": "karl",
+      "name": "Karl (Miembro)",
+      "nameEnglish": "Member",
+      "maxCount": 46,
+      "priority": 4,
+      "permissions": [
+        "chat",
+        "view_ally_troops"
+      ]
+    }
+  },
+  "succession": {
+    "inactivityThresholdDays": 14,
+    "priority": [
+      "thane_oldest",
+      "hirdman_oldest",
+      "karl_highest_population"
+    ],
+    "note": "If Jarl is inactive for 14 days, leadership auto-transfers following priority order"
+  },
+  "diplomacy": {
+    "states": {
+      "allied": {
+        "id": "allied",
+        "name": "Aliado",
+        "icon": "green_circle",
+        "colorUI": "#4CAF50",
+        "canAttack": false,
+        "canReinforce": true,
+        "mapHighlight": true
+      },
+      "nap": {
+        "id": "nap",
+        "name": "Pacto de No-Agresión",
+        "icon": "yellow_circle",
+        "colorUI": "#FFC107",
+        "canAttack": false,
+        "canReinforce": false,
+        "mapHighlight": true
+      },
+      "neutral": {
+        "id": "neutral",
+        "name": "Neutral",
+        "icon": "white_circle",
+        "colorUI": "#9E9E9E",
+        "canAttack": true,
+        "canReinforce": false,
+        "mapHighlight": false
+      },
+      "enemy": {
+        "id": "enemy",
+        "name": "Enemigo",
+        "icon": "red_circle",
+        "colorUI": "#F44336",
+        "canAttack": true,
+        "canReinforce": false,
+        "mapHighlight": true,
+        "coordinationBonus": true
+      }
+    },
+    "limits": {
+      "maxAllies": 3,
+      "maxNAPs": 5
+    },
+    "cooldowns": {
+      "alliedToNeutral": {
+        "hours": 24,
+        "note": "24h advance notice"
+      },
+      "alliedToEnemy": {
+        "hours": 48,
+        "note": "48h advance notice to prevent instant betrayal"
+      },
+      "napToNeutral": {
+        "hours": 12,
+        "note": "12h advance notice"
+      },
+      "neutralToEnemy": {
+        "hours": 0,
+        "note": "Immediate"
+      }
+    },
+    "requiresMutualAcceptance": true
+  },
+  "reinforcement": {
+    "allowedBetween": "allied",
+    "troopWheatPaidBy": "defender",
+    "maxReinforcementsPerVillage": null,
+    "canBeRecalledBy": [
+      "owner",
+      "defender"
+    ],
+    "note": "Reinforcement troops defend as if local. Wheat cost on the hosting village."
+  },
+  "communication": {
+    "chat": {
+      "type": "realtime_websocket",
+      "access": "all_members",
+      "historyMessages": 500,
+      "historyDays": 7,
+      "maxMessageLength": 300,
+      "rateLimitPerMinute": 10,
+      "format": "plain_text"
+    },
+    "broadcast": {
+      "access": [
+        "jarl",
+        "thane",
+        "hirdman"
+      ],
+      "maxActive": 3,
+      "maxLength": 500,
+      "displayAs": "banner"
+    },
+    "autoNotifications": [
+      {
+        "event": "member_attacked",
+        "message": "⚔️ {player} is being attacked at {village}",
+        "recipients": "all"
+      },
+      {
+        "event": "member_joined",
+        "message": "🟢 {player} joined the alliance",
+        "recipients": "all"
+      },
+      {
+        "event": "member_kicked",
+        "message": "🔴 {player} was expelled",
+        "recipients": "all"
+      },
+      {
+        "event": "diplomacy_changed",
+        "message": "🤝 Now {state} with {alliance}",
+        "recipients": "all"
+      },
+      {
+        "event": "member_village_lost",
+        "message": "💀 {player} lost village {village}",
+        "recipients": "all"
+      },
+      {
+        "event": "oasis_claimed",
+        "message": "🌿 {player} claimed an oasis ({bonus})",
+        "recipients": "all"
+      }
+    ]
+  },
+  "rankings": {
+    "individual": [
+      {
+        "id": "population",
+        "name": "Población",
+        "metric": "sum of all village population",
+        "updateInterval": "hourly"
+      },
+      {
+        "id": "attacker",
+        "name": "Atacante",
+        "metric": "attack points from battles",
+        "updateInterval": "per_battle"
+      },
+      {
+        "id": "defender",
+        "name": "Defensor",
+        "metric": "defense points from battles",
+        "updateInterval": "per_battle"
+      },
+      {
+        "id": "raider",
+        "name": "Saqueador",
+        "metric": "total resources looted",
+        "updateInterval": "per_battle"
+      },
+      {
+        "id": "villages",
+        "name": "Aldeas",
+        "metric": "number of villages owned",
+        "updateInterval": "hourly"
+      }
+    ],
+    "alliance": [
+      {
+        "id": "population",
+        "name": "Población",
+        "metric": "sum of member population",
+        "updateInterval": "hourly"
+      },
+      {
+        "id": "offense",
+        "name": "Ofensiva",
+        "metric": "sum of member attack points",
+        "updateInterval": "hourly"
+      },
+      {
+        "id": "defense",
+        "name": "Defensiva",
+        "metric": "sum of member defense points",
+        "updateInterval": "hourly"
+      },
+      {
+        "id": "average",
+        "name": "Media",
+        "metric": "total population / members",
+        "updateInterval": "hourly"
+      },
+      {
+        "id": "territory",
+        "name": "Territorio",
+        "metric": "total villages controlled",
+        "updateInterval": "hourly"
+      }
+    ],
+    "battlePointsFormula": "sum(enemyTroopsDestroyed_i × troopTotalCost_i / 10)"
+  },
+  "leaving": {
+    "leaveAllianceCooldown": {
+      "hours": 24,
+      "note": "24h before can join another alliance"
+    },
+    "dissolveAllianceCooldown": {
+      "hours": 48,
+      "note": "48h before Jarl can create new alliance"
+    },
+    "jarlMustTransferFirst": true
+  }
+}
