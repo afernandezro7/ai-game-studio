@@ -131,7 +131,12 @@
         "canAttack": true,
         "canReinforce": false,
         "mapHighlight": true,
-        "coordinationBonus": true
+        "coordinationBonus": {
+          "enabled": true,
+          "attackBonusPercent": 10,
+          "earlyWarningMinutes": 30,
+          "description": "+10% ATK total when attacking a declared enemy alliance. Enemy troop movements visible on map 30 min earlier than neutral."
+        }
       }
     },
     "limits": {

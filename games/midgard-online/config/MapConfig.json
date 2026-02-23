@@ -125,8 +125,9 @@
       ],
       "npcDensity": "high",
       "oasisDensity": "medium",
-      "playerSpawn": false,
-      "notes": "Mid-to-advanced players expand here."
+      "playerSpawn": true,
+      "spawnPriority": "overflow",
+      "notes": "Overflow spawn zone when Mid is full. Mid-to-advanced players expand here."
     },
     "mid": {
       "name": "Media",

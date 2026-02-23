@@ -335,6 +335,21 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 7.  **Siguiente Paso:** `@archivist` debe integrar mapa y alianzas en documentación GDD. `@qa` debe validar: consistencia de oasis con economía, balance de colonización, fórmulas de viaje con velocidades de tropas, y permisos de roles.
 
+### [2026-02-23] - Revisión QA Paso 4: 3 Fixes (Map + Alliances)
+
+**Autor:** `@gamedesign` (en respuesta a revisión de `@qa`)
+
+1.  **P1 (ALTO) — Inner zone spawn fix:**
+    - `MapConfig.json`: Inner zone cambiada a `playerSpawn: true` con `spawnPriority: "overflow"`.
+    - `map.md`: Tabla de zonas actualizada — Interior ahora dice "Overflow spawn + expansión". Algoritmo de spawn aclara que Interior es overflow con prioridad secundaria.
+
+2.  **P2 (MEDIO) — Fórmula Residencia corregida:**
+    - `map.md`: Fórmula cambiada de `residencia_level × 0.05` a `(residencia_level - 1) × 0.05`. Anotación corregida: `[L1=0%, L2=-5%, L10=-45%]`.
+
+3.  **P3 (MEDIO) — Coordination bonus definido:**
+    - `AlliancesConfig.json`: `coordinationBonus` expandido de `true` a objeto con `attackBonusPercent: 10` y `earlyWarningMinutes: 30`.
+    - `alliances.md`: Nueva sección "Bonus de Coordinación contra Enemigos Declarados" — +10% ATK total + 30m aviso anticipado de movimientos. Nota: el bonus es simétrico (el enemigo también lo recibe).
+
 ---
 
 _Fin del registro actual. Añade nuevas entradas debajo._

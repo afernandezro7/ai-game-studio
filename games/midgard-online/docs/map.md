@@ -333,12 +333,12 @@ El mapa se divide en 4 zonas concéntricas desde el centro (0,0):
          └─────────────────────────────────┘
 ```
 
-| Zona         | Distancia al Centro | Densidad NPC           | Densidad Oasis | Jugadores                |
-| ------------ | ------------------- | ---------------------- | -------------- | ------------------------ |
-| **Centro**   | 0-30                | Muy Alta (NPC fuertes) | Baja           | Pocos (tardío)           |
-| **Interior** | 30-80               | Alta                   | Media          | Medio-avanzados          |
-| **Media**    | 80-160              | Media                  | Alta           | La mayoría spawneán aquí |
-| **Borde**    | 160-200             | Baja                   | Baja           | Principiantes, tranquilo |
+| Zona         | Distancia al Centro | Densidad NPC           | Densidad Oasis | Jugadores                  |
+| ------------ | ------------------- | ---------------------- | -------------- | -------------------------- |
+| **Centro**   | 0-30                | Muy Alta (NPC fuertes) | Baja           | Pocos (tardío)             |
+| **Interior** | 30-80               | Alta                   | Media          | Overflow spawn + expansión |
+| **Media**    | 80-160              | Media                  | Alta           | La mayoría spawneán aquí   |
+| **Borde**    | 160-200             | Baja                   | Baja           | Principiantes, tranquilo   |
 
 ### Spawn de Jugadores Nuevos
 
@@ -346,7 +346,7 @@ El mapa se divide en 4 zonas concéntricas desde el centro (0,0):
 Algoritmo de Spawn:
 1. Buscar celda vacía en zona Media (80-160 del centro)
 2. Preferir celdas a > 5 campos de otra aldea de jugador
-3. Si la zona Media está llena → expandir a Interior o Borde
+3. Si la zona Media está llena → overflow a Interior (playerSpawn: true, prioridad overflow) o Borde
 4. Nunca spawnear en Centro (reservado para late-game)
 
 Distribución: Los jugadores se spawnean distribuidos en los 4 cuadrantes
@@ -410,8 +410,7 @@ tiempo_horas = dist(A,B) / min(velocidad_tropas_grupo)
 prod_efectiva = prod_base × (1 + Σ bonus_oasis)
 
 # Coste de colono con Residencia
-coste_colono = base_coste × (1 - residencia_level × 0.05)  [L1=-5%, L10=-45%]
-(nota: L1 no tiene descuento, L2 empieza con -5%)
+coste_colono = base_coste × (1 - (residencia_level - 1) × 0.05)  [L1=0%, L2=-5%, L10=-45%]
 
 # Capacidad de spawn
 aldeas_por_jugador = ilimitado (limitado por economía, no por regla)

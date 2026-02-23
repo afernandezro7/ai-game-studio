@@ -69,12 +69,12 @@ Si el Jarl abandona la alianza voluntariamente:
 
 ### Estados Diplomáticos (4 tipos)
 
-| Estado                         | Icono | Color UI  | Efecto en Mapa              | Efecto en Combate                    |
-| ------------------------------ | ----- | --------- | --------------------------- | ------------------------------------ |
-| **Aliado**                     | 🟢    | `#4CAF50` | Aldeas marcadas en verde    | Puede reforzar. NO puede atacar.     |
-| **Pacto de No-Agresión (NAP)** | 🟡    | `#FFC107` | Aldeas marcadas en amarillo | NO puede atacar ni reforzar.         |
-| **Neutral**                    | ⚪    | `#9E9E9E` | Sin marca especial          | Puede atacar y ser atacado.          |
-| **Enemigo**                    | 🔴    | `#F44336` | Aldeas marcadas en rojo     | Puede atacar. Bonus de coordinación. |
+| Estado                         | Icono | Color UI  | Efecto en Mapa              | Efecto en Combate                             |
+| ------------------------------ | ----- | --------- | --------------------------- | --------------------------------------------- |
+| **Aliado**                     | 🟢    | `#4CAF50` | Aldeas marcadas en verde    | Puede reforzar. NO puede atacar.              |
+| **Pacto de No-Agresión (NAP)** | 🟡    | `#FFC107` | Aldeas marcadas en amarillo | NO puede atacar ni reforzar.                  |
+| **Neutral**                    | ⚪    | `#9E9E9E` | Sin marca especial          | Puede atacar y ser atacado.                   |
+| **Enemigo**                    | 🔴    | `#F44336` | Aldeas marcadas en rojo     | Puede atacar. +10% ATK. Aviso anticipado 30m. |
 
 ### Mecánica de Diplomacia
 
@@ -101,6 +101,19 @@ Cooldowns:
 | Auto-diplomacia    | Una alianza está aliada consigo misma (siempre) | Obvio                        |
 | Atacar a un aliado | Bloqueado por el sistema                        | Deben romper alianza primero |
 | Reforzar a un NAP  | NO permitido                                    | Solo aliados pueden reforzar |
+
+### Bonus de Coordinación contra Enemigos Declarados
+
+Declarar a una alianza como **Enemigo** activa dos beneficios para tu alianza:
+
+| Bonus                | Valor          | Mecánica                                                                                                                                                                     |
+| -------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ATK Bonus**        | +10% ATK total | Todas las tropas de tu alianza obtienen +10% al ATK total cuando atacan aldeas de la alianza enemiga declarada. Se aplica después del cálculo base de ATK.                   |
+| **Aviso Anticipado** | +30 minutos    | Los movimientos de tropas de la alianza enemiga son visibles en el mapa con 30 minutos de antelación extra (vs neutrales que solo se ven al entrar en tu radio de 3 celdas). |
+
+> **Justificación de diseño:** Este bonus incentiva a las alianzas a declarar enemigos formalmente en lugar de atacar "a traición" desde estado Neutral. El aviso anticipado permite a la alianza defensora coordinarse, creando batallas más épicas y estratégicas.
+
+> **Contrapartida:** El enemigo TAMBIÉN recibe estos mismos bonuses contra ti. Declarar enemigo es una espada de doble filo.
 
 ---
 
