@@ -139,7 +139,6 @@ model Mission {
 // ── Mission Troops ─────────────────────────────────────────
 
 model MissionTroop {
-  id            String @id @default(uuid()) @db.Uuid
   missionId     String @map("mission_id") @db.Uuid
   troopType     String @map("troop_type") @db.VarChar(30)
   countSent     Int    @map("count_sent")
@@ -148,7 +147,7 @@ model MissionTroop {
   // Relations
   mission Mission @relation(fields: [missionId], references: [id])
 
-  @@index([missionId])
+  @@id([missionId, troopType])
   @@map("mission_troops")
 }
 

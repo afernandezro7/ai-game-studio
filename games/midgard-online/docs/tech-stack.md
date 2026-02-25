@@ -7,16 +7,16 @@
 
 ## 🏛️ Resumen del Stack
 
-| Capa              | Tecnología                     | Versión Target   | Justificación                                       |
-| ----------------- | ------------------------------ | ---------------- | --------------------------------------------------- |
-| **Frontend**      | React + Vite + TypeScript      | React 18, Vite 5 | SPA moderna, HMR rápido, tipado fuerte              |
-| **Backend**       | Node.js + Express + TypeScript | Node 20 LTS      | Ecosistema compartido con frontend, async nativo    |
-| **Base de datos** | PostgreSQL                     | PostgreSQL 16    | Relacional robusto para MMO (aldeas, tropas, mapa)  |
-| **ORM**           | Prisma                         | Prisma 5         | Type-safe, migraciones declarativas, DX excelente   |
-| **Real-time**     | Socket.io (WebSocket)          | Socket.io 4      | Notificaciones de ataques, chat, eventos en vivo    |
-| **Cache**         | Redis _(Fase 3+)_              | Redis 7          | Sesiones calientes, leaderboard, tick de producción |
-| **Auth**          | JWT + bcrypt                   | -                | Stateless, compatible con múltiples instancias      |
-| **Hosting**       | VPS / DigitalOcean + Docker    | -                | Escalable por servidor de juego, coste controlado   |
+| Capa              | Tecnología                     | Versión Target   | Justificación                                                      |
+| ----------------- | ------------------------------ | ---------------- | ------------------------------------------------------------------ |
+| **Frontend**      | React + Vite + TypeScript      | React 18, Vite 5 | SPA moderna, HMR rápido, tipado fuerte                             |
+| **Backend**       | Node.js + Express + TypeScript | Node 22 LTS      | Ecosistema compartido con frontend, async nativo                   |
+| **Base de datos** | PostgreSQL                     | PostgreSQL 16    | Relacional robusto para MMO (aldeas, tropas, mapa)                 |
+| **ORM**           | Prisma                         | Prisma 7         | Type-safe, driver adapters, migraciones declarativas, DX excelente |
+| **Real-time**     | Socket.io (WebSocket)          | Socket.io 4      | Notificaciones de ataques, chat, eventos en vivo                   |
+| **Cache**         | Redis _(Fase 3+)_              | Redis 7          | Sesiones calientes, leaderboard, tick de producción                |
+| **Auth**          | JWT + bcrypt                   | -                | Stateless, compatible con múltiples instancias                     |
+| **Hosting**       | VPS / DigitalOcean + Docker    | -                | Escalable por servidor de juego, coste controlado                  |
 
 ---
 

@@ -687,4 +687,27 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 
 6. **Siguiente Paso:** MO-02 — Auth (registro + login + JWT).
 
+---
+
+### [2026-02-24] - QA Review de PR #15 (MO-01 Project Setup)
+
+**Autor:** `@qa`
+**PR:** #15 (`feature/MO-01-setup` → `develop`)
+**Veredicto:** ⚠️ REQUEST CHANGES — 3 bloqueantes, 2 menores
+
+1. **Revisión contra Issue #7:** 6/8 criterios de aceptación PASS. Frontend (React 18 + Vite 5 + TS strict), Backend (Express + TS strict), Docker (PostgreSQL 16), CSS Variables (165 líneas), 6 JSON configs cargados en ambos lados — todo correcto.
+
+2. **Bloqueantes encontrados:**
+   - **B-001**: `.tool-versions` usa Node 22.17.1 pero tech-stack.md especifica Node 20 LTS
+   - **B-002**: `mission_troops` tiene UUID PK en vez de composite PK `(mission_id, troop_type)` como define tech-stack.md
+   - **B-003**: Prisma 7.4.1 instalado pero tech-stack.md especifica Prisma 5 — la implementación es internamente consistente con Prisma 7 pero la documentación no se ha actualizado
+
+3. **Menores:**
+   - **M-001**: Faltan `ws/attackNotifier.ts` y `ws/chatHandler.ts` (placeholders vacíos)
+   - **M-002**: Faltan `services/villageService.ts` y `services/troopsService.ts` en frontend
+
+4. **Lo que está bien:** Prisma schema con 13 tablas correctas (tipos, FKs, índices), estructura de carpetas match, Zod env validation, Socket.io + Vite proxy, rate limiter, CORS + helmet, DEVLOG entry presente.
+
+5. **Siguiente Paso:** `@developer` debe resolver los 3 bloqueantes y 2 menores, luego solicitar re-review a `@qa`.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
