@@ -1,0 +1,165 @@
+/* ============================================================
+   Midgard Online — Global CSS Variables
+   Source: games/midgard-online/docs/art/style-guide.md
+   ============================================================ */
+
+:root {
+  /* ── Base UI Colors ── */
+  --bg-primary: #0f1923;
+  --bg-secondary: #1a2a3a;
+  --bg-tertiary: #243447;
+  --bg-elevated: #2e4058;
+  --border-default: #3a5068;
+  --border-highlight: #5a7a98;
+  --text-primary: #e8e0d4;
+  --text-secondary: #a89b8c;
+  --text-muted: #857667;
+  --text-inverse: #0f1923;
+
+  /* ── Resource Colors ── */
+  --res-wood: #8B6914;
+  --res-wood-light: #D4A843;
+  --res-clay: #C2694A;
+  --res-clay-light: #E89B7B;
+  --res-iron: #7B8FA8;
+  --res-iron-light: #A8BCD0;
+  --res-wheat: #C9A832;
+  --res-wheat-light: #E8D066;
+  --res-premium: #9370DB;
+  --res-premium-light: #B898F0;
+
+  /* ── Status Colors ── */
+  --success: #2E8B57;
+  --success-bg: #1a3d2a;
+  --warning: #DAA520;
+  --warning-bg: #3d3315;
+  --danger: #DC3545;
+  --danger-bg: #3d1a1f;
+  --info: #4A90D9;
+  --info-bg: #1a2d45;
+  --premium: #9370DB;
+  --premium-bg: #2a1f3d;
+
+  /* ── CTA / Button Colors ── */
+  --btn-primary: #DAA520;
+  --btn-primary-hover: #F0C040;
+  --btn-primary-disabled: #6B5B30;
+  --btn-secondary: #4A6E7C;
+  --btn-secondary-hover: #5A8A9C;
+  --btn-secondary-disabled: #2A3E47;
+  --btn-destructive: #8B2020;
+  --btn-destructive-hover: #B03030;
+  --btn-destructive-disabled: #4A1515;
+  --btn-premium: #7B52C9;
+  --btn-premium-hover: #9370DB;
+  --btn-premium-disabled: #3D2960;
+
+  /* ── Faction / Map Colors ── */
+  --faction-own: #4A90D9;
+  --faction-ally: #2E8B57;
+  --faction-neutral: #A89B8C;
+  --faction-enemy: #DC3545;
+  --faction-npc: #6B3A6B;
+  --faction-oasis: #2E8B57;
+  --faction-oasis-claimed: #4A90D9;
+  --faction-empty: #2A3A4A;
+
+  /* ── Spacing ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ── Typography ── */
+  --font-display: 'Cinzel Decorative', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ── Layout ── */
+  --sidebar-width: 240px;
+  --context-panel-width: 320px;
+  --resource-bar-height: 48px;
+}
+
+/* ── Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Headings ── */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* ── Links ── */
+a {
+  color: var(--info);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--btn-primary-hover);
+}
+
+/* ── Scrollbar (dark theme) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-highlight);
+}
+
+/* ── Breakpoints (reference) ──
+   Mobile:  < 768px
+   Tablet:  768px – 1024px
+   Desktop: > 1024px
+   Wide:    > 1440px
+*/

@@ -636,4 +636,78 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 
 `@developer` debe implementar los issues en orden MO-01 → MO-02 → MO-03 → MO-04 → MO-05 → MO-06 → MO-07 → MO-08.
 
+---
+
+### [2026-02-23] - MO-01: Project Setup — Monorepo Scaffolding (Issue #7)
+
+**Autor:** `@developer`
+
+**Resumen:** Scaffolding completo del monorepo para Midgard Online. Ambos proyectos (frontend + backend) compilan sin errores en TypeScript strict mode. Vite dev server arranca correctamente.
+
+1. **Frontend — `sandbox-web/`** (16 archivos creados)
+   - Vite 5 + React 18 + TypeScript strict
+   - React Router v6 con 4 rutas: `/` (Village), `/map`, `/alliance`, `/auth`
+   - Tanstack Query v5 provider en `main.tsx`
+   - Zustand stores: `gameStore.ts` (resources/buildings/troops), `authStore.ts` (JWT auth)
+   - Axios client con interceptor JWT + Socket.io client singleton
+   - 4 hooks placeholder: useResources, useBuildings, useTroops, useWebSocket
+   - `gameConfigs.ts` re-exporta los 6 JSON configs
+   - `index.css` con TODAS las CSS variables de `style-guide.md` (~70 tokens)
+   - Google Fonts: Cinzel, Cinzel Decorative, Inter, JetBrains Mono
+   - Vite proxy: `/api` → localhost:3001, `/socket.io` → ws://localhost:3001
+
+2. **Backend — `backend/`** (20 archivos creados)
+   - Express + TypeScript strict (ES2022)
+   - Zod env validation (DATABASE_URL, JWT_SECRET, PORT, etc.)
+   - Prisma client singleton + gameData loader (6 JSON configs)
+   - 7 route files: auth, villages, buildings, troops, combat, map, alliances
+   - 5 service files: production, building, combat, travel, alliance
+   - Socket.io server con auth middleware placeholder
+   - 3 cron job placeholders: productionTick, missionResolver, cleanupJobs
+   - 2 middleware: JWT auth, rate limiter
+   - `.env.example` con todas las variables de tech-stack.md
+
+3. **Prisma Schema** — 13 tablas implementadas:
+   - `users`, `villages`, `resources`, `buildings`, `troops`
+   - `missions`, `mission_troops`, `battle_reports`
+   - `map_cells` (composite PK x,y), `alliances`, `alliance_members`, `diplomacy`, `oasis_claims`
+   - `reinforcements` excluida (Fase 3)
+   - UUID PKs, relaciones correctas, índices en campos de búsqueda frecuente
+
+4. **Infraestructura:**
+   - `docker-compose.yml` — PostgreSQL 16 con volume persistente
+   - `.gitignore` — node_modules, .env, dist, .prisma
+   - `README.md` — Quick start completo
+
+5. **Verificación:**
+   - ✅ `npx tsc --noEmit` — 0 errores en frontend
+   - ✅ `npx tsc --noEmit` — 0 errores en backend
+   - ✅ `npx prisma generate` — Client generado
+   - ✅ `npm run dev` — Vite arranca en localhost:5173
+
+6. **Siguiente Paso:** MO-02 — Auth (registro + login + JWT).
+
+---
+
+### [2026-02-24] - QA Review de PR #15 (MO-01 Project Setup)
+
+**Autor:** `@qa`
+**PR:** #15 (`feature/MO-01-setup` → `develop`)
+**Veredicto:** ⚠️ REQUEST CHANGES — 3 bloqueantes, 2 menores
+
+1. **Revisión contra Issue #7:** 6/8 criterios de aceptación PASS. Frontend (React 18 + Vite 5 + TS strict), Backend (Express + TS strict), Docker (PostgreSQL 16), CSS Variables (165 líneas), 6 JSON configs cargados en ambos lados — todo correcto.
+
+2. **Bloqueantes encontrados:**
+   - **B-001**: `.tool-versions` usa Node 22.17.1 pero tech-stack.md especifica Node 20 LTS
+   - **B-002**: `mission_troops` tiene UUID PK en vez de composite PK `(mission_id, troop_type)` como define tech-stack.md
+   - **B-003**: Prisma 7.4.1 instalado pero tech-stack.md especifica Prisma 5 — la implementación es internamente consistente con Prisma 7 pero la documentación no se ha actualizado
+
+3. **Menores:**
+   - **M-001**: Faltan `ws/attackNotifier.ts` y `ws/chatHandler.ts` (placeholders vacíos)
+   - **M-002**: Faltan `services/villageService.ts` y `services/troopsService.ts` en frontend
+
+4. **Lo que está bien:** Prisma schema con 13 tablas correctas (tipos, FKs, índices), estructura de carpetas match, Zod env validation, Socket.io + Vite proxy, rate limiter, CORS + helmet, DEVLOG entry presente.
+
+5. **Siguiente Paso:** `@developer` debe resolver los 3 bloqueantes y 2 menores, luego solicitar re-review a `@qa`.
+
 _Fin del registro actual. Añade nuevas entradas debajo._

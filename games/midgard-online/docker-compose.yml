@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: midgard-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: midgard
+      POSTGRES_PASSWORD: midgard_dev
+      POSTGRES_DB: midgard_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - midgard_pgdata:/var/lib/postgresql/data
+
+volumes:
+  midgard_pgdata:

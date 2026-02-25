@@ -1,0 +1,258 @@
+// ============================================================
+// Midgard Online — Prisma Schema
+// Source of truth: games/midgard-online/docs/tech-stack.md
+// Tables: users, villages, resources, buildings, troops,
+//         missions, mission_troops, battle_reports, map_cells,
+//         alliances, alliance_members, diplomacy, oasis_claims
+// NOTE: reinforcements table is Phase 3 — not included here
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Users ──────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  username     String   @unique @db.VarChar(30)
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  runes        Int      @default(50)
+  createdAt    DateTime @default(now()) @map("created_at")
+  lastLogin    DateTime @default(now()) @map("last_login")
+
+  // Relations
+  villages       Village[]
+  missions       Mission[]
+  allianceMember AllianceMember?
+  ledAlliances   Alliance[]      @relation("AllianceLeader")
+
+  @@map("users")
+}
+
+// ── Villages ───────────────────────────────────────────────
+
+model Village {
+  id         String   @id @default(uuid()) @db.Uuid
+  ownerId    String   @map("owner_id") @db.Uuid
+  name       String   @db.VarChar(50)
+  mapX       Int      @map("map_x")
+  mapY       Int      @map("map_y")
+  population Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  owner            User         @relation(fields: [ownerId], references: [id])
+  resources        Resource?
+  buildings        Building[]
+  troops           Troop[]
+  missionsAsOrigin Mission[]    @relation("MissionOrigin")
+  missionsAsTarget Mission[]    @relation("MissionTarget")
+  mapCell          MapCell?     @relation()
+  oasisClaims      OasisClaim[]
+
+  @@index([ownerId])
+  @@index([mapX, mapY])
+  @@map("villages")
+}
+
+// ── Resources ──────────────────────────────────────────────
+
+model Resource {
+  id          String   @id @default(uuid()) @db.Uuid
+  villageId   String   @unique @map("village_id") @db.Uuid
+  wood        Decimal  @default(0) @db.Decimal(10, 2)
+  clay        Decimal  @default(0) @db.Decimal(10, 2)
+  iron        Decimal  @default(0) @db.Decimal(10, 2)
+  wheat       Decimal  @default(0) @db.Decimal(10, 2)
+  lastUpdated DateTime @default(now()) @map("last_updated")
+
+  // Relations
+  village Village @relation(fields: [villageId], references: [id])
+
+  @@map("resources")
+}
+
+// ── Buildings ──────────────────────────────────────────────
+
+model Building {
+  id              String    @id @default(uuid()) @db.Uuid
+  villageId       String    @map("village_id") @db.Uuid
+  buildingType    String    @map("building_type") @db.VarChar(30)
+  slotIndex       Int       @map("slot_index")
+  level           Int       @default(0)
+  upgradeFinishAt DateTime? @map("upgrade_finish_at")
+
+  // Relations
+  village Village @relation(fields: [villageId], references: [id])
+
+  @@index([villageId])
+  @@map("buildings")
+}
+
+// ── Troops ─────────────────────────────────────────────────
+
+model Troop {
+  id               String    @id @default(uuid()) @db.Uuid
+  villageId        String    @map("village_id") @db.Uuid
+  troopType        String    @map("troop_type") @db.VarChar(30)
+  count            Int       @default(0)
+  trainingFinishAt DateTime? @map("training_finish_at")
+
+  // Relations
+  village Village @relation(fields: [villageId], references: [id])
+
+  @@index([villageId])
+  @@map("troops")
+}
+
+// ── Missions ───────────────────────────────────────────────
+
+model Mission {
+  id             String   @id @default(uuid()) @db.Uuid
+  attackerId     String   @map("attacker_id") @db.Uuid
+  originVillage  String   @map("origin_village") @db.Uuid
+  targetVillage  String   @map("target_village") @db.Uuid
+  missionType    String   @map("mission_type") @db.VarChar(20)
+  departAt       DateTime @map("depart_at")
+  arriveAt       DateTime @map("arrive_at")
+  status         String   @default("traveling") @db.VarChar(20)
+  battleReportId String?  @unique @map("battle_report_id") @db.Uuid
+
+  // Relations
+  attacker     User           @relation(fields: [attackerId], references: [id])
+  origin       Village        @relation("MissionOrigin", fields: [originVillage], references: [id])
+  target       Village        @relation("MissionTarget", fields: [targetVillage], references: [id])
+  battleReport BattleReport?  @relation()
+  troops       MissionTroop[]
+
+  @@index([attackerId])
+  @@index([status, arriveAt])
+  @@map("missions")
+}
+
+// ── Mission Troops ─────────────────────────────────────────
+
+model MissionTroop {
+  missionId     String @map("mission_id") @db.Uuid
+  troopType     String @map("troop_type") @db.VarChar(30)
+  countSent     Int    @map("count_sent")
+  countReturned Int?   @map("count_returned")
+
+  // Relations
+  mission Mission @relation(fields: [missionId], references: [id])
+
+  @@id([missionId, troopType])
+  @@map("mission_troops")
+}
+
+// ── Battle Reports ─────────────────────────────────────────
+
+model BattleReport {
+  id             String   @id @default(uuid()) @db.Uuid
+  missionId      String   @unique @map("mission_id") @db.Uuid
+  winner         String   @db.VarChar(10)
+  attackerAtk    Int      @map("attacker_atk")
+  defenderDef    Int      @map("defender_def")
+  loot           Json     @default("{}")
+  attackerLosses Json     @default("{}") @map("attacker_losses")
+  defenderLosses Json     @default("{}") @map("defender_losses")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  mission Mission @relation(fields: [missionId], references: [id])
+
+  @@map("battle_reports")
+}
+
+// ── Map Cells ──────────────────────────────────────────────
+
+model MapCell {
+  x         Int
+  y         Int
+  cellType  String  @default("empty") @map("cell_type") @db.VarChar(20)
+  villageId String? @unique @map("village_id") @db.Uuid
+  oasisType String? @map("oasis_type") @db.VarChar(30)
+
+  // Relations
+  village    Village?    @relation(fields: [villageId], references: [id])
+  oasisClaim OasisClaim?
+
+  @@id([x, y])
+  @@index([cellType])
+  @@map("map_cells")
+}
+
+// ── Alliances ──────────────────────────────────────────────
+
+model Alliance {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique @db.VarChar(30)
+  tag         String   @unique @db.VarChar(4)
+  description String   @default("") @db.VarChar(500)
+  leaderId    String   @map("leader_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  leader     User             @relation("AllianceLeader", fields: [leaderId], references: [id])
+  members    AllianceMember[]
+  diplomacyA Diplomacy[]      @relation("DiplomacyA")
+  diplomacyB Diplomacy[]      @relation("DiplomacyB")
+
+  @@map("alliances")
+}
+
+// ── Alliance Members ───────────────────────────────────────
+
+model AllianceMember {
+  allianceId String   @map("alliance_id") @db.Uuid
+  userId     String   @unique @map("user_id") @db.Uuid
+  role       String   @default("karl") @db.VarChar(20)
+  joinedAt   DateTime @default(now()) @map("joined_at")
+
+  // Relations
+  alliance Alliance @relation(fields: [allianceId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@id([allianceId, userId])
+  @@map("alliance_members")
+}
+
+// ── Diplomacy ──────────────────────────────────────────────
+
+model Diplomacy {
+  allianceAId String   @map("alliance_a_id") @db.Uuid
+  allianceBId String   @map("alliance_b_id") @db.Uuid
+  state       String   @default("neutral") @db.VarChar(20)
+  changedAt   DateTime @default(now()) @map("changed_at")
+
+  // Relations
+  allianceA Alliance @relation("DiplomacyA", fields: [allianceAId], references: [id])
+  allianceB Alliance @relation("DiplomacyB", fields: [allianceBId], references: [id])
+
+  @@id([allianceAId, allianceBId])
+  @@map("diplomacy")
+}
+
+// ── Oasis Claims ───────────────────────────────────────────
+
+model OasisClaim {
+  oasisX    Int      @map("oasis_x")
+  oasisY    Int      @map("oasis_y")
+  villageId String   @map("village_id") @db.Uuid
+  oasisType String   @map("oasis_type") @db.VarChar(30)
+  claimedAt DateTime @default(now()) @map("claimed_at")
+
+  // Relations
+  village Village @relation(fields: [villageId], references: [id])
+  mapCell MapCell @relation(fields: [oasisX, oasisY], references: [x, y])
+
+  @@id([oasisX, oasisY])
+  @@index([villageId])
+  @@map("oasis_claims")
+}
