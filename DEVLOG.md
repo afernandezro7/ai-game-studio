@@ -710,4 +710,25 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 
 5. **Siguiente Paso:** `@developer` debe resolver los 3 bloqueantes y 2 menores, luego solicitar re-review a `@qa`.
 
+---
+
+### [2026-02-25] - QA Re-Review de PR #15 — ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #15 (`feature/MO-01-setup` → `develop`) — commit `3a68b7da`
+**Veredicto:** ✅ QA APPROVED — 5/5 issues resueltos, 8/8 criterios PASS
+
+1. **Verificación de fixes (commit `d318f02`):**
+   - **B-001** ✅: tech-stack.md actualizado a `Node 22 LTS` — docs y `.tool-versions` alineados
+   - **B-002** ✅: `mission_troops` ahora tiene composite PK `(mission_id, troop_type)`, campo `id` eliminado, migration correcta
+   - **B-003** ✅: tech-stack.md actualizado a `Prisma 7` — docs y `package.json` alineados
+   - **M-001** ✅: `ws/attackNotifier.ts` (24 líneas) y `ws/chatHandler.ts` (14 líneas) creados con tipos Socket.io
+   - **M-002** ✅: `services/villageService.ts` (25 líneas) y `services/troopsService.ts` (27 líneas) creados con funciones reales
+
+2. **Decisión del equipo:** Se optó por subir las versiones documentadas (Node 22, Prisma 7) en vez de hacer downgrade. Coherente y justificado.
+
+3. **Report generado:** `games/midgard-online/docs/qa-re-review-pr15-mo01-setup.md`
+
+4. **Siguiente Paso:** Mergear PR #15 a `develop`. Siguiente tarea: MO-02 — Auth (registro + login + JWT).
+
 _Fin del registro actual. Añade nuevas entradas debajo._
