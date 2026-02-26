@@ -730,6 +730,7 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 3. **Report generado:** `games/midgard-online/docs/qa-re-review-pr15-mo01-setup.md`
 
 4. **Siguiente Paso:** Mergear PR #15 a `develop`. Siguiente tarea: MO-02 — Auth (registro + login + JWT).
+
 ## [MO-02] Auth — Registro + Login JWT · 2026-02-26
 
 **Issue:** #8 | **Branch:** `feature/MO-02-auth` | **Agent:** @developer
@@ -765,5 +766,34 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 - ✅ Rutas protegidas retornan 401 sin token
 - ✅ Login/Register responsive (mobile + desktop)
 - ✅ tsc clean en backend y frontend
+
+## QA Review — PR #17 (MO-02 Auth) · 2025-07-24
+
+**PR:** #17 | **Issue:** #8 | **Agent:** @qa
+
+### Decisión: ✅ APPROVED
+
+PR #17 revisado contra los 5 criterios de aceptación del issue #8 y las especificaciones de `tech-stack.md`.
+
+### Verificaciones
+
+1. **Criterios de aceptación:** 5/5 PASS — registro, runes 50, JWT 7d, 401 sin token, responsive
+2. **Contrato API vs tech-stack.md:** 3/3 MATCH — register, login, /me
+3. **Seguridad:** PASS — bcrypt 12 rounds, JWT_SECRET min 32 chars, passwordHash nunca expuesto, "Invalid credentials" genérico
+4. **Código:** PASS — tsc clean, CSS vars mapeadas, authStore compatible, Axios interceptor funcional
+
+### Advertencias (no bloqueantes)
+
+- **W-001:** Async handlers sin try-catch (Express 4 no captura promise rejections) → resolver en MO-03+
+- **W-002:** Race condition TOCTOU en register (`findFirst` → `create`) → se resuelve con W-001
+
+### Entregables
+
+1. **Review en PR #17:** COMMENT con APPROVE (no se puede hacer APPROVE en PR propia)
+2. **Report:** `games/midgard-online/docs/qa-review-pr17-mo02-auth.md`
+
+### Siguiente Paso
+
+Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
 
 _Fin del registro actual. Añade nuevas entradas debajo._
