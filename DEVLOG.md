@@ -710,4 +710,42 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 
 5. **Siguiente Paso:** `@developer` debe resolver los 3 bloqueantes y 2 menores, luego solicitar re-review a `@qa`.
 
+---
+
+## [MO-02] Auth — Registro + Login JWT · 2026-02-26
+
+**Issue:** #8 | **Branch:** `feature/MO-02-auth` | **Agent:** @developer
+
+### Archivos implementados
+
+**Backend (`games/midgard-online/backend/`)**
+
+- `src/routes/auth.ts` — POST /auth/register, POST /auth/login, GET /auth/me (con Zod validation, bcryptjs salt 12, JWT sign)
+- `src/middleware/auth.ts` — `authMiddleware` completo: extrae Bearer token, verifica JWT, adjunta payload como `AuthRequest`; interfaces `JwtPayload` + `AuthRequest`
+
+**Frontend (`games/midgard-online/sandbox-web/`)**
+
+- `src/pages/Auth.tsx` — Página Login/Register con tabs, validación client-side, manejo de errores 401/409, redirect post-auth con react-router
+- `src/pages/Auth.css` — Estilos Nordic con todas las CSS vars (--bg-primary, --accent-gold, --text-primary, etc.), responsive (card centrada en desktop, full-width en mobile)
+- `src/App.tsx` — Route guards: si no autenticado → /auth; si autenticado en /auth → /
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+- `npx tsc --noEmit` frontend → 0 errores ✅
+- Zod valida: username 3-20 alphanum, email válido, password ≥8 chars
+- bcryptjs salt rounds: 12
+- JWT payload: `{ userId, username }`, expiry desde `env.JWT_EXPIRES_IN` ("7d")
+- `passwordHash` nunca expuesto en respuestas
+- `runes: 50` por defecto en el User model (schema sin modificar)
+
+### Criterios de aceptación
+
+- ✅ Registro con email + username + password
+- ✅ Runes: 50 automáticos al registrar
+- ✅ Login retorna JWT (expira en 7d)
+- ✅ Rutas protegidas retornan 401 sin token
+- ✅ Login/Register responsive (mobile + desktop)
+- ✅ tsc clean en backend y frontend
+
 _Fin del registro actual. Añade nuevas entradas debajo._
