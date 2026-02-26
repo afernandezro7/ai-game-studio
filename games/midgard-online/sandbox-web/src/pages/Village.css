@@ -2,7 +2,7 @@
 
 .village-page {
   min-height: 100vh;
-  background-color: var(--bg-primary, #1a1a2e);
+  background-color: var(--bg-primary, #0f1923);
   color: var(--text-primary, #e8e8e8);
   padding: 1.5rem 1rem;
   max-width: 900px;

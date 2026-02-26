@@ -330,6 +330,7 @@ erDiagram
 | ------ | ------------------------- | ------------------------------------- |
 | GET    | `/villages/:id`           | Estado completo de la aldea           |
 | GET    | `/villages/:id/resources` | Recursos actuales (con tick aplicado) |
+| PATCH  | `/villages/:id/name`      | Renombrar aldea (body: `{name}`)       |
 
 ### Edificios
 

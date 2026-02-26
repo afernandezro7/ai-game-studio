@@ -165,14 +165,17 @@ export async function getVillageState(villageId: string) {
     lastUpdated: village.resources.lastUpdated,
   });
 
-  // Persist updated lastUpdated (fire-and-forget, don't await)
+  // Persist updated lastUpdated (fire-and-forget, don't await).
+  // TODO(MO-04): change to `await` once production rates are active —
+  //   a silent failure here will inflate deltaT on next tick, producing
+  //   extra resources. Safe only while production = 0 (MO-03 stub).
   prisma.resource
     .update({
       where: { villageId },
       data: { lastUpdated: ticked.lastUpdated },
     })
     .catch(() => {
-      /* ignore — non-critical */
+      /* ignore — non-critical while production = 0 */
     });
 
   return {

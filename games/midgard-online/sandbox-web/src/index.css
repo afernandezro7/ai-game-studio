@@ -82,6 +82,13 @@
   --sidebar-width: 240px;
   --context-panel-width: 320px;
   --resource-bar-height: 48px;
+
+  /* ── Semantic aliases (page components) ── */
+  --accent-gold: #DAA520;   /* alias of --btn-primary / --warning */
+  --accent-silver: #C0C0C0;
+  --bg-card: #243447;       /* alias of --bg-tertiary */
+  --border-color: #3a5068;  /* alias of --border-default */
+  --color-error: #DC3545;   /* alias of --danger */
 }
 
 /* ── Reset & Base ── */
