@@ -1,7 +1,13 @@
-import { Router } from "express";
+import {
+  Router,
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../config/database.js";
 import { env } from "../config/env.js";
 import { authMiddleware, type AuthRequest } from "../middleware/auth.js";
@@ -51,114 +57,149 @@ function sanitizeUser(user: {
 
 // ── POST /auth/register ──────────────────────────────────────
 
-authRouter.post("/register", async (req, res) => {
-  const parsed = registerSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res
-      .status(400)
-      .json({ error: parsed.error.errors[0]?.message ?? "Validation error" });
-    return;
-  }
+authRouter.post(
+  "/register",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = registerSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res
+          .status(400)
+          .json({
+            error: parsed.error.errors[0]?.message ?? "Validation error",
+          });
+        return;
+      }
 
-  const { username, email, password } = parsed.data;
+      const { username, email, password } = parsed.data;
 
-  // Check uniqueness
-  const existing = await prisma.user.findFirst({
-    where: { OR: [{ username }, { email }] },
-    select: { username: true, email: true },
-  });
+      // Check uniqueness (optimistic — DB constraint is the real guard — see W-002)
+      const existing = await prisma.user.findFirst({
+        where: { OR: [{ username }, { email }] },
+        select: { username: true, email: true },
+      });
 
-  if (existing) {
-    const field = existing.username === username ? "Username" : "Email";
-    res.status(409).json({ error: `${field} is already taken` });
-    return;
-  }
+      if (existing) {
+        const field = existing.username === username ? "Username" : "Email";
+        res.status(409).json({ error: `${field} is already taken` });
+        return;
+      }
 
-  const passwordHash = await bcrypt.hash(password, 12);
+      const passwordHash = await bcrypt.hash(password, 12);
 
-  const user = await prisma.user.create({
-    data: { username, email, passwordHash, runes: 50 },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      runes: true,
-      createdAt: true,
-    },
-  });
+      const user = await prisma.user.create({
+        data: { username, email, passwordHash, runes: 50 },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          runes: true,
+          createdAt: true,
+        },
+      });
 
-  const token = signToken(user.id, user.username);
+      const token = signToken(user.id, user.username);
 
-  res.status(201).json({ token, user: sanitizeUser(user) });
-});
+      res.status(201).json({ token, user: sanitizeUser(user) });
+    } catch (err) {
+      // W-002: Race condition — two concurrent requests can both pass the findFirst
+      // check; the second create hits the unique constraint. Return 409 instead of hanging.
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002"
+      ) {
+        res.status(409).json({ error: "Username or email is already taken" });
+        return;
+      }
+      next(err);
+    }
+  },
+);
 
 // ── POST /auth/login ─────────────────────────────────────────
 
-authRouter.post("/login", async (req, res) => {
-  const parsed = loginSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res
-      .status(400)
-      .json({ error: parsed.error.errors[0]?.message ?? "Validation error" });
-    return;
-  }
+authRouter.post(
+  "/login",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = loginSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res
+          .status(400)
+          .json({
+            error: parsed.error.errors[0]?.message ?? "Validation error",
+          });
+        return;
+      }
 
-  const { email, password } = parsed.data;
+      const { email, password } = parsed.data;
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      runes: true,
-      createdAt: true,
-      passwordHash: true,
-    },
-  });
+      const user = await prisma.user.findUnique({
+        where: { email },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          runes: true,
+          createdAt: true,
+          passwordHash: true,
+        },
+      });
 
-  if (!user) {
-    res.status(401).json({ error: "Invalid credentials" });
-    return;
-  }
+      if (!user) {
+        res.status(401).json({ error: "Invalid credentials" });
+        return;
+      }
 
-  const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-  if (!passwordMatch) {
-    res.status(401).json({ error: "Invalid credentials" });
-    return;
-  }
+      const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+      if (!passwordMatch) {
+        res.status(401).json({ error: "Invalid credentials" });
+        return;
+      }
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { lastLogin: new Date() },
-  });
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { lastLogin: new Date() },
+      });
 
-  const token = signToken(user.id, user.username);
+      const token = signToken(user.id, user.username);
 
-  const { passwordHash: _ph, ...safeUser } = user;
-  res.json({ token, user: sanitizeUser(safeUser) });
-});
+      const { passwordHash: _ph, ...safeUser } = user;
+      res.json({ token, user: sanitizeUser(safeUser) });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 // ── GET /auth/me ─────────────────────────────────────────────
 
-authRouter.get("/me", authMiddleware, async (req, res) => {
-  const authReq = req as AuthRequest;
+authRouter.get(
+  "/me",
+  authMiddleware,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const authReq = req as AuthRequest;
 
-  const user = await prisma.user.findUnique({
-    where: { id: authReq.user.userId },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      runes: true,
-      createdAt: true,
-    },
-  });
+      const user = await prisma.user.findUnique({
+        where: { id: authReq.user.userId },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          runes: true,
+          createdAt: true,
+        },
+      });
 
-  if (!user) {
-    res.status(404).json({ error: "User not found" });
-    return;
-  }
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
 
-  res.json({ user });
-});
+      res.json({ user });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
