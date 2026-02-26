@@ -2,6 +2,12 @@
   "ignorePatterns": [
     {
       "pattern": "^https://afernandezro7.github.io/ai-game-studio/"
+    },
+    {
+      "pattern": "^https://midjourney.com"
+    },
+    {
+      "pattern": "^https://leonardo.ai"
     }
   ]
 }

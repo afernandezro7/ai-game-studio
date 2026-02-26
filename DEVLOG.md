@@ -731,4 +731,121 @@ El pipeline completo de 9 agentes de Midgard Online ha sido ejecutado exitosamen
 
 4. **Siguiente Paso:** Mergear PR #15 a `develop`. Siguiente tarea: MO-02 — Auth (registro + login + JWT).
 
+## [MO-02] Auth — Registro + Login JWT · 2026-02-26
+
+**Issue:** #8 | **Branch:** `feature/MO-02-auth` | **Agent:** @developer
+
+### Archivos implementados
+
+**Backend (`games/midgard-online/backend/`)**
+
+- `src/routes/auth.ts` — POST /auth/register, POST /auth/login, GET /auth/me (con Zod validation, bcryptjs salt 12, JWT sign)
+- `src/middleware/auth.ts` — `authMiddleware` completo: extrae Bearer token, verifica JWT, adjunta payload como `AuthRequest`; interfaces `JwtPayload` + `AuthRequest`
+
+**Frontend (`games/midgard-online/sandbox-web/`)**
+
+- `src/pages/Auth.tsx` — Página Login/Register con tabs, validación client-side, manejo de errores 401/409, redirect post-auth con react-router
+- `src/pages/Auth.css` — Estilos Nordic con todas las CSS vars (--bg-primary, --accent-gold, --text-primary, etc.), responsive (card centrada en desktop, full-width en mobile)
+- `src/App.tsx` — Route guards: si no autenticado → /auth; si autenticado en /auth → /
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+- `npx tsc --noEmit` frontend → 0 errores ✅
+- Zod valida: username 3-20 alphanum, email válido, password ≥8 chars
+- bcryptjs salt rounds: 12
+- JWT payload: `{ userId, username }`, expiry desde `env.JWT_EXPIRES_IN` ("7d")
+- `passwordHash` nunca expuesto en respuestas
+- `runes: 50` por defecto en el User model (schema sin modificar)
+
+### Criterios de aceptación
+
+- ✅ Registro con email + username + password
+- ✅ Runes: 50 automáticos al registrar
+- ✅ Login retorna JWT (expira en 7d)
+- ✅ Rutas protegidas retornan 401 sin token
+- ✅ Login/Register responsive (mobile + desktop)
+- ✅ tsc clean en backend y frontend
+
+## QA Review — PR #17 (MO-02 Auth) · 2025-07-24
+
+**PR:** #17 | **Issue:** #8 | **Agent:** @qa
+
+### Decisión: ✅ APPROVED
+
+PR #17 revisado contra los 5 criterios de aceptación del issue #8 y las especificaciones de `tech-stack.md`.
+
+### Verificaciones
+
+1. **Criterios de aceptación:** 5/5 PASS — registro, runes 50, JWT 7d, 401 sin token, responsive
+2. **Contrato API vs tech-stack.md:** 3/3 MATCH — register, login, /me
+3. **Seguridad:** PASS — bcrypt 12 rounds, JWT_SECRET min 32 chars, passwordHash nunca expuesto, "Invalid credentials" genérico
+4. **Código:** PASS — tsc clean, CSS vars mapeadas, authStore compatible, Axios interceptor funcional
+
+### Advertencias (no bloqueantes)
+
+- **W-001:** Async handlers sin try-catch (Express 4 no captura promise rejections) → resolver en MO-03+
+- **W-002:** Race condition TOCTOU en register (`findFirst` → `create`) → se resuelve con W-001
+
+### Entregables
+
+1. **Review en PR #17:** COMMENT con APPROVE (no se puede hacer APPROVE en PR propia)
+2. **Report:** `games/midgard-online/docs/qa-review-pr17-mo02-auth.md`
+
+### Siguiente Paso
+
+Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
+
+---
+
+## [MO-02] QA Fixes — W-001 + W-002 · 2026-02-26
+
+**PR:** #17 | **Branch:** `feature/MO-02-auth` | **Agent:** @developer
+
+Resueltas las 2 advertencias no bloqueantes del QA review de PR #17.
+
+### W-001 — Async handlers sin try-catch + falta global error handler
+
+- **`backend/src/routes/auth.ts`** — Los 3 handlers (`POST /register`, `POST /login`, `GET /me`) envueltos en `try/catch`. El `catch` llama a `next(err)` para propagar al error handler global.
+- **`backend/src/index.ts`** — Añadido global error handler Express (4 parámetros) antes del `listen`. Captura cualquier error no manejado, responde JSON `{ error: "Internal server error" }` con status 500. En desarrollo incluye `details: err.message`.
+
+### W-002 — Race condition P2002 en register
+
+- **`backend/src/routes/auth.ts`** — El `catch` de `POST /register` detecta `err.code === 'P2002'` (Prisma unique constraint violation) y responde 409 `{ error: "Username or email already taken" }` en lugar de dejar que el error burbujee como 500.
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+
+---
+
+## QA Re-Review — PR #17 W-001 + W-002 · 2026-02-26
+
+**PR:** #17 | **Commit:** `e6abaf5c` | **Agent:** @qa
+
+### Decisión: ✅ APPROVED — Advertencias resueltas
+
+Re-verificación de las 2 advertencias del QA review original.
+
+### W-001: Async handlers sin try-catch ✅ RESUELTO
+
+- Los 3 handlers (`register`, `login`, `/me`) ahora tienen **try-catch** con `next(err)` en el catch
+- Global error handler añadido en `index.ts` (4 parámetros): loguea `err.message` + `err.stack`, responde `500 { error: "Internal server error" }`
+- Sin leak de detalles internos al cliente
+
+### W-002: Race condition TOCTOU en register ✅ RESUELTO
+
+- Catch detecta `Prisma.PrismaClientKnownRequestError` con code `P2002` → responde **409** con mensaje genérico
+- Import de `{ Prisma }` desde `@prisma/client` correcto
+- Comentario documenta la razón del catch
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+- `npx tsc --noEmit` frontend → 0 errores ✅
+
+### Siguiente Paso
+
+Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
+
 _Fin del registro actual. Añade nuevas entradas debajo._

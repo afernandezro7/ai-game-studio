@@ -196,7 +196,7 @@ Los scripts de UI usan TextMeshPro (viene incluido en Unity 6, pero hay que impo
 
 ## Paso 6: Generar las imágenes con IA
 
-- [ ] Abre [docs/art/building-prompts.md](building-prompts.md) (o el archivo en este repo)
+- [ ] Abre [docs/art/building-prompts.md](art/building-prompts.md) (o el archivo en este repo)
 - [ ] Ve a tu herramienta de IA favorita:
   - [Midjourney](https://midjourney.com) (la mejor calidad para game assets)
   - [ChatGPT/DALL-E](https://chatgpt.com) (más fácil, incluido en GPT Plus)
