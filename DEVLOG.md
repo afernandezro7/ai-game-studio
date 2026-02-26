@@ -817,4 +817,35 @@ Resueltas las 2 advertencias no bloqueantes del QA review de PR #17.
 
 - `npx tsc --noEmit` backend → 0 errores ✅
 
+---
+
+## QA Re-Review — PR #17 W-001 + W-002 · 2026-02-26
+
+**PR:** #17 | **Commit:** `e6abaf5c` | **Agent:** @qa
+
+### Decisión: ✅ APPROVED — Advertencias resueltas
+
+Re-verificación de las 2 advertencias del QA review original.
+
+### W-001: Async handlers sin try-catch ✅ RESUELTO
+
+- Los 3 handlers (`register`, `login`, `/me`) ahora tienen **try-catch** con `next(err)` en el catch
+- Global error handler añadido en `index.ts` (4 parámetros): loguea `err.message` + `err.stack`, responde `500 { error: "Internal server error" }`
+- Sin leak de detalles internos al cliente
+
+### W-002: Race condition TOCTOU en register ✅ RESUELTO
+
+- Catch detecta `Prisma.PrismaClientKnownRequestError` con code `P2002` → responde **409** con mensaje genérico
+- Import de `{ Prisma }` desde `@prisma/client` correcto
+- Comentario documenta la razón del catch
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+- `npx tsc --noEmit` frontend → 0 errores ✅
+
+### Siguiente Paso
+
+Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
+
 _Fin del registro actual. Añade nuevas entradas debajo._
