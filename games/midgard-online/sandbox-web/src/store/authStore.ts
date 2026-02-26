@@ -11,6 +11,7 @@ interface User {
 interface AuthState {
   token: string | null;
   user: User | null;
+  villageId: string | null;
   isAuthenticated: boolean;
 
   login: (email: string, password: string) => Promise<void>;
@@ -26,12 +27,21 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   token: localStorage.getItem("midgard_token"),
   user: null,
+  villageId: localStorage.getItem("midgard_village_id"),
   isAuthenticated: !!localStorage.getItem("midgard_token"),
 
   login: async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
     localStorage.setItem("midgard_token", data.token);
-    set({ token: data.token, user: data.user, isAuthenticated: true });
+    if (data.villageId) {
+      localStorage.setItem("midgard_village_id", data.villageId);
+    }
+    set({
+      token: data.token,
+      user: data.user,
+      villageId: data.villageId ?? null,
+      isAuthenticated: true,
+    });
   },
 
   register: async (username, email, password) => {
@@ -41,12 +51,21 @@ export const useAuthStore = create<AuthState>((set) => ({
       password,
     });
     localStorage.setItem("midgard_token", data.token);
-    set({ token: data.token, user: data.user, isAuthenticated: true });
+    if (data.villageId) {
+      localStorage.setItem("midgard_village_id", data.villageId);
+    }
+    set({
+      token: data.token,
+      user: data.user,
+      villageId: data.villageId ?? null,
+      isAuthenticated: true,
+    });
   },
 
   logout: () => {
     localStorage.removeItem("midgard_token");
-    set({ token: null, user: null, isAuthenticated: false });
+    localStorage.removeItem("midgard_village_id");
+    set({ token: null, user: null, villageId: null, isAuthenticated: false });
   },
 
   setAuth: (token, user) => {

@@ -849,3 +849,42 @@ Re-verificación de las 2 advertencias del QA review original.
 Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
 
 _Fin del registro actual. Añade nuevas entradas debajo._
+
+---
+
+## MO-03 — Villages: Creación Automática + CRUD + Recursos Iniciales · 2026-02-26
+
+**Branch:** `feature/MO-03-villages` | **Issue:** #9 | **Agent:** @developer
+
+### Objetivo
+
+Implementar el sistema de Aldeas para Midgard Online: creación automática al registrarse, estado completo, lazy tick stub de recursos, y renombre de aldea.
+
+### Archivos Creados / Modificados
+
+**Backend:**
+- `backend/src/services/villageService.ts` *(nuevo)* — Lógica de negocio: coordenadas automáticas zona mid (dist 80-160), creación atómica en `prisma.$transaction`, lazy tick stub, `getVillageState`, `getVillageResources`
+- `backend/src/routes/villages.ts` *(reemplazado)* — `GET /:id`, `GET /:id/resources`, `PATCH /:id/name`
+- `backend/src/routes/auth.ts` *(modificado)* — Register con transacción; login y `/me` devuelven `villageId`
+
+**Frontend:**
+- `sandbox-web/src/store/authStore.ts` — Añadido `villageId` con persistencia localStorage
+- `sandbox-web/src/store/gameStore.ts` — Añadidos `currentVillage`, `fetchVillage`, `refreshResources`
+- `sandbox-web/src/pages/Village.tsx` — Página React Query v5 con ResourceBar, RenameModal, banner bienvenida
+- `sandbox-web/src/pages/Village.css` — Tema nórdico, responsive
+
+### Decisiones Técnicas
+
+- Lazy tick stub: MO-04 implementará producción real. Aquí solo se actualiza `lastUpdated`.
+- Coordenadas aleatorias en zona `mid` con reintentos por colisión (P2002).
+- Transacción atómica garantiza consistencia usuario+aldea en register.
+- `req.params['id'] as string` para satisfacer tipos Express.
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+- `npx tsc --noEmit` frontend → 0 errores ✅
+
+### Siguiente Paso
+
+PR `feature/MO-03-villages` → `develop`. Próxima tarea: MO-04 — Producción de Recursos (tick real).

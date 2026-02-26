@@ -11,6 +11,10 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "../config/database.js";
 import { env } from "../config/env.js";
 import { authMiddleware, type AuthRequest } from "../middleware/auth.js";
+import {
+  generateStartingCoordinates,
+  createVillageInTx,
+} from "../services/villageService.js";
 
 export const authRouter = Router();
 
@@ -63,11 +67,9 @@ authRouter.post(
     try {
       const parsed = registerSchema.safeParse(req.body);
       if (!parsed.success) {
-        res
-          .status(400)
-          .json({
-            error: parsed.error.errors[0]?.message ?? "Validation error",
-          });
+        res.status(400).json({
+          error: parsed.error.errors[0]?.message ?? "Validation error",
+        });
         return;
       }
 
@@ -87,20 +89,34 @@ authRouter.post(
 
       const passwordHash = await bcrypt.hash(password, 12);
 
-      const user = await prisma.user.create({
-        data: { username, email, passwordHash, runes: 50 },
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          runes: true,
-          createdAt: true,
-        },
+      // Generate village coords before the transaction (pre-check avoids most collisions)
+      const coords = await generateStartingCoordinates();
+
+      // Single transaction: create user + village + resources + map_cell (atomicity)
+      const { user, villageId } = await prisma.$transaction(async (tx) => {
+        const newUser = await tx.user.create({
+          data: { username, email, passwordHash, runes: 50 },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            runes: true,
+            createdAt: true,
+          },
+        });
+
+        const vid = await createVillageInTx(
+          tx,
+          newUser.id,
+          newUser.username,
+          coords,
+        );
+        return { user: newUser, villageId: vid };
       });
 
       const token = signToken(user.id, user.username);
 
-      res.status(201).json({ token, user: sanitizeUser(user) });
+      res.status(201).json({ token, user: sanitizeUser(user), villageId });
     } catch (err) {
       // W-002: Race condition — two concurrent requests can both pass the findFirst
       // check; the second create hits the unique constraint. Return 409 instead of hanging.
@@ -124,11 +140,9 @@ authRouter.post(
     try {
       const parsed = loginSchema.safeParse(req.body);
       if (!parsed.success) {
-        res
-          .status(400)
-          .json({
-            error: parsed.error.errors[0]?.message ?? "Validation error",
-          });
+        res.status(400).json({
+          error: parsed.error.errors[0]?.message ?? "Validation error",
+        });
         return;
       }
 
@@ -162,10 +176,20 @@ authRouter.post(
         data: { lastLogin: new Date() },
       });
 
+      // Retrieve the user's village id (one village per user in Phase 1)
+      const village = await prisma.village.findFirst({
+        where: { ownerId: user.id },
+        select: { id: true },
+      });
+
       const token = signToken(user.id, user.username);
 
       const { passwordHash: _ph, ...safeUser } = user;
-      res.json({ token, user: sanitizeUser(safeUser) });
+      res.json({
+        token,
+        user: sanitizeUser(safeUser),
+        villageId: village?.id ?? null,
+      });
     } catch (err) {
       next(err);
     }
@@ -197,7 +221,12 @@ authRouter.get(
         return;
       }
 
-      res.json({ user });
+      const village = await prisma.village.findFirst({
+        where: { ownerId: user.id },
+        select: { id: true },
+      });
+
+      res.json({ user, villageId: village?.id ?? null });
     } catch (err) {
       next(err);
     }
