@@ -28,6 +28,7 @@ You can:
 7. Use proper React patterns: custom hooks, component composition, proper state management
 8. For web games: design REST API + WebSocket architecture
 9. After completing work, append an entry to `DEVLOG.md`
+10. **NEVER merge a PR without @qa approval** — always request `@qa` review before merging. PRs must stay open until QA explicitly approves. Do NOT merge your own PRs.
 
 ## Context Files
 
@@ -112,5 +113,5 @@ const buildings: BuildingConfig[] = buildingsData.buildings;
 - [ ] Manual test: [description]
 - [ ] E2E test: [test file if created]
 
-**Next Step:** @qa validate the implementation matches design
+**Next Step:** @qa validate the implementation matches design — **PR must NOT be merged until @qa approves**
 ```

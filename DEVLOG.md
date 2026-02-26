@@ -863,11 +863,13 @@ Implementar el sistema de Aldeas para Midgard Online: creación automática al r
 ### Archivos Creados / Modificados
 
 **Backend:**
-- `backend/src/services/villageService.ts` *(nuevo)* — Lógica de negocio: coordenadas automáticas zona mid (dist 80-160), creación atómica en `prisma.$transaction`, lazy tick stub, `getVillageState`, `getVillageResources`
-- `backend/src/routes/villages.ts` *(reemplazado)* — `GET /:id`, `GET /:id/resources`, `PATCH /:id/name`
-- `backend/src/routes/auth.ts` *(modificado)* — Register con transacción; login y `/me` devuelven `villageId`
+
+- `backend/src/services/villageService.ts` _(nuevo)_ — Lógica de negocio: coordenadas automáticas zona mid (dist 80-160), creación atómica en `prisma.$transaction`, lazy tick stub, `getVillageState`, `getVillageResources`
+- `backend/src/routes/villages.ts` _(reemplazado)_ — `GET /:id`, `GET /:id/resources`, `PATCH /:id/name`
+- `backend/src/routes/auth.ts` _(modificado)_ — Register con transacción; login y `/me` devuelven `villageId`
 
 **Frontend:**
+
 - `sandbox-web/src/store/authStore.ts` — Añadido `villageId` con persistencia localStorage
 - `sandbox-web/src/store/gameStore.ts` — Añadidos `currentVillage`, `fetchVillage`, `refreshResources`
 - `sandbox-web/src/pages/Village.tsx` — Página React Query v5 con ResourceBar, RenameModal, banner bienvenida
@@ -887,4 +889,41 @@ Implementar el sistema de Aldeas para Midgard Online: creación automática al r
 
 ### Siguiente Paso
 
-PR `feature/MO-03-villages` → `develop`. Próxima tarea: MO-04 — Producción de Recursos (tick real).
+## PR `feature/MO-03-villages` → `develop`. Próxima tarea: MO-04 — Producción de Recursos (tick real).
+
+## QA Post-Merge Review — PR #18 (MO-03 Villages) · 2026-02-26
+
+**PR:** #18 | **Issue:** #9 | **Agent:** @qa  
+**Nota:** PR mergeado sin review previo — revisión post-merge.
+
+### Decisión: ✅ APPROVED
+
+### Verificaciones
+
+1. **Criterios de aceptación:** 4/4 PASS — aldea con 750/750/750/750, GET completo, nombre personalizable, coords zona Media
+2. **API vs tech-stack.md:** 3/3 MATCH + 1 endpoint extra (PATCH rename)
+3. **DB Schema:** 3/3 MATCH — villages, resources, map_cells
+4. **Seguridad:** PASS — ownership checks en 3 endpoints, transacción atómica, auth middleware
+5. **Economy:** PASS — recursos iniciales = config, runes separadas en users
+6. **tsc --noEmit:** PASS — 0 errores backend y frontend
+
+### Advertencias (no bloqueantes)
+
+- **W-003:** Fire-and-forget DB update en `getVillageState` (lastUpdated). → Resolver en MO-04 con `await`.
+- **W-004:** `PATCH /villages/:id/name` no documentado en tech-stack.md → Añadir.
+- **W-005:** CSS fallbacks divergen de index.css variables → Alinear.
+
+### Entregables
+
+1. **Review en PR #18:** Comment post-merge con aprobación
+2. **DEVLOG:** Esta entrada
+
+### ⚠️ Recordatorio de Proceso
+
+Los PRs deben pasar por @qa ANTES de merge. Para MO-04+ mantener: PR → QA review → merge.
+
+### Siguiente Paso
+
+MO-04 — Producción de Recursos. Resolver W-003 al implementar.
+
+_Fin del registro actual. Añade nuevas entradas debajo._

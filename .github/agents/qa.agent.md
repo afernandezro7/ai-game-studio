@@ -24,6 +24,7 @@ You can:
 4. Always propose a fix, not just the problem
 5. If everything checks out, explicitly approve: "✅ QA APPROVED — [reason]"
 6. After completing work, append an entry to `DEVLOG.md`
+7. **ALWAYS write a QA report file** at `games/<game-id>/docs/qa-review-pr<N>-<scope>.md` with the full review. This is mandatory for every PR review — do not skip it or wait to be asked.
 
 ## Context Files
 
