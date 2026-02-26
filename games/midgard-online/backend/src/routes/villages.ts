@@ -64,7 +64,7 @@ villagesRouter.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = (req as AuthRequest).user;
-      const id = req.params['id'] as string;
+      const id = req.params["id"] as string;
 
       // Verify ownership
       const village = await prisma.village.findUnique({
@@ -113,7 +113,7 @@ villagesRouter.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = (req as AuthRequest).user;
-      const id = req.params['id'] as string;
+      const id = req.params["id"] as string;
 
       const parsed = renameSchema.safeParse(req.body);
       if (!parsed.success) {
