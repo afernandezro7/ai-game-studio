@@ -9,6 +9,7 @@ import helmet from "helmet";
 import { createServer } from "http";
 import { env } from "./config/env.js";
 import { setupSocketServer } from "./ws/socketServer.js";
+import { startProductionTick } from "./cron/productionTick.js";
 import { authRouter } from "./routes/auth.js";
 import { villagesRouter } from "./routes/villages.js";
 import { buildingsRouter } from "./routes/buildings.js";
@@ -50,6 +51,7 @@ setupSocketServer(httpServer);
 httpServer.listen(env.PORT, () => {
   console.log(`⚔️  Midgard Online API running on http://localhost:${env.PORT}`);
   console.log(`   Environment: ${env.NODE_ENV}`);
+  startProductionTick();
 });
 
 // ── Global error handler (W-001: catches unhandled async errors in Express 4) ──

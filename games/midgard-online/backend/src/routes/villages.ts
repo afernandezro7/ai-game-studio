@@ -89,7 +89,17 @@ villagesRouter.get(
         return;
       }
 
-      res.json({ resources });
+      res.json({
+        resources: {
+          wood: resources.wood,
+          clay: resources.clay,
+          iron: resources.iron,
+          wheat: resources.wheat,
+          lastUpdated: resources.lastUpdated,
+        },
+        rates: resources.rates,
+        caps: resources.caps,
+      });
     } catch (err) {
       next(err);
     }

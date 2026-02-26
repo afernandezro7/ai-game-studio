@@ -926,4 +926,46 @@ Los PRs deben pasar por @qa ANTES de merge. Para MO-04+ mantener: PR → QA revi
 
 MO-04 — Producción de Recursos. Resolver W-003 al implementar.
 
+---
+
+## [MO-04] Produccion en tiempo real - Tick loop + Acumulacion de recursos
+
+**Fecha:** 2025-07-23
+**Rama:** `feature/MO-04-production`
+**Issue:** #10
+
+### Resumen
+
+Implementacion completa del sistema de produccion de recursos en tiempo real para Midgard Online. El servidor acumula recursos cada PRODUCTION_TICK_INTERVAL_MS (60s por defecto) con setInterval. El cliente React interpola los valores cada 1s para visualizacion fluida sin sobrecargar la red.
+
+### Backend
+
+- `productionService.ts` - calculateProduction suma productionPerHour por nivel desde BuildingsConfig; getStorageCaps lee capacityPerResource (almacen) y capacityWheat (granero) con fallback a 800; applyTick aplica delta temporal, limita por almacenamiento, consume trigo por poblacion.
+- `productionTick.ts` - startProductionTick() con setInterval; consulta aldeas con propietario activo (ultimos 7 dias); actualiza DB y emite resources:tick al room village:{id}.
+- `villageService.ts` - integracion con productionService; getVillageResources retorna { resources, rates, caps }; correccion W-003 (fire-and-forget -> await en persist).
+- `routes/villages.ts` - GET /:id/resources retorna { resources, rates, caps }.
+- `socketServer.ts` - handlers join:village / leave:village para subscripcion a rooms WebSocket.
+- `index.ts` - startProductionTick() arranca con el servidor HTTP.
+
+### Frontend
+
+- `socketService.ts` - metodos joinVillage / leaveVillage.
+- `useResources.ts` - React Query (60s refetch) + setInterval 1s para interpolacion cliente; listener resources:tick via WebSocket que sincroniza base + invalida query.
+- `ResourceBar.tsx` - barra de recursos con 4 recursos, barra de progreso, badge FULL, tasa de produccion (+/-/h), tema nordico.
+- `ResourceBar.css` - estilos con CSS vars, responsive (mobile oculta tasa).
+
+### Correcciones incluidas
+
+- W-003: getVillageState y getVillageResources ahora await la persistencia DB.
+- Building IDs correctos del config: woodcutter, claypit, ironMine, farm.
+- Consumo de trigo usando populationPerHour del ResourcesConfig, no valor hardcodeado.
+
+### TypeScript
+
+tsc --noEmit en backend y frontend: 0 errores.
+
+### Siguiente Paso
+
+@qa revisar implementacion antes de merge a develop. PR no debe mergearse sin aprobacion de @qa.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
