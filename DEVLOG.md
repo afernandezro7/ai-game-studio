@@ -796,4 +796,25 @@ PR #17 revisado contra los 5 criterios de aceptación del issue #8 y las especif
 
 Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
 
+---
+
+## [MO-02] QA Fixes — W-001 + W-002 · 2026-02-26
+
+**PR:** #17 | **Branch:** `feature/MO-02-auth` | **Agent:** @developer
+
+Resueltas las 2 advertencias no bloqueantes del QA review de PR #17.
+
+### W-001 — Async handlers sin try-catch + falta global error handler
+
+- **`backend/src/routes/auth.ts`** — Los 3 handlers (`POST /register`, `POST /login`, `GET /me`) envueltos en `try/catch`. El `catch` llama a `next(err)` para propagar al error handler global.
+- **`backend/src/index.ts`** — Añadido global error handler Express (4 parámetros) antes del `listen`. Captura cualquier error no manejado, responde JSON `{ error: "Internal server error" }` con status 500. En desarrollo incluye `details: err.message`.
+
+### W-002 — Race condition P2002 en register
+
+- **`backend/src/routes/auth.ts`** — El `catch` de `POST /register` detecta `err.code === 'P2002'` (Prisma unique constraint violation) y responde 409 `{ error: "Username or email already taken" }` en lugar de dejar que el error burbujee como 500.
+
+### Verificación
+
+- `npx tsc --noEmit` backend → 0 errores ✅
+
 _Fin del registro actual. Añade nuevas entradas debajo._
