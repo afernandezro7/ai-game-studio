@@ -87,6 +87,8 @@ async function runProductionTick(): Promise<void> {
             clayPerHour: rates.clayPerHour,
             ironPerHour: rates.ironPerHour,
             wheatPerHour: rates.wheatPerHour,
+            wheatGrossPerHour: rates.wheatGrossPerHour,
+            wheatConsumptionPerHour: rates.wheatConsumptionPerHour,
           },
           caps,
         });
