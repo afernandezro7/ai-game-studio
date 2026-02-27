@@ -6,7 +6,10 @@
  */
 
 import { useState } from "react";
-import type { BuildingData, BuildingLevelStats } from "@/services/buildingService";
+import type {
+  BuildingData,
+  BuildingLevelStats,
+} from "@/services/buildingService";
 import "./BuildingPanel.css";
 
 // ── Props ─────────────────────────────────────────────────────
@@ -45,18 +48,27 @@ function effectiveTime(baseTimeSec: number, mainBuildingLevel: number): number {
   return Math.max(10, Math.round(baseTimeSec * (1 - reduction)));
 }
 
-function getStatLabel(stats: BuildingLevelStats): { label: string; value: string } {
+function getStatLabel(stats: BuildingLevelStats): {
+  label: string;
+  value: string;
+} {
   if (stats.productionPerHour !== undefined) {
     return { label: "Producción", value: `${fmt(stats.productionPerHour)}/h` };
   }
   if (stats.capacityPerResource !== undefined) {
-    return { label: "Capacidad", value: `${fmt(stats.capacityPerResource)} por recurso` };
+    return {
+      label: "Capacidad",
+      value: `${fmt(stats.capacityPerResource)} por recurso`,
+    };
   }
   if (stats.capacityWheat !== undefined) {
     return { label: "Cap. trigo", value: fmt(stats.capacityWheat) };
   }
   if (stats.buildTimeReduction !== undefined) {
-    return { label: "Reducción", value: `${Math.abs(stats.buildTimeReduction)}%` };
+    return {
+      label: "Reducción",
+      value: `${Math.abs(stats.buildTimeReduction)}%`,
+    };
   }
   return { label: "—", value: "—" };
 }
@@ -136,7 +148,9 @@ export function BuildingPanel({
           </div>
           <div className="building-panel__stat-arrow">→</div>
           <div className="building-panel__stat-col building-panel__stat-col--next">
-            <span className="building-panel__stat-label">Nivel {targetLevel}</span>
+            <span className="building-panel__stat-label">
+              Nivel {targetLevel}
+            </span>
             <span className="building-panel__stat-value building-panel__stat-value--next">
               {currentStat.label}
             </span>
@@ -151,10 +165,26 @@ export function BuildingPanel({
             Coste Lv.{targetLevel}
           </h3>
           <div className="building-panel__cost-grid">
-            <CostRow label="🪵 Madera" need={nextLevelCost.wood} have={resources.wood} />
-            <CostRow label="🧱 Arcilla" need={nextLevelCost.clay} have={resources.clay} />
-            <CostRow label="⚙️ Hierro" need={nextLevelCost.iron} have={resources.iron} />
-            <CostRow label="🌾 Trigo" need={nextLevelCost.wheat} have={resources.wheat} />
+            <CostRow
+              label="🪵 Madera"
+              need={nextLevelCost.wood}
+              have={resources.wood}
+            />
+            <CostRow
+              label="🧱 Arcilla"
+              need={nextLevelCost.clay}
+              have={resources.clay}
+            />
+            <CostRow
+              label="⚙️ Hierro"
+              need={nextLevelCost.iron}
+              have={resources.iron}
+            />
+            <CostRow
+              label="🌾 Trigo"
+              need={nextLevelCost.wheat}
+              have={resources.wheat}
+            />
           </div>
         </div>
       )}
@@ -162,7 +192,9 @@ export function BuildingPanel({
       {/* Build time */}
       {!atMaxLevel && !isUpgradingThis && effectiveBuildTime !== null && (
         <div className="building-panel__time-section">
-          <span className="building-panel__time-label">⏱ Tiempo de construcción:</span>
+          <span className="building-panel__time-label">
+            ⏱ Tiempo de construcción:
+          </span>
           <span className="building-panel__time-value">
             {fmtTime(effectiveBuildTime)}
           </span>
@@ -219,27 +251,36 @@ export function BuildingPanel({
               </tr>
             </thead>
             <tbody>
-              {(building as unknown as { allLevelStats?: BuildingLevelStats[] }).allLevelStats?.map(
-                (lvl) => {
-                  const stat = getStatLabel(lvl);
-                  return (
-                    <tr
-                      key={lvl.level}
-                      className={lvl.level === building.level ? "building-panel__levels-table__current" : ""}
-                    >
-                      <td>{lvl.level}</td>
-                      <td>{fmt(lvl.costs.wood)}</td>
-                      <td>{fmt(lvl.costs.clay)}</td>
-                      <td>{fmt(lvl.costs.iron)}</td>
-                      <td>{fmt(lvl.costs.wheat)}</td>
-                      <td>{fmtTime(effectiveTime(lvl.timeSec, mainBuildingLevel))}</td>
-                      <td>{stat.value}</td>
-                    </tr>
-                  );
-                },
-              ) ?? (
+              {(
+                building as unknown as { allLevelStats?: BuildingLevelStats[] }
+              ).allLevelStats?.map((lvl) => {
+                const stat = getStatLabel(lvl);
+                return (
+                  <tr
+                    key={lvl.level}
+                    className={
+                      lvl.level === building.level
+                        ? "building-panel__levels-table__current"
+                        : ""
+                    }
+                  >
+                    <td>{lvl.level}</td>
+                    <td>{fmt(lvl.costs.wood)}</td>
+                    <td>{fmt(lvl.costs.clay)}</td>
+                    <td>{fmt(lvl.costs.iron)}</td>
+                    <td>{fmt(lvl.costs.wheat)}</td>
+                    <td>
+                      {fmtTime(effectiveTime(lvl.timeSec, mainBuildingLevel))}
+                    </td>
+                    <td>{stat.value}</td>
+                  </tr>
+                );
+              }) ?? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: "center", color: "var(--text-muted)" }}>
+                  <td
+                    colSpan={7}
+                    style={{ textAlign: "center", color: "var(--text-muted)" }}
+                  >
                     Datos completos no disponibles
                   </td>
                 </tr>

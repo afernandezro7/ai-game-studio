@@ -142,7 +142,9 @@ export function BuildingCard({
     >
       {/* Header */}
       <div className="building-card__header">
-        <span className="building-card__emoji">{buildingEmoji(building.buildingType)}</span>
+        <span className="building-card__emoji">
+          {buildingEmoji(building.buildingType)}
+        </span>
         <div className="building-card__title">
           <span className="building-card__name">{building.name}</span>
           <span className="building-card__level">
@@ -229,7 +231,9 @@ function CostItem({
   have: number;
 }) {
   return (
-    <span className={`building-card__cost-item ${have >= amount ? "building-card__cost-item--ok" : "building-card__cost-item--low"}`}>
+    <span
+      className={`building-card__cost-item ${have >= amount ? "building-card__cost-item--ok" : "building-card__cost-item--low"}`}
+    >
       {label} {formatNumber(amount)}
     </span>
   );
