@@ -968,4 +968,71 @@ tsc --noEmit en backend y frontend: 0 errores.
 
 @qa revisar implementacion antes de merge a develop. PR no debe mergearse sin aprobacion de @qa.
 
+---
+
+## QA Review — PR #19 (MO-04 Production)
+
+**Fecha:** 2026-02-26
+**Reviewer:** @qa
+**PR:** #19
+
+### Decisión: ❌ BLOCKED (1 bug, fix trivial)
+
+### Bug encontrado
+
+- **B-001**: WS tick emite rates parciales (4 de 6 campos). El frontend usa `wheatGrossPerHour` y `wheatConsumptionPerHour` para interpolar trigo, pero el WS solo envía `wheatPerHour` (net). Resultado: wheat muestra "NaN" durante ~200ms tras cada tick WS. Fix: añadir 2 campos al emit en `productionTick.ts`.
+
+### Advertencias (no bloqueantes)
+
+- **W-006**: WS room join sin ownership check — cualquier cliente puede escuchar ticks de otras aldeas.
+- **W-007**: Flag `productionStopsOnFullStorage` no se lee del config (hardcoded true).
+- **W-008**: Tick secuencial O(n) queries — OK pre-producción.
+- **W-009**: `applyTick` clampa overcap al cap (relevante cuando exista saqueo).
+
+### Validación
+
+- W-003 (fire-and-forget) RESUELTO ✅
+- Production formula matches config ✅
+- tsc --noEmit 0 errores ✅
+- 5-Point QA Checklist: 5/5 PASS
+
+### Report
+
+`games/midgard-online/docs/qa-review-pr19-mo04-production.md`
+
+### Siguiente Paso
+
+@developer fix B-001 → @qa re-review → merge.
+
+---
+
+## [MO-04] fix(B-001): emit wheatGrossPerHour + wheatConsumptionPerHour en WS tick
+
+**Fecha:** 2026-02-27
+**Rama:** `feature/MO-04-production`
+**Commit:** `e73b08c`
+**Issue:** #10 — Respuesta a QA review PR #19
+
+### Problema
+
+El emit de `resources:tick` en `productionTick.ts` omitía dos campos de rates (`wheatGrossPerHour`, `wheatConsumptionPerHour`). El frontend `useResources.ts` los usa en la interpolación cliente para calcular trigo neto (`gross - consumption`). Al recibirlos como `undefined`, la operación producía `NaN` durante ~200ms cada 60s hasta el siguiente refetch de React Query.
+
+### Fix
+
+`backend/src/cron/productionTick.ts` — añadidos los 2 campos al objeto `rates` del emit:
+
+```ts
+wheatGrossPerHour:       rates.wheatGrossPerHour,
+wheatConsumptionPerHour: rates.wheatConsumptionPerHour,
+```
+
+### Verificación
+
+- `tsc --noEmit` backend: 0 errores
+- Campos ya existían en `ProductionRates` (productionService.ts) — sin cambios de tipos necesarios
+
+### Siguiente Paso
+
+@qa re-review PR #19 → merge a develop.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
