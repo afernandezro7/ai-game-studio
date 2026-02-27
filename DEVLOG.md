@@ -1055,4 +1055,48 @@ Warnings pendientes (no bloquean): W-006 (WS ownership), W-007 (config flag), W-
 
 **Listo para merge a develop.**
 
+---
+
+## [MO-05] Edificios: Upgrade + Cola de construcción + Gran Salón
+
+**Fecha:** 2026-02-27
+**Rama:** `feature/MO-05-buildings`
+**Issue:** #11
+
+### Resumen
+
+Implementación completa del sistema de gestión de edificios para Midgard Online. Incluye validación de prerrequisitos, cola de construcción (1 concurrente en v0.1.0), reducción de tiempos por Gran Salón (−3%/nivel), reembolso 100% en cancelación, y completado automático via cron cada 5s.
+
+### Backend
+
+- **`buildingService.ts`** — `getUpgradeCost`, `getBuildTime` (con reducción Gran Salón), `getVillageBuildings` (enriquecido con stats del config), `startUpgrade` (valida prerrequisitos + recursos + cola, deduce recursos, establece timer), `cancelUpgrade` (reembolso 100%), `completeUpgrade` (incrementa nivel, actualiza población delta, limpia timer).
+- **`routes/buildings.ts`** — `POST /buildings/upgrade` (Zod validation, ownership check), `DELETE /buildings/upgrade/:id` (cancel).
+- **`routes/villages.ts`** — nuevo endpoint `GET /villages/:id/buildings` (devuelve buildings enriquecidos con stats de config).
+- **`cron/buildingChecker.ts`** — `startBuildingChecker()` con `setInterval` cada `MISSION_CHECK_INTERVAL_MS` (5s); consulta buildings con `upgradeFinishAt ≤ now`; llama `completeUpgrade`; emite `building:complete` al room `village:${id}`.
+- **`index.ts`** — `startBuildingChecker()` arranca con el servidor.
+
+### Config mapping
+
+- `mainBuilding` = Gran Salón — `unlocks` define prerrequisitos por nivel
+- Reducción de tiempo: `baseTime × (1 - mainBuildingLevel × 0.03)`, tope 30% (Lv.10)
+- Reembolso: 100% (no especificado en buildings.md → default 100%)
+- IDs usados del config: `mainBuilding`, `warehouse`, `granary`, `woodcutter`, `claypit`, `ironMine`, `farm`
+
+### Frontend
+
+- **`services/buildingService.ts`** (nuevo) — `getBuildings`, `upgradeBuilding`, `cancelBuildingUpgrade`.
+- **`hooks/useBuildings.ts`** — React Query fetch + mutations upgrade/cancel + listener `building:complete` WS + `canUpgrade(type)` + `currentUpgrade`.
+- **`components/buildings/BuildingCard.tsx`** — tarjeta compacta con countdown timer, barra de progreso, desglose de costes (verde/rojo), botón upgrade/cancel, badge MAX.
+- **`components/buildings/BuildingCard.css`** — tema nórdico, animación pulse para construcción activa.
+- **`components/buildings/BuildingPanel.tsx`** — panel detallado: stats actual vs siguiente nivel, tabla de costes, tiempo con reducción Gran Salón, tabla de todos los niveles (acordeón).
+- **`components/buildings/BuildingPanel.css`** — responsive, bottom sheet en mobile.
+
+### TypeScript
+
+`tsc --noEmit` backend y frontend: **0 errores**.
+
+### Siguiente Paso
+
+@qa revisar implementación antes de merge a `develop`. **PR no debe mergearse sin aprobación de @qa.**
+
 _Fin del registro actual. Añade nuevas entradas debajo._
