@@ -3,13 +3,13 @@
 **PR:** [#19](https://github.com/afernandezro7/ai-game-studio/pull/19) — [MO-04] Producción en tiempo real: Tick loop + Acumulación de recursos
 **Issue:** [#10](https://github.com/afernandezro7/ai-game-studio/issues/10)
 **Branch:** `feature/MO-04-production` → `develop`
-**Commit:** `8d0b6be280c12c1d7ee647ef4e25d05232203e56`
+**Commit:** `8d0b6be280c12c1d7ee647ef4e25d05232203e56` → `f18a12c` (B-001 fix)
 **Reviewer:** @qa
-**Fecha:** 2026-02-26
+**Fecha:** 2026-02-26 (initial) / 2026-02-27 (re-review)
 
 ---
 
-## Decisión: ❌ BLOCKED (1 bug bloqueante, fix trivial)
+## Decisión: ✅ APPROVED (tras fix B-001 en commit e73b08c)
 
 ---
 
@@ -228,12 +228,19 @@ rates: {
 - **tsc clean** en ambos proyectos
 - Lógica de producción correcta vs config + economy.md
 
-**❌ BLOCKED — Fix B-001, luego ✅ APPROVE.**
+**✅ APPROVED** (tras fix B-001 en commit `e73b08c`).
 
 ---
 
+## Re-Review (2026-02-27)
+
+Commit `e73b08c` añadió `wheatGrossPerHour` y `wheatConsumptionPerHour` al emit. Verificado:
+
+- Los 6 campos de `ProductionRates` se emiten completos
+- `tsc --noEmit` backend: 0 errores
+- Cambio mínimo (2 líneas), sin regresiones
+- Criterios de aceptación: 5/5 PASS
+
 ## Siguiente Paso
 
-1. @developer: Añadir `wheatGrossPerHour` y `wheatConsumptionPerHour` al emit del tick (2 líneas en `productionTick.ts`)
-2. @qa: Re-review tras fix
-3. Merge a develop
+Merge a develop. MO-05 — Construcción de Edificios.

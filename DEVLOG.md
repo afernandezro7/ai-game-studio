@@ -1035,4 +1035,24 @@ wheatConsumptionPerHour: rates.wheatConsumptionPerHour,
 
 @qa re-review PR #19 → merge a develop.
 
+---
+
+## QA Re-Review — PR #19 (MO-04 Production) — B-001 Fix
+
+**Fecha:** 2026-02-27
+**Reviewer:** @qa
+**PR:** #19 — commit `e73b08c`
+
+### Decisión: ✅ APPROVED
+
+B-001 resuelto: `wheatGrossPerHour` y `wheatConsumptionPerHour` añadidos al emit de `resources:tick` en `productionTick.ts` L90-91. Los 6 campos de `ProductionRates` ahora se emiten completos.
+
+- `tsc --noEmit` backend: 0 errores
+- 5/5 criterios de aceptación PASS
+- Report actualizado: `games/midgard-online/docs/qa-review-pr19-mo04-production.md`
+
+Warnings pendientes (no bloquean): W-006 (WS ownership), W-007 (config flag), W-008 (tick O(n)), W-009 (overcap).
+
+**Listo para merge a develop.**
+
 _Fin del registro actual. Añade nuevas entradas debajo._
