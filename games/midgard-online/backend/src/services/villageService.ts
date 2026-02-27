@@ -1,6 +1,11 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "../config/database.js";
 import { gameData } from "../config/gameData.js";
+import {
+  calculateProduction,
+  getStorageCaps,
+  applyTick,
+} from "./productionService.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -15,6 +20,11 @@ interface ResourceSnapshot {
   iron: number;
   wheat: number;
   lastUpdated: Date;
+}
+
+export interface ResourcesWithProduction extends ResourceSnapshot {
+  rates: import("./productionService.js").ProductionRates;
+  caps: import("./productionService.js").StorageCaps;
 }
 
 // ── Coordinate generation ────────────────────────────────────
@@ -123,19 +133,13 @@ export async function createVillageInTx(
 // ── Lazy resource tick ───────────────────────────────────────
 
 /**
- * Applies a lazy production tick to a resource snapshot.
- * MO-03: No buildings exist yet → production rate is 0.
- * MO-04 will replace this with real production calculation.
- *
- * Returns updated ResourceSnapshot (does NOT persist to DB — caller decides).
+ * Re-exported for backward compatibility — delegates to productionService.applyTick.
+ * @deprecated Use applyTick from productionService directly.
  */
 export function applyLazyTick(resources: ResourceSnapshot): ResourceSnapshot {
-  // Production is 0 until MO-04 implements building-based rates.
-  // We still update lastUpdated so future ticks have a correct baseline.
-  return {
-    ...resources,
-    lastUpdated: new Date(),
-  };
+  // MO-04: real production logic is now in productionService.
+  // This stub is preserved so any external callers don't break.
+  return { ...resources, lastUpdated: new Date() };
 }
 
 // ── Village state query ──────────────────────────────────────
@@ -157,26 +161,31 @@ export async function getVillageState(villageId: string) {
 
   if (!village || !village.resources) return null;
 
-  const ticked = applyLazyTick({
+  const now = new Date();
+  const deltaSeconds =
+    (now.getTime() - village.resources.lastUpdated.getTime()) / 1000;
+
+  const buildings = village.buildings.map((b) => ({
+    buildingType: b.buildingType,
+    level: b.level,
+  }));
+
+  const rates = calculateProduction(buildings, village.population);
+  const caps = getStorageCaps(buildings);
+  const current = {
     wood: Number(village.resources.wood),
     clay: Number(village.resources.clay),
     iron: Number(village.resources.iron),
     wheat: Number(village.resources.wheat),
-    lastUpdated: village.resources.lastUpdated,
-  });
+  };
 
-  // Persist updated lastUpdated (fire-and-forget, don't await).
-  // TODO(MO-04): change to `await` once production rates are active —
-  //   a silent failure here will inflate deltaT on next tick, producing
-  //   extra resources. Safe only while production = 0 (MO-03 stub).
-  prisma.resource
-    .update({
-      where: { villageId },
-      data: { lastUpdated: ticked.lastUpdated },
-    })
-    .catch(() => {
-      /* ignore — non-critical while production = 0 */
-    });
+  const updated = applyTick(current, rates, caps, Math.max(0, deltaSeconds));
+
+  // Persist tick result (W-003 fix: now awaited)
+  await prisma.resource.update({
+    where: { villageId },
+    data: { ...updated, lastUpdated: now },
+  });
 
   return {
     id: village.id,
@@ -187,11 +196,8 @@ export async function getVillageState(villageId: string) {
     createdAt: village.createdAt,
     ownerId: village.ownerId,
     resources: {
-      wood: ticked.wood,
-      clay: ticked.clay,
-      iron: ticked.iron,
-      wheat: ticked.wheat,
-      lastUpdated: ticked.lastUpdated,
+      ...updated,
+      lastUpdated: now,
     },
     buildings: village.buildings.map((b) => ({
       id: b.id,
@@ -200,25 +206,50 @@ export async function getVillageState(villageId: string) {
       level: b.level,
       upgradeFinishAt: b.upgradeFinishAt,
     })),
+    rates,
+    caps,
   };
 }
 
 /**
- * Returns only the resources with a lazy tick applied.
+ * Returns resources with real production tick applied, plus rates and caps.
+ * Used by GET /villages/:id/resources for frontend interpolation.
  */
 export async function getVillageResources(
   villageId: string,
-): Promise<ResourceSnapshot | null> {
-  const r = await prisma.resource.findUnique({ where: { villageId } });
-  if (!r) return null;
+): Promise<ResourcesWithProduction | null> {
+  // Fetch resource + buildings in one query so we can apply real production
+  const village = await prisma.village.findUnique({
+    where: { id: villageId },
+    select: {
+      population: true,
+      resources: true,
+      buildings: { select: { buildingType: true, level: true } },
+    },
+  });
 
-  const snapshot: ResourceSnapshot = {
-    wood: Number(r.wood),
-    clay: Number(r.clay),
-    iron: Number(r.iron),
-    wheat: Number(r.wheat),
-    lastUpdated: r.lastUpdated,
+  if (!village?.resources) return null;
+
+  const now = new Date();
+  const deltaSeconds =
+    (now.getTime() - village.resources.lastUpdated.getTime()) / 1000;
+
+  const rates = calculateProduction(village.buildings, village.population);
+  const caps = getStorageCaps(village.buildings);
+  const current = {
+    wood: Number(village.resources.wood),
+    clay: Number(village.resources.clay),
+    iron: Number(village.resources.iron),
+    wheat: Number(village.resources.wheat),
   };
 
-  return applyLazyTick(snapshot);
+  const updated = applyTick(current, rates, caps, Math.max(0, deltaSeconds));
+
+  // Persist tick (await — W-003 resolved)
+  await prisma.resource.update({
+    where: { villageId },
+    data: { ...updated, lastUpdated: now },
+  });
+
+  return { ...updated, lastUpdated: now, rates, caps };
 }

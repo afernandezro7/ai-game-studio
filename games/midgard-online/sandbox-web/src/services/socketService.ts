@@ -31,6 +31,14 @@ class SocketService {
     this.socket = null;
   }
 
+  joinVillage(villageId: string): void {
+    this.socket?.emit("join:village", villageId);
+  }
+
+  leaveVillage(villageId: string): void {
+    this.socket?.emit("leave:village", villageId);
+  }
+
   getSocket(): Socket | null {
     return this.socket;
   }

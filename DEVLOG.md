@@ -926,4 +926,133 @@ Los PRs deben pasar por @qa ANTES de merge. Para MO-04+ mantener: PR → QA revi
 
 MO-04 — Producción de Recursos. Resolver W-003 al implementar.
 
+---
+
+## [MO-04] Produccion en tiempo real - Tick loop + Acumulacion de recursos
+
+**Fecha:** 2025-07-23
+**Rama:** `feature/MO-04-production`
+**Issue:** #10
+
+### Resumen
+
+Implementacion completa del sistema de produccion de recursos en tiempo real para Midgard Online. El servidor acumula recursos cada PRODUCTION_TICK_INTERVAL_MS (60s por defecto) con setInterval. El cliente React interpola los valores cada 1s para visualizacion fluida sin sobrecargar la red.
+
+### Backend
+
+- `productionService.ts` - calculateProduction suma productionPerHour por nivel desde BuildingsConfig; getStorageCaps lee capacityPerResource (almacen) y capacityWheat (granero) con fallback a 800; applyTick aplica delta temporal, limita por almacenamiento, consume trigo por poblacion.
+- `productionTick.ts` - startProductionTick() con setInterval; consulta aldeas con propietario activo (ultimos 7 dias); actualiza DB y emite resources:tick al room village:{id}.
+- `villageService.ts` - integracion con productionService; getVillageResources retorna { resources, rates, caps }; correccion W-003 (fire-and-forget -> await en persist).
+- `routes/villages.ts` - GET /:id/resources retorna { resources, rates, caps }.
+- `socketServer.ts` - handlers join:village / leave:village para subscripcion a rooms WebSocket.
+- `index.ts` - startProductionTick() arranca con el servidor HTTP.
+
+### Frontend
+
+- `socketService.ts` - metodos joinVillage / leaveVillage.
+- `useResources.ts` - React Query (60s refetch) + setInterval 1s para interpolacion cliente; listener resources:tick via WebSocket que sincroniza base + invalida query.
+- `ResourceBar.tsx` - barra de recursos con 4 recursos, barra de progreso, badge FULL, tasa de produccion (+/-/h), tema nordico.
+- `ResourceBar.css` - estilos con CSS vars, responsive (mobile oculta tasa).
+
+### Correcciones incluidas
+
+- W-003: getVillageState y getVillageResources ahora await la persistencia DB.
+- Building IDs correctos del config: woodcutter, claypit, ironMine, farm.
+- Consumo de trigo usando populationPerHour del ResourcesConfig, no valor hardcodeado.
+
+### TypeScript
+
+tsc --noEmit en backend y frontend: 0 errores.
+
+### Siguiente Paso
+
+@qa revisar implementacion antes de merge a develop. PR no debe mergearse sin aprobacion de @qa.
+
+---
+
+## QA Review — PR #19 (MO-04 Production)
+
+**Fecha:** 2026-02-26
+**Reviewer:** @qa
+**PR:** #19
+
+### Decisión: ❌ BLOCKED (1 bug, fix trivial)
+
+### Bug encontrado
+
+- **B-001**: WS tick emite rates parciales (4 de 6 campos). El frontend usa `wheatGrossPerHour` y `wheatConsumptionPerHour` para interpolar trigo, pero el WS solo envía `wheatPerHour` (net). Resultado: wheat muestra "NaN" durante ~200ms tras cada tick WS. Fix: añadir 2 campos al emit en `productionTick.ts`.
+
+### Advertencias (no bloqueantes)
+
+- **W-006**: WS room join sin ownership check — cualquier cliente puede escuchar ticks de otras aldeas.
+- **W-007**: Flag `productionStopsOnFullStorage` no se lee del config (hardcoded true).
+- **W-008**: Tick secuencial O(n) queries — OK pre-producción.
+- **W-009**: `applyTick` clampa overcap al cap (relevante cuando exista saqueo).
+
+### Validación
+
+- W-003 (fire-and-forget) RESUELTO ✅
+- Production formula matches config ✅
+- tsc --noEmit 0 errores ✅
+- 5-Point QA Checklist: 5/5 PASS
+
+### Report
+
+`games/midgard-online/docs/qa-review-pr19-mo04-production.md`
+
+### Siguiente Paso
+
+@developer fix B-001 → @qa re-review → merge.
+
+---
+
+## [MO-04] fix(B-001): emit wheatGrossPerHour + wheatConsumptionPerHour en WS tick
+
+**Fecha:** 2026-02-27
+**Rama:** `feature/MO-04-production`
+**Commit:** `e73b08c`
+**Issue:** #10 — Respuesta a QA review PR #19
+
+### Problema
+
+El emit de `resources:tick` en `productionTick.ts` omitía dos campos de rates (`wheatGrossPerHour`, `wheatConsumptionPerHour`). El frontend `useResources.ts` los usa en la interpolación cliente para calcular trigo neto (`gross - consumption`). Al recibirlos como `undefined`, la operación producía `NaN` durante ~200ms cada 60s hasta el siguiente refetch de React Query.
+
+### Fix
+
+`backend/src/cron/productionTick.ts` — añadidos los 2 campos al objeto `rates` del emit:
+
+```ts
+wheatGrossPerHour:       rates.wheatGrossPerHour,
+wheatConsumptionPerHour: rates.wheatConsumptionPerHour,
+```
+
+### Verificación
+
+- `tsc --noEmit` backend: 0 errores
+- Campos ya existían en `ProductionRates` (productionService.ts) — sin cambios de tipos necesarios
+
+### Siguiente Paso
+
+@qa re-review PR #19 → merge a develop.
+
+---
+
+## QA Re-Review — PR #19 (MO-04 Production) — B-001 Fix
+
+**Fecha:** 2026-02-27
+**Reviewer:** @qa
+**PR:** #19 — commit `e73b08c`
+
+### Decisión: ✅ APPROVED
+
+B-001 resuelto: `wheatGrossPerHour` y `wheatConsumptionPerHour` añadidos al emit de `resources:tick` en `productionTick.ts` L90-91. Los 6 campos de `ProductionRates` ahora se emiten completos.
+
+- `tsc --noEmit` backend: 0 errores
+- 5/5 criterios de aceptación PASS
+- Report actualizado: `games/midgard-online/docs/qa-review-pr19-mo04-production.md`
+
+Warnings pendientes (no bloquean): W-006 (WS ownership), W-007 (config flag), W-008 (tick O(n)), W-009 (overcap).
+
+**Listo para merge a develop.**
+
 _Fin del registro actual. Añade nuevas entradas debajo._

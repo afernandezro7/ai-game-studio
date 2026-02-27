@@ -1,0 +1,131 @@
+/* ── ResourceBar — top bar showing all 4 resources ──────────── */
+
+.resource-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 4px);
+  padding: 0 var(--space-md, 16px);
+  height: var(--resource-bar-height, 48px);
+  background: var(--bg-secondary, #1a2a3a);
+  border-bottom: 1px solid var(--border-default, #3a5068);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+/* ── Item ── */
+
+.resource-bar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 4px);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-tertiary, #243447);
+  border: 1px solid var(--border-default, #3a5068);
+  min-width: 148px;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.resource-bar__item--full {
+  border-color: var(--warning, #daa520);
+  background: var(--warning-bg, #3d3315);
+}
+
+/* ── Emoji ── */
+
+.resource-bar__emoji {
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Info block ── */
+
+.resource-bar__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.resource-bar__numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.resource-bar__value {
+  font-weight: 700;
+  color: var(--text-primary, #e8e0d4);
+}
+
+.resource-bar__sep,
+.resource-bar__cap {
+  color: var(--text-muted, #857667);
+  font-size: 0.75rem;
+}
+
+.resource-bar__rate {
+  color: var(--success, #2e8b57);
+  font-size: 0.7rem;
+  margin-left: 2px;
+}
+
+.resource-bar__rate--negative {
+  color: var(--danger, #dc3545);
+}
+
+/* ── Progress track ── */
+
+.resource-bar__track {
+  height: 3px;
+  background: var(--bg-elevated, #2e4058);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.resource-bar__fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ── FULL badge ── */
+
+.resource-bar__full-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--warning, #daa520);
+  background: var(--warning-bg, #3d3315);
+  border: 1px solid var(--warning, #daa520);
+  border-radius: 3px;
+  padding: 1px 4px;
+  flex-shrink: 0;
+}
+
+/* ── Mobile: compact ── */
+
+@media (max-width: 768px) {
+  .resource-bar {
+    gap: 4px;
+    padding: 0 var(--space-sm, 8px);
+  }
+
+  .resource-bar__item {
+    min-width: 110px;
+    padding: 3px 8px;
+  }
+
+  .resource-bar__numbers {
+    font-size: 0.75rem;
+  }
+
+  .resource-bar__rate {
+    display: none;
+  }
+}
