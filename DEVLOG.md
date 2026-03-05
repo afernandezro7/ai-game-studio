@@ -1099,4 +1099,36 @@ Implementación completa del sistema de gestión de edificios para Midgard Onlin
 
 @qa revisar implementación antes de merge a `develop`. **PR no debe mergearse sin aprobación de @qa.**
 
+---
+
+## [QA] Review PR #20 — MO-05 Edificios
+
+**Fecha:** 2026-03-05
+**Agente:** @qa
+**PR:** #20 (`feature/MO-05-buildings` → `develop`)
+**Verdict:** ❌ BLOCKED
+
+### Resultado
+
+- `tsc --noEmit` backend + frontend: ✅ 0 errores
+- Acceptance criteria: 6/6 correctos en diseño
+- 5-Point QA Checklist: PASS (soft-lock, inflation, time walls, cross-resource, FTUE)
+
+### Issues
+
+- **B-002 (BLOQUEANTE):** `createVillageInTx` no crea filas de buildings → `startUpgrade` falla con `"Building 'X' not found in village"` para toda aldea nueva. El sistema de edificios es 100% inutilizable sin building seed.
+- **W-010:** `validateUpgrade` throws `"Forbidden: you do not own..."` pero route compara `=== "Forbidden"` → devuelve 500 en lugar de 403.
+- **W-011:** BuildingCard muestra tiempo base, sin reducción Gran Salón.
+- **W-012:** BuildingPanel stats comparison muestra label en vez de valor del siguiente nivel.
+- **W-013:** Progress bar desalineada con Gran Salón activo (base time denominador).
+- **W-014:** TOCTOU — SET absoluto vs decrement atómico en startUpgrade/cancelUpgrade.
+
+Warnings pendientes de PRs anteriores: W-004, W-005, W-006, W-007, W-008, W-009.
+
+### Acción
+
+@developer corregir B-002 (añadir building seed). @qa re-valida tras fix.
+
+Informe completo: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
+
 _Fin del registro actual. Añade nuevas entradas debajo._
