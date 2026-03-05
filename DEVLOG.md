@@ -1198,3 +1198,24 @@ Implementación completa de la UI de aldea: layout de 3 columnas en desktop, bot
 
 **Pendiente:** ⚠️ @qa debe revisar y aprobar PR #21 antes de merge.
 
+### [2026-03-05] - QA Review PR #21 — MO-06 Village UI ❌ BLOCKED
+
+**Autor:** `@qa`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop`
+
+Revisión completa del PR de UI de aldea (15 archivos, +1127/-245 LOC, 0 cambios backend).
+
+**Issue encontrado:**
+
+- **B-003 (BLOQUEANTE):** `Village.tsx:52` — `buildingByType` Map colapsa múltiples slots del mismo tipo (4 woodcutter, 4 claypit, 4 ironMine, 6 farm) en una entrada. Tras upgrade de recurso: timer invisible, cancel inaccesible, level incorrecto. Afecta 18/21 slots.
+- **W-015:** VillageGrid.tsx creado pero nunca importado (dead code, 94 LOC).
+- **W-016:** AppLayout no pasa `runes` a ResourceBar (feature implementada pero no wired).
+- **W-017:** Bottom sheet sin Escape key handler (a11y).
+
+**Compilación:** `tsc --noEmit` frontend → 0 errores.
+
+**Validaciones positivas:** SLOT_DEFINITIONS ↔ backend seed match, props interfaces correctas, FLAVOR dict completo, CSS responsive, z-index correct, sin `any`/`@ts-ignore`.
+
+**Acción:** @developer corregir B-003 (smart selector o buildingBySlot Map). @qa re-valida tras fix.
+
+Informe completo: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
