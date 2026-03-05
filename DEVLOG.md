@@ -1169,3 +1169,32 @@ Re-revisión tras commit `3b67a5b` con fixes de @developer.
 Informe actualizado: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
 
 _Fin del registro actual. Añade nuevas entradas debajo._
+
+---
+
+### [2026-03-06] - MO-06: Village UI — AppLayout + Grid + Panel de Edificio
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-06-village-ui`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop` (Closes #12)
+
+Implementación completa de la UI de aldea: layout de 3 columnas en desktop, bottom sheet en mobile, barra de recursos sticky y panel de detalle de edificio con flavor text nórdico.
+
+**Archivos creados (10 nuevos):**
+
+1. `AppLayout.tsx` / `.css` — Layout global con header sticky (logo Cinzel, tabs de navegación) y barra de recursos pinnada (52px + 48px). Consume `useResources` + `useAuthStore`.
+2. `ConstructionTimer.tsx` / `.css` — Countdown HH:MM:SS + barra de progreso animada. Modo `compact` para overlay en `BuildingSlot`.
+3. `BuildingSlot.tsx` / `.css` — Representación visual de un slot: 3 estados (`--empty` borde verde discontinuo, `--built` relleno, `--upgrading` pulso dorado). Exporta `SLOT_DEFINITIONS` (21 slots: índices 0-17 recurso, 18-20 interior).
+4. `VillageGrid.tsx` / `.css` — Organiza slots en 2 zonas (campos de recurso + centro de aldea). Bonus reusable.
+5. `BuildingDetailPanel.tsx` / `.css` — Flavor text nórdico por tipo de edificio (13 entradas) + delega el bloque stats/costs a `BuildingPanel`. Desktop: columna derecha fija 320px. Mobile: bottom sheet `position: fixed; height: 70vh` con `slide-up 0.25s`.
+
+**Archivos modificados (4):**
+
+- `ResourceBar.tsx` / `.css` — Nueva prop `runes?: number`; muestra ᚱ con color `--res-premium-light` (dorado) separado por divisor.
+- `Village.tsx` — Reescritura completa: 3 columnas via `AppLayout` (Campos / Centro / Panel), `useBuildings` + `useResources`, estado `selectedType`, `buildingByType` Map.
+- `Village.css` — Nuevo bloque `.village-layout` CSS Grid 3 columnas; stack vertical en `≤768px`.
+
+**Validación:** `npx tsc --noEmit` → EXIT:0 — 0 errores.
+
+**Pendiente:** ⚠️ @qa debe revisar y aprobar PR #21 antes de merge.
+
