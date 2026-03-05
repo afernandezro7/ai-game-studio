@@ -4,6 +4,7 @@
  * Adds Norse flavor text header per building type.
  */
 
+import { useEffect } from "react";
 import type { BuildingData } from "@/services/buildingService";
 import { BuildingPanel } from "@/components/buildings/BuildingPanel";
 import "./BuildingDetailPanel.css";
@@ -63,6 +64,15 @@ export default function BuildingDetailPanel({
   onClose,
   isUpgrading,
 }: BuildingDetailPanelProps) {
+  // W-017: close panel on Escape key (a11y)
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
   if (!building) return null;
 
   const flavor =

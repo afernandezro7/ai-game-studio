@@ -11,9 +11,25 @@ import BuildingSlot, {
 } from "@/components/village/BuildingSlot";
 import BuildingDetailPanel from "@/components/buildings/BuildingDetailPanel";
 import { useBuildings } from "@/hooks/useBuildings";
+import type { BuildingData } from "@/services/buildingService";
 import { useResources } from "@/hooks/useResources";
 import { useAuthStore } from "@/store/authStore";
 import "./Village.css";
+
+/**
+ * Picks the representative BuildingData for a given buildingType.
+ * Priority: upgrading row first (so the timer is visible), then highest level.
+ * Handles multi-slot types (woodcutter×4, claypit×4, ironMine×4, farm×6).
+ */
+function pickForType(
+  type: string,
+  buildings: BuildingData[]
+): BuildingData | undefined {
+  const ofType = buildings.filter((b) => b.buildingType === type);
+  const upgrading = ofType.find((b) => b.upgradeFinishAt);
+  if (upgrading) return upgrading;
+  return ofType.sort((a, b) => b.level - a.level)[0];
+}
 
 export default function Village() {
   const villageId = useAuthStore((s) => s.villageId);
@@ -44,11 +60,11 @@ export default function Village() {
     );
   }
 
-  const buildingByType = new Map(buildings.map((b) => [b.buildingType, b]));
+  // B-003 fix: use pickForType to handle multi-slot building types correctly.
   const selectedBuilding = selectedType
-    ? (buildingByType.get(selectedType) ?? null)
+    ? (pickForType(selectedType, buildings) ?? null)
     : null;
-  const mainBuildingLevel = buildingByType.get("mainBuilding")?.level ?? 0;
+  const mainBuildingLevel = pickForType("mainBuilding", buildings)?.level ?? 0;
 
   const resources = { wood, clay, iron, wheat };
   const hasQueueSlot = !currentUpgrade;
@@ -87,7 +103,7 @@ export default function Village() {
             <h2 className="village-layout__zone-title">Campos de Recursos</h2>
             <div className="village-layout__slot-grid village-layout__slot-grid--4col">
               {resourceSlots.map((slot) => {
-                const b = buildingByType.get(slot.buildingType);
+                const b = pickForType(slot.buildingType, buildings);
                 return (
                   <BuildingSlot
                     key={slot.slotIndex}
@@ -111,7 +127,7 @@ export default function Village() {
             <h2 className="village-layout__zone-title">Centro de la Aldea</h2>
             <div className="village-layout__slot-grid village-layout__slot-grid--3col">
               {innerSlots.map((slot) => {
-                const b = buildingByType.get(slot.buildingType);
+                const b = pickForType(slot.buildingType, buildings);
                 return (
                   <BuildingSlot
                     key={slot.slotIndex}

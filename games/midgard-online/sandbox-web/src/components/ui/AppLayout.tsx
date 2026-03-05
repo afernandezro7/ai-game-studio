@@ -16,6 +16,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const villageId = useAuthStore((s) => s.villageId);
+  const runes = useAuthStore((s) => s.user?.runes ?? 0);
   const { wood, clay, iron, wheat, rates, caps, isFull } =
     useResources(villageId);
 
@@ -69,6 +70,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           rates={rates}
           caps={caps}
           isFull={isFull}
+          runes={runes}
         />
       </div>
 
