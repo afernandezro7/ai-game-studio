@@ -11,6 +11,7 @@ import {
   getVillageState,
   getVillageResources,
 } from "../services/villageService.js";
+import { getVillageBuildings } from "../services/buildingService.js";
 
 export const villagesRouter = Router();
 
@@ -100,6 +101,40 @@ villagesRouter.get(
         rates: resources.rates,
         caps: resources.caps,
       });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+// ── GET /villages/:id/buildings ─────────────────────────────
+// Returns all buildings for a village with config-enriched stats.
+
+villagesRouter.get(
+  "/:id/buildings",
+  authMiddleware,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = (req as AuthRequest).user;
+      const id = req.params["id"] as string;
+
+      const village = await prisma.village.findUnique({
+        where: { id },
+        select: { ownerId: true },
+      });
+
+      if (!village) {
+        res.status(404).json({ error: "Village not found" });
+        return;
+      }
+
+      if (village.ownerId !== userId) {
+        res.status(403).json({ error: "Forbidden — not your village" });
+        return;
+      }
+
+      const buildings = await getVillageBuildings(id);
+      res.json({ buildings });
     } catch (err) {
       next(err);
     }

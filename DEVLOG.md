@@ -1055,4 +1055,117 @@ Warnings pendientes (no bloquean): W-006 (WS ownership), W-007 (config flag), W-
 
 **Listo para merge a develop.**
 
+---
+
+## [MO-05] Edificios: Upgrade + Cola de construcción + Gran Salón
+
+**Fecha:** 2026-02-27
+**Rama:** `feature/MO-05-buildings`
+**Issue:** #11
+
+### Resumen
+
+Implementación completa del sistema de gestión de edificios para Midgard Online. Incluye validación de prerrequisitos, cola de construcción (1 concurrente en v0.1.0), reducción de tiempos por Gran Salón (−3%/nivel), reembolso 100% en cancelación, y completado automático via cron cada 5s.
+
+### Backend
+
+- **`buildingService.ts`** — `getUpgradeCost`, `getBuildTime` (con reducción Gran Salón), `getVillageBuildings` (enriquecido con stats del config), `startUpgrade` (valida prerrequisitos + recursos + cola, deduce recursos, establece timer), `cancelUpgrade` (reembolso 100%), `completeUpgrade` (incrementa nivel, actualiza población delta, limpia timer).
+- **`routes/buildings.ts`** — `POST /buildings/upgrade` (Zod validation, ownership check), `DELETE /buildings/upgrade/:id` (cancel).
+- **`routes/villages.ts`** — nuevo endpoint `GET /villages/:id/buildings` (devuelve buildings enriquecidos con stats de config).
+- **`cron/buildingChecker.ts`** — `startBuildingChecker()` con `setInterval` cada `MISSION_CHECK_INTERVAL_MS` (5s); consulta buildings con `upgradeFinishAt ≤ now`; llama `completeUpgrade`; emite `building:complete` al room `village:${id}`.
+- **`index.ts`** — `startBuildingChecker()` arranca con el servidor.
+
+### Config mapping
+
+- `mainBuilding` = Gran Salón — `unlocks` define prerrequisitos por nivel
+- Reducción de tiempo: `baseTime × (1 - mainBuildingLevel × 0.03)`, tope 30% (Lv.10)
+- Reembolso: 100% (no especificado en buildings.md → default 100%)
+- IDs usados del config: `mainBuilding`, `warehouse`, `granary`, `woodcutter`, `claypit`, `ironMine`, `farm`
+
+### Frontend
+
+- **`services/buildingService.ts`** (nuevo) — `getBuildings`, `upgradeBuilding`, `cancelBuildingUpgrade`.
+- **`hooks/useBuildings.ts`** — React Query fetch + mutations upgrade/cancel + listener `building:complete` WS + `canUpgrade(type)` + `currentUpgrade`.
+- **`components/buildings/BuildingCard.tsx`** — tarjeta compacta con countdown timer, barra de progreso, desglose de costes (verde/rojo), botón upgrade/cancel, badge MAX.
+- **`components/buildings/BuildingCard.css`** — tema nórdico, animación pulse para construcción activa.
+- **`components/buildings/BuildingPanel.tsx`** — panel detallado: stats actual vs siguiente nivel, tabla de costes, tiempo con reducción Gran Salón, tabla de todos los niveles (acordeón).
+- **`components/buildings/BuildingPanel.css`** — responsive, bottom sheet en mobile.
+
+### TypeScript
+
+`tsc --noEmit` backend y frontend: **0 errores**.
+
+### Siguiente Paso
+
+@qa revisar implementación antes de merge a `develop`. **PR no debe mergearse sin aprobación de @qa.**
+
+---
+
+## [QA] Review PR #20 — MO-05 Edificios
+
+**Fecha:** 2026-03-05
+**Agente:** @qa
+**PR:** #20 (`feature/MO-05-buildings` → `develop`)
+**Verdict:** ❌ BLOCKED
+
+### Resultado
+
+- `tsc --noEmit` backend + frontend: ✅ 0 errores
+- Acceptance criteria: 6/6 correctos en diseño
+- 5-Point QA Checklist: PASS (soft-lock, inflation, time walls, cross-resource, FTUE)
+
+### Issues
+
+- **B-002 (BLOQUEANTE):** `createVillageInTx` no crea filas de buildings → `startUpgrade` falla con `"Building 'X' not found in village"` para toda aldea nueva. El sistema de edificios es 100% inutilizable sin building seed.
+- **W-010:** `validateUpgrade` throws `"Forbidden: you do not own..."` pero route compara `=== "Forbidden"` → devuelve 500 en lugar de 403.
+- **W-011:** BuildingCard muestra tiempo base, sin reducción Gran Salón.
+- **W-012:** BuildingPanel stats comparison muestra label en vez de valor del siguiente nivel.
+- **W-013:** Progress bar desalineada con Gran Salón activo (base time denominador).
+- **W-014:** TOCTOU — SET absoluto vs decrement atómico en startUpgrade/cancelUpgrade.
+
+Warnings pendientes de PRs anteriores: W-004, W-005, W-006, W-007, W-008, W-009.
+
+### Acción
+
+@developer corregir B-002 (añadir building seed). @qa re-valida tras fix.
+
+Informe completo: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
+
+### [2026-03-05] - MO-05 QA Fixes: B-002 + W-010/W-011/W-012/W-013/W-014
+
+**Autor:** `@developer`
+**PR:** #20 — `feature/MO-05-buildings` → `develop`
+
+Corregidos todos los issues del QA Report `qa-review-pr20-mo05-buildings.md`.
+
+1. **B-002 (BLOQUEANTE) — Building seed en aldeas nuevas:** `createVillageInTx` crea 21 building rows a Lv.0 (woodcutter×4, claypit×4, ironMine×4, farm×6, mainBuilding, warehouse, granary). Sistema funcional para nuevos jugadores.
+2. **W-010 — 500 → 403:** `validateUpgrade` lanza `"Forbidden"` (igual que `cancelUpgrade`) → route handler matchea y devuelve 403.
+3. **W-011 — Tiempo efectivo:** `getVillageBuildings` retorna `effectiveBuildTimeSec` con reducción Gran Salón aplicada. `BuildingCard` muestra el tiempo real.
+4. **W-012 — Valor siguiente nivel:** `getVillageBuildings` retorna `nextLevelStats`. `BuildingPanel` usa su valor en lugar del label.
+5. **W-013 — Progress bar:** Denominador usa `effectiveBuildTimeSec` → barra empieza en 0% con Gran Salón activo.
+6. **W-014 — Atómico:** `startUpgrade` usa `{ decrement }`, `cancelUpgrade` usa `{ increment }` en Prisma.
+
+**Verificación:** `tsc --noEmit` backend ✅ + frontend ✅ — 0 errores.
+
+### [2026-03-05] - QA Re-Review PR #20 — MO-05 Edificios ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #20 — `feature/MO-05-buildings` → `develop`
+
+Re-revisión tras commit `3b67a5b` con fixes de @developer.
+
+**Verificación:**
+
+- **B-002** (BLOQUEANTE): `createVillageInTx` crea 21 building rows a Lv0 — ✅ RESUELTO
+- **W-010**: Error message → `"Forbidden"` matchea 403 — ✅ RESUELTO
+- **W-011**: `effectiveBuildTimeSec` retornado y mostrado en BuildingCard — ✅ RESUELTO
+- **W-012**: `nextLevelStats` retornado y mostrado en BuildingPanel — ✅ RESUELTO
+- **W-013**: Progress bar usa `effectiveBuildTimeSec ?? nextLevelTimeSec` — ✅ RESUELTO
+- **W-014**: Prisma `decrement`/`increment` atómicos — ✅ RESUELTO
+- `tsc --noEmit` backend + frontend: 0 errores
+
+**Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
+
+Informe actualizado: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
+
 _Fin del registro actual. Añade nuevas entradas debajo._
