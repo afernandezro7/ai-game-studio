@@ -1147,4 +1147,25 @@ Corregidos todos los issues del QA Report `qa-review-pr20-mo05-buildings.md`.
 
 **Verificación:** `tsc --noEmit` backend ✅ + frontend ✅ — 0 errores.
 
+### [2026-03-05] - QA Re-Review PR #20 — MO-05 Edificios ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #20 — `feature/MO-05-buildings` → `develop`
+
+Re-revisión tras commit `3b67a5b` con fixes de @developer.
+
+**Verificación:**
+
+- **B-002** (BLOQUEANTE): `createVillageInTx` crea 21 building rows a Lv0 — ✅ RESUELTO
+- **W-010**: Error message → `"Forbidden"` matchea 403 — ✅ RESUELTO
+- **W-011**: `effectiveBuildTimeSec` retornado y mostrado en BuildingCard — ✅ RESUELTO
+- **W-012**: `nextLevelStats` retornado y mostrado en BuildingPanel — ✅ RESUELTO
+- **W-013**: Progress bar usa `effectiveBuildTimeSec ?? nextLevelTimeSec` — ✅ RESUELTO
+- **W-014**: Prisma `decrement`/`increment` atómicos — ✅ RESUELTO
+- `tsc --noEmit` backend + frontend: 0 errores
+
+**Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
+
+Informe actualizado: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
+
 _Fin del registro actual. Añade nuevas entradas debajo._

@@ -4,7 +4,7 @@
 **Rama:** `feature/MO-05-buildings` → `develop`
 **Issue:** #11
 **Fecha:** 2026-03-05
-**Verdict:** ❌ BLOCKED — 1 bloqueante (B-002)
+**Verdict:** ✅ APPROVED (tras re-review — ver sección al final)
 
 ---
 
@@ -322,14 +322,14 @@ Fórmulas verificadas:
 
 ### Issues Tracker
 
-| ID    | Severidad     | Descripción                                                 | Estado  |
-| ----- | ------------- | ----------------------------------------------------------- | ------- |
-| B-002 | ❌ BLOQUEANTE | No hay building rows en aldeas nuevas → startUpgrade falla  | ABIERTO |
-| W-010 | ⚠️ Warning    | startUpgrade ownership → 500 en lugar de 403                | ABIERTO |
-| W-011 | ⚠️ Warning    | BuildingCard muestra tiempo base sin reducción GS           | ABIERTO |
-| W-012 | ⚠️ Warning    | BuildingPanel muestra label en vez de valor siguiente nivel | ABIERTO |
-| W-013 | ⚠️ Warning    | Progress bar desalineada con Gran Salón                     | ABIERTO |
-| W-014 | ⚠️ Warning    | TOCTOU — SET absoluto vs decrement atómico                  | ABIERTO |
+| ID    | Severidad     | Descripción                                                 | Estado               |
+| ----- | ------------- | ----------------------------------------------------------- | -------------------- |
+| B-002 | ❌ BLOQUEANTE | No hay building rows en aldeas nuevas → startUpgrade falla  | ✅ FIXED (`3b67a5b`) |
+| W-010 | ⚠️ Warning    | startUpgrade ownership → 500 en lugar de 403                | ✅ FIXED (`3b67a5b`) |
+| W-011 | ⚠️ Warning    | BuildingCard muestra tiempo base sin reducción GS           | ✅ FIXED (`3b67a5b`) |
+| W-012 | ⚠️ Warning    | BuildingPanel muestra label en vez de valor siguiente nivel | ✅ FIXED (`3b67a5b`) |
+| W-013 | ⚠️ Warning    | Progress bar desalineada con Gran Salón                     | ✅ FIXED (`3b67a5b`) |
+| W-014 | ⚠️ Warning    | TOCTOU — SET absoluto vs decrement atómico                  | ✅ FIXED (`3b67a5b`) |
 
 ### Warnings anteriores (de PRs previos, siguen abiertos)
 
@@ -344,11 +344,40 @@ Fórmulas verificadas:
 
 ### Next Step
 
-@developer debe:
-
-1. Corregir **B-002**: añadir seed de building rows en `createVillageInTx` al crear aldea
-2. @qa re-valida tras el fix
+~~@developer debe corregir B-002~~ → COMPLETADO en `3b67a5b`.
 
 ---
 
-_Informe generado por @qa — 2026-03-05_
+## Re-Review (2026-03-05) — Commit `3b67a5b`
+
+**Verdict:** ✅ QA APPROVED
+
+### Verificación de fixes
+
+| Issue     | Fix aplicado                                                                                                                                                                                  | Verificado                                                     |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **B-002** | `createVillageInTx` ahora crea 21 building rows a Lv0 (4 woodcutter + 4 claypit + 4 ironMine + 6 farm + mainBuilding + warehouse + granary) via `tx.building.createMany`                      | ✅ Seed correcto, 21 filas, level 0, slotIndex secuencial 0-20 |
+| **W-010** | `validateUpgrade` lanza `"Forbidden"` (antes `"Forbidden: you do not own this village"`)                                                                                                      | ✅ Matchea con `err.message === "Forbidden"` → 403             |
+| **W-011** | `getVillageBuildings` retorna `effectiveBuildTimeSec` calculado con `getBuildTime(type, nextLvl, mainBuildingLevel)`. BuildingCard usa `effectiveBuildTimeSec` en lugar de `nextLevelTimeSec` | ✅ Tiempo real con reducción GS mostrado                       |
+| **W-012** | `getVillageBuildings` retorna `nextLevelStats`. BuildingPanel usa `getStatLabel(building.nextLevelStats).value`                                                                               | ✅ Muestra valor real, no label                                |
+| **W-013** | Progress bar usa `building.effectiveBuildTimeSec ?? building.nextLevelTimeSec` como denominador                                                                                               | ✅ Barra empieza en 0%                                         |
+| **W-014** | `startUpgrade` usa `{ decrement: cost.X }`, `cancelUpgrade` usa `{ increment: refund.X }`                                                                                                     | ✅ Operaciones atómicas, elimina TOCTOU                        |
+
+### TypeScript
+
+| Proyecto | Resultado                     |
+| -------- | ----------------------------- |
+| Backend  | ✅ `tsc --noEmit` — 0 errores |
+| Frontend | ✅ `tsc --noEmit` — 0 errores |
+
+### Conclusión
+
+Todos los issues (1 bloqueante + 5 warnings) resueltos correctamente. Compilación limpia. Lógica de negocio intacta.
+
+Warnings pendientes de PRs anteriores (no afectan a MO-05): W-004, W-005, W-006, W-007, W-008, W-009.
+
+**Listo para merge a develop.**
+
+---
+
+_Informe actualizado por @qa — 2026-03-05_
