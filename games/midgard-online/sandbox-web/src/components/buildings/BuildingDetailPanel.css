@@ -1,0 +1,57 @@
+/* BuildingDetailPanel — Layout: desktop fixed right, mobile bottom sheet */
+
+/* Desktop: positioned via parent 3-column grid, fills right column */
+.detail-panel__backdrop {
+  display: none;
+}
+
+.detail-panel {
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-panel__flavor {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: var(--space-md);
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: 0;
+}
+
+/* Mobile: bottom sheet */
+@media (max-width: 768px) {
+  .detail-panel__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 199;
+  }
+
+  .detail-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70vh;
+    max-height: 80vh;
+    border-left: none;
+    border-top: 2px solid var(--accent-gold);
+    border-radius: 16px 16px 0 0;
+    z-index: 200;
+    animation: slide-up 0.25s ease-out;
+  }
+
+  @keyframes slide-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+}

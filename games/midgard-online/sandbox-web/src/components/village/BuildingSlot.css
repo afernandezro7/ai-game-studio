@@ -1,0 +1,115 @@
+/* BuildingSlot */
+
+.building-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  aspect-ratio: 1;
+  min-width: 70px;
+  min-height: 70px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.1s;
+  font-family: var(--font-body);
+  padding: var(--space-xs);
+  background: none;
+}
+
+.building-slot:hover {
+  transform: scale(1.04);
+}
+
+/* ── Empty state ── */
+.building-slot--empty {
+  border: 2px dashed var(--success);
+  background-color: var(--success-bg);
+  color: var(--success);
+}
+
+.building-slot--empty:hover {
+  background-color: #1f4d36;
+  border-color: var(--btn-primary-hover);
+}
+
+/* ── Built state ── */
+.building-slot--built {
+  border: 2px solid var(--border-default);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.building-slot--built:hover {
+  border-color: var(--border-highlight);
+  background-color: var(--bg-tertiary);
+}
+
+/* ── Upgrading state ── */
+.building-slot--upgrading {
+  border: 2px solid var(--warning);
+  background-color: var(--warning-bg);
+  color: var(--warning);
+  animation: slot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes slot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(218, 165, 32, 0); }
+  50%       { box-shadow: 0 0 8px 2px rgba(218, 165, 32, 0.35); }
+}
+
+/* ── Inner elements ── */
+.building-slot__emoji {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.building-slot__label {
+  font-size: 10px;
+  font-weight: 500;
+  color: inherit;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.building-slot__level {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  background-color: var(--warning-bg);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+/* ── Timer overlay (compact) ── */
+.building-slot__timer-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4px;
+  background: rgba(15, 25, 35, 0.85);
+  border-radius: 0 0 4px 4px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .building-slot {
+    min-width: 56px;
+    min-height: 56px;
+  }
+
+  .building-slot__emoji {
+    font-size: 18px;
+  }
+
+  .building-slot__label {
+    font-size: 9px;
+  }
+}

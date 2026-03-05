@@ -129,3 +129,15 @@
     display: none;
   }
 }
+
+/* ── Runas (premium) ── */
+.resource-bar__item--premium {
+  border-left: 1px solid var(--border-default);
+  padding-left: var(--space-sm);
+  margin-left: var(--space-xs);
+}
+
+.resource-bar__value--premium {
+  color: var(--res-premium-light);
+  font-weight: 700;
+}

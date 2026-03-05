@@ -1,4 +1,90 @@
-/* ── Village page — Nordic theme ─────────────────────────────── */
+/* ── Village 3-column layout ─────────────────────────────────── */
+
+.village-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr var(--context-panel-width, 320px);
+  min-height: calc(100vh - 52px - var(--resource-bar-height, 48px));
+  align-items: start;
+}
+
+.village-layout--panel-open {
+  /* panel column activates via presence of the 3rd child */
+}
+
+.village-layout__col {
+  padding: var(--space-lg, 1.5rem);
+  border-right: 1px solid var(--border-default, #2d2d4e);
+  overflow-y: auto;
+}
+
+.village-layout__col--inner {
+  border-right: none;
+}
+
+.village-layout__zone-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 13px;
+  color: var(--text-secondary, #a0a0b8);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--space-md, 1rem);
+  border-bottom: 1px solid var(--border-default, #2d2d4e);
+  padding-bottom: var(--space-xs, 0.25rem);
+}
+
+.village-layout__slot-grid {
+  display: grid;
+  gap: var(--space-sm, 0.5rem);
+}
+
+.village-layout__slot-grid--4col {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.village-layout__slot-grid--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* State messages */
+.village-page__loading,
+.village-page__error,
+.village-page__empty {
+  padding: var(--space-2xl, 3rem);
+  text-align: center;
+  color: var(--text-secondary, #a0a0b8);
+}
+
+.village-page__error {
+  color: var(--danger, #e74c3c);
+}
+
+.village-page__empty h1 {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  color: var(--accent-gold, #DAA520);
+  margin-bottom: var(--space-sm, 0.5rem);
+}
+
+/* Mobile: single column stack */
+@media (max-width: 768px) {
+  .village-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .village-layout__col {
+    border-right: none;
+    border-bottom: 1px solid var(--border-default, #2d2d4e);
+  }
+
+  .village-layout__slot-grid--4col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .village-layout__slot-grid--3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Village page — Nordic theme (legacy) ────────────────────── */
 
 .village-page {
   min-height: 100vh;

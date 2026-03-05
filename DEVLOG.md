@@ -352,8 +352,6 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 ---
 
-_Fin del registro actual. Añade nuevas entradas debajo._
-
 ### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
 
 **Autor:** @archivist
@@ -846,11 +844,7 @@ Re-verificación de las 2 advertencias del QA review original.
 
 ### Siguiente Paso
 
-Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
-
-_Fin del registro actual. Añade nuevas entradas debajo._
-
----
+## Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
 
 ## MO-03 — Villages: Creación Automática + CRUD + Recursos Iniciales · 2026-02-26
 
@@ -1167,5 +1161,92 @@ Re-revisión tras commit `3b67a5b` con fixes de @developer.
 **Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
 
 Informe actualizado: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
+
+---
+
+### [2026-03-06] - MO-06: Village UI — AppLayout + Grid + Panel de Edificio
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-06-village-ui`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop` (Closes #12)
+
+Implementación completa de la UI de aldea: layout de 3 columnas en desktop, bottom sheet en mobile, barra de recursos sticky y panel de detalle de edificio con flavor text nórdico.
+
+**Archivos creados (10 nuevos):**
+
+1. `AppLayout.tsx` / `.css` — Layout global con header sticky (logo Cinzel, tabs de navegación) y barra de recursos pinnada (52px + 48px). Consume `useResources` + `useAuthStore`.
+2. `ConstructionTimer.tsx` / `.css` — Countdown HH:MM:SS + barra de progreso animada. Modo `compact` para overlay en `BuildingSlot`.
+3. `BuildingSlot.tsx` / `.css` — Representación visual de un slot: 3 estados (`--empty` borde verde discontinuo, `--built` relleno, `--upgrading` pulso dorado). Exporta `SLOT_DEFINITIONS` (21 slots: índices 0-17 recurso, 18-20 interior).
+4. `VillageGrid.tsx` / `.css` — Organiza slots en 2 zonas (campos de recurso + centro de aldea). Bonus reusable.
+5. `BuildingDetailPanel.tsx` / `.css` — Flavor text nórdico por tipo de edificio (13 entradas) + delega el bloque stats/costs a `BuildingPanel`. Desktop: columna derecha fija 320px. Mobile: bottom sheet `position: fixed; height: 70vh` con `slide-up 0.25s`.
+
+**Archivos modificados (4):**
+
+- `ResourceBar.tsx` / `.css` — Nueva prop `runes?: number`; muestra ᚱ con color `--res-premium-light` (dorado) separado por divisor.
+- `Village.tsx` — Reescritura completa: 3 columnas via `AppLayout` (Campos / Centro / Panel), `useBuildings` + `useResources`, estado `selectedType`, `buildingByType` Map.
+- `Village.css` — Nuevo bloque `.village-layout` CSS Grid 3 columnas; stack vertical en `≤768px`.
+
+**Validación:** `npx tsc --noEmit` → EXIT:0 — 0 errores.
+
+**Pendiente:** ⚠️ @qa debe revisar y aprobar PR #21 antes de merge.
+
+### [2026-03-05] - QA Review PR #21 — MO-06 Village UI ❌ BLOCKED
+
+**Autor:** `@qa`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop`
+
+Revisión completa del PR de UI de aldea (15 archivos, +1127/-245 LOC, 0 cambios backend).
+
+**Issue encontrado:**
+
+- **B-003 (BLOQUEANTE):** `Village.tsx:52` — `buildingByType` Map colapsa múltiples slots del mismo tipo (4 woodcutter, 4 claypit, 4 ironMine, 6 farm) en una entrada. Tras upgrade de recurso: timer invisible, cancel inaccesible, level incorrecto. Afecta 18/21 slots.
+- **W-015:** VillageGrid.tsx creado pero nunca importado (dead code, 94 LOC).
+- **W-016:** AppLayout no pasa `runes` a ResourceBar (feature implementada pero no wired).
+- **W-017:** Bottom sheet sin Escape key handler (a11y).
+
+**Compilación:** `tsc --noEmit` frontend → 0 errores.
+
+**Validaciones positivas:** SLOT_DEFINITIONS ↔ backend seed match, props interfaces correctas, FLAVOR dict completo, CSS responsive, z-index correct, sin `any`/`@ts-ignore`.
+
+**Acción:** @developer corregir B-003 (smart selector o buildingBySlot Map). @qa re-valida tras fix.
+
+Informe completo: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
+
+
+### [2026-03-05] - MO-06 QA Fixes — B-003 + W-015 + W-016 + W-017
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-06-village-ui`
+**Commit:** `f7df0d8`
+**PR:** #21
+
+Aplicados todos los issues del QA review @qa.
+
+- **B-003 (BLOQUEANTE):** `buildingByType` Map reemplazado por `pickForType(type, buildings)` en `Village.tsx`. Prioriza la fila con `upgradeFinishAt` activo; si no, la de mayor nivel. Los 18 slots de recurso (woodcutter×4, claypit×4, ironMine×4, farm×6) ahora muestran timer y nivel correctos.
+- **W-015:** `VillageGrid.tsx` + `VillageGrid.css` eliminados (94 LOC dead code).
+- **W-016:** `AppLayout.tsx` lee `runes` desde `useAuthStore(s.user?.runes)` y lo pasa a `<ResourceBar runes={runes} />`. ᚱ premium ya aparece en la barra sticky.
+- **W-017:** `BuildingDetailPanel.tsx` añade `useEffect` con listener `keydown → onClose()` cuando `e.key === "Escape"`. Cleanup correcto en unmount.
+
+**Verificación:** `tsc --noEmit` → EXIT:0 — 0 errores.
+
+**Pendiente:** ~~⚠️ @qa re-revisión de PR #21 antes de merge.~~ → COMPLETADO.
+
+### [2026-03-05] - QA Re-Review PR #21 — MO-06 Village UI ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop`
+
+Re-revisión tras commits `f7df0d8` + `a0a039a` con fixes de @developer.
+
+**Verificación:**
+- **B-003** (BLOQUEANTE): `buildingByType` Map → `pickForType()` smart selector — ✅ RESUELTO
+- **W-015**: VillageGrid.tsx + .css eliminados (145 LOC dead code) — ✅ RESUELTO
+- **W-016**: AppLayout pasa `runes` a ResourceBar — ✅ RESUELTO
+- **W-017**: BuildingDetailPanel Escape key handler — ✅ RESUELTO
+- `tsc --noEmit` frontend: 0 errores
+
+**Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
+
+Informe actualizado: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
 
 _Fin del registro actual. Añade nuevas entradas debajo._
