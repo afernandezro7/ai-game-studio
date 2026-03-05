@@ -1,0 +1,51 @@
+/* VillageGrid */
+
+.village-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ── Zone header ── */
+.village-grid__zone-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: var(--space-xs);
+}
+
+/* ── Resource cells grid (4 columns) ── */
+.village-grid__resource-cells {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+/* ── Inner cells (3 buildings in a row) ── */
+.village-grid__inner-cells {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+/* ── Selected cell highlight ── */
+.village-grid__cell--selected > .building-slot {
+  border-color: var(--border-highlight);
+  box-shadow: 0 0 0 2px var(--accent-gold);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .village-grid__resource-cells {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .village-grid__inner-cells {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

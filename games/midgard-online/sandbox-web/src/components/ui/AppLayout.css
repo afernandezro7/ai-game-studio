@@ -1,0 +1,90 @@
+/* AppLayout — shell styles */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+/* ── Header ── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 var(--space-lg);
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-default);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header__logo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.app-header__nav {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.app-header__tab {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s, background-color 0.15s;
+  border: 1px solid transparent;
+}
+
+.app-header__tab:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.app-header__tab--active {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  background-color: var(--warning-bg);
+}
+
+/* ── Pinned resource bar ── */
+.app-resource-bar {
+  position: sticky;
+  top: 52px;
+  z-index: 90;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* ── Content ── */
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 var(--space-md);
+  }
+
+  .app-header__logo {
+    font-size: 14px;
+  }
+
+  .app-header__tab {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 12px;
+  }
+}

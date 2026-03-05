@@ -18,6 +18,7 @@ interface ResourceBarProps {
   rates: ProductionRates;
   caps: StorageCaps;
   isFull: { wood: boolean; clay: boolean; iron: boolean; wheat: boolean };
+  runes?: number; // from authStore.user.runes (premium currency)
 }
 
 // ── Resource config ──────────────────────────────────────────
@@ -80,6 +81,7 @@ export default function ResourceBar({
   rates,
   caps,
   isFull,
+  runes,
 }: ResourceBarProps) {
   const values = { wood, clay, iron, wheat };
 
@@ -141,6 +143,25 @@ export default function ResourceBar({
           </div>
         );
       })}
+
+      {/* ── Runas (premium, separate) ── */}
+      {runes !== undefined && (
+        <div
+          className="resource-bar__item resource-bar__item--premium"
+          title={`Runas de Odín: ${runes}`}
+        >
+          <span className="resource-bar__emoji" aria-hidden="true">
+            ᚱ
+          </span>
+          <div className="resource-bar__info">
+            <div className="resource-bar__numbers">
+              <span className="resource-bar__value resource-bar__value--premium">
+                {fmt(runes)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
