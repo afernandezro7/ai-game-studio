@@ -127,6 +127,56 @@ export async function createVillageInTx(
     },
   });
 
+  // B-002: seed all Phase-1 building slots at level 0 so startUpgrade can find them
+  await tx.building.createMany({
+    data: [
+      // Resource fields: 4 woodcutter, 4 claypit, 4 ironMine, 6 farm
+      ...Array.from({ length: 4 }, (_, i) => ({
+        villageId: village.id,
+        buildingType: "woodcutter",
+        slotIndex: i,
+        level: 0,
+      })),
+      ...Array.from({ length: 4 }, (_, i) => ({
+        villageId: village.id,
+        buildingType: "claypit",
+        slotIndex: 4 + i,
+        level: 0,
+      })),
+      ...Array.from({ length: 4 }, (_, i) => ({
+        villageId: village.id,
+        buildingType: "ironMine",
+        slotIndex: 8 + i,
+        level: 0,
+      })),
+      ...Array.from({ length: 6 }, (_, i) => ({
+        villageId: village.id,
+        buildingType: "farm",
+        slotIndex: 12 + i,
+        level: 0,
+      })),
+      // Inner buildings (Phase 1)
+      {
+        villageId: village.id,
+        buildingType: "mainBuilding",
+        slotIndex: 18,
+        level: 0,
+      },
+      {
+        villageId: village.id,
+        buildingType: "warehouse",
+        slotIndex: 19,
+        level: 0,
+      },
+      {
+        villageId: village.id,
+        buildingType: "granary",
+        slotIndex: 20,
+        level: 0,
+      },
+    ],
+  });
+
   return village.id;
 }
 

@@ -31,6 +31,7 @@ export interface BuildingData {
   name: string;
   maxLevel: number;
   currentStats: BuildingLevelStats | null;
+  nextLevelStats: BuildingLevelStats | null;
   nextLevelCost: {
     wood: number;
     clay: number;
@@ -38,6 +39,7 @@ export interface BuildingData {
     wheat: number;
   } | null;
   nextLevelTimeSec: number | null;
+  effectiveBuildTimeSec: number | null;
 }
 
 export interface UpgradeResult {

@@ -152,7 +152,10 @@ export function BuildingPanel({
               Nivel {targetLevel}
             </span>
             <span className="building-panel__stat-value building-panel__stat-value--next">
-              {currentStat.label}
+              {/* W-012: show the actual next-level value, not a label */}
+              {building.nextLevelStats
+                ? getStatLabel(building.nextLevelStats).value
+                : "—"}
             </span>
           </div>
         </div>

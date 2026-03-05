@@ -166,9 +166,14 @@ export function BuildingCard({
             <div
               className="building-card__progress-fill"
               style={{
-                width: building.nextLevelTimeSec
-                  ? `${Math.max(0, Math.min(100, 100 - (countdown / building.nextLevelTimeSec) * 100))}%`
-                  : "50%",
+                width: (() => {
+                  // W-013: use effectiveBuildTimeSec (Gran Salón reduction applied) as denominator
+                  const totalSec =
+                    building.effectiveBuildTimeSec ?? building.nextLevelTimeSec;
+                  return totalSec
+                    ? `${Math.max(0, Math.min(100, 100 - (countdown / totalSec) * 100))}%`
+                    : "50%";
+                })(),
               }}
             />
           </div>
@@ -188,9 +193,9 @@ export function BuildingCard({
               <CostItem label="🧱" amount={cost.clay} have={resources.clay} />
               <CostItem label="⚙️" amount={cost.iron} have={resources.iron} />
               <CostItem label="🌾" amount={cost.wheat} have={resources.wheat} />
-              {building.nextLevelTimeSec && (
+              {building.effectiveBuildTimeSec !== null && (
                 <span className="building-card__time">
-                  ⏱ {formatTime(building.nextLevelTimeSec)}
+                  ⏱ {formatTime(building.effectiveBuildTimeSec)}
                 </span>
               )}
             </div>

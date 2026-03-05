@@ -10,7 +10,6 @@
  * - Increment level and update population on complete
  */
 
-import type { Prisma } from "@prisma/client";
 import { prisma } from "../config/database.js";
 import { gameData } from "../config/gameData.js";
 
@@ -63,8 +62,10 @@ export interface BuildingWithStats {
   name: string;
   maxLevel: number;
   currentStats: BuildingLevelConfig | null;
+  nextLevelStats: BuildingLevelConfig | null;
   nextLevelCost: ResourceValues | null;
   nextLevelTimeSec: number | null;
+  effectiveBuildTimeSec: number | null;
 }
 
 export interface UpgradeResult {
@@ -148,17 +149,26 @@ export async function getVillageBuildings(
     orderBy: [{ slotIndex: "asc" }],
   });
 
+  // W-011/W-013: need mainBuilding level to compute effective build times
+  const mainBuildingLevel =
+    buildings.find((b) => b.buildingType === "mainBuilding")?.level ?? 0;
+
   return buildings.map((b) => {
     const cfg = buildingsCfg.buildings[b.buildingType];
+    const hasNextLevel = b.level < (cfg?.maxLevel ?? 10);
     const currentStats = cfg?.levels[b.level - 1] ?? null;
-    const nextLevelCost =
-      b.level < (cfg?.maxLevel ?? 10)
-        ? getUpgradeCost(b.buildingType, b.level + 1)
-        : null;
-    const nextLevelTimeSec =
-      b.level < (cfg?.maxLevel ?? 10)
-        ? (cfg?.levels[b.level]?.timeSec ?? null)
-        : null;
+    // W-012: next level stats (index = b.level because levels array is 0-indexed)
+    const nextLevelStats = hasNextLevel ? (cfg?.levels[b.level] ?? null) : null;
+    const nextLevelCost = hasNextLevel
+      ? getUpgradeCost(b.buildingType, b.level + 1)
+      : null;
+    const nextLevelTimeSec = hasNextLevel
+      ? (cfg?.levels[b.level]?.timeSec ?? null)
+      : null;
+    // W-011/W-013: effective time with Gran Salón reduction applied
+    const effectiveBuildTimeSec = hasNextLevel
+      ? getBuildTime(b.buildingType, b.level + 1, mainBuildingLevel)
+      : null;
 
     return {
       id: b.id,
@@ -169,8 +179,10 @@ export async function getVillageBuildings(
       name: cfg?.name ?? b.buildingType,
       maxLevel: cfg?.maxLevel ?? 10,
       currentStats,
+      nextLevelStats,
       nextLevelCost,
       nextLevelTimeSec,
+      effectiveBuildTimeSec,
     };
   });
 }
@@ -198,8 +210,7 @@ async function validateUpgrade(
   });
 
   if (!village) throw new Error("Village not found");
-  if (village.ownerId !== userId)
-    throw new Error("Forbidden: you do not own this village");
+  if (village.ownerId !== userId) throw new Error("Forbidden"); // W-010: consistent with routes/buildings.ts error check
   if (!village.resources) throw new Error("Village has no resource record");
 
   // 2. Find the building
@@ -276,8 +287,11 @@ export async function startUpgrade(
   buildingType: string,
   userId: string,
 ): Promise<UpgradeResult> {
-  const { village, building, resources, cost, mainBuildingLevel } =
-    await validateUpgrade(villageId, buildingType, userId);
+  const { village, building, cost, mainBuildingLevel } = await validateUpgrade(
+    villageId,
+    buildingType,
+    userId,
+  );
 
   const targetLevel = building.level + 1;
   const buildTimeSec = getBuildTime(
@@ -287,14 +301,7 @@ export async function startUpgrade(
   );
   const upgradeFinishAt = new Date(Date.now() + buildTimeSec * 1000);
 
-  const updatedResource: Prisma.ResourceUpdateInput = {
-    wood: resources.wood - cost.wood,
-    clay: resources.clay - cost.clay,
-    iron: resources.iron - cost.iron,
-    wheat: resources.wheat - cost.wheat,
-    lastUpdated: new Date(),
-  };
-
+  // W-014: atomic decrements protect against TOCTOU race with productionTick
   const [updatedBuilding, updatedRes] = await prisma.$transaction([
     prisma.building.update({
       where: { id: building.id },
@@ -302,7 +309,13 @@ export async function startUpgrade(
     }),
     prisma.resource.update({
       where: { villageId: village.id },
-      data: updatedResource,
+      data: {
+        wood: { decrement: cost.wood },
+        clay: { decrement: cost.clay },
+        iron: { decrement: cost.iron },
+        wheat: { decrement: cost.wheat },
+        lastUpdated: new Date(),
+      },
     }),
   ]);
 
@@ -348,7 +361,7 @@ export async function cancelUpgrade(
   const refund = getUpgradeCost(building.buildingType, targetLevel);
   if (!refund) throw new Error("Could not determine refund cost");
 
-  const res = building.village.resources;
+  // W-014: atomic increments for 100% refund
   const [updatedBuilding, updatedRes] = await prisma.$transaction([
     prisma.building.update({
       where: { id: building.id },
@@ -357,10 +370,10 @@ export async function cancelUpgrade(
     prisma.resource.update({
       where: { villageId: building.villageId },
       data: {
-        wood: Number(res.wood) + refund.wood,
-        clay: Number(res.clay) + refund.clay,
-        iron: Number(res.iron) + refund.iron,
-        wheat: Number(res.wheat) + refund.wheat,
+        wood: { increment: refund.wood },
+        clay: { increment: refund.clay },
+        iron: { increment: refund.iron },
+        wheat: { increment: refund.wheat },
         lastUpdated: new Date(),
       },
     }),
@@ -386,9 +399,7 @@ export async function cancelUpgrade(
  * Completes a build: increments level, clears timer, updates village population.
  * Returns the updated building and the villageId for WS emit.
  */
-export async function completeUpgrade(
-  buildingId: string,
-): Promise<{
+export async function completeUpgrade(buildingId: string): Promise<{
   building: { id: string; buildingType: string; newLevel: number };
   villageId: string;
 }> {
