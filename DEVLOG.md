@@ -1229,6 +1229,24 @@ Aplicados todos los issues del QA review @qa.
 
 **Verificación:** `tsc --noEmit` → EXIT:0 — 0 errores.
 
-**Pendiente:** ⚠️ @qa re-revisión de PR #21 antes de merge.
+**Pendiente:** ~~⚠️ @qa re-revisión de PR #21 antes de merge.~~ → COMPLETADO.
+
+### [2026-03-05] - QA Re-Review PR #21 — MO-06 Village UI ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #21 — `feature/MO-06-village-ui` → `develop`
+
+Re-revisión tras commits `f7df0d8` + `a0a039a` con fixes de @developer.
+
+**Verificación:**
+- **B-003** (BLOQUEANTE): `buildingByType` Map → `pickForType()` smart selector — ✅ RESUELTO
+- **W-015**: VillageGrid.tsx + .css eliminados (145 LOC dead code) — ✅ RESUELTO
+- **W-016**: AppLayout pasa `runes` a ResourceBar — ✅ RESUELTO
+- **W-017**: BuildingDetailPanel Escape key handler — ✅ RESUELTO
+- `tsc --noEmit` frontend: 0 errores
+
+**Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
+
+Informe actualizado: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
 
 _Fin del registro actual. Añade nuevas entradas debajo._

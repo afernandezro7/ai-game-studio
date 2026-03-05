@@ -6,7 +6,7 @@
 **Autor PR:** `@developer`
 **Reviewer:** `@qa`
 **Fecha:** 2026-03-05
-**Verdict:** ❌ BLOCKED — 1 bloqueante (B-003)
+**Verdict:** ✅ APPROVED (tras re-review — ver sección al final)
 
 ---
 
@@ -201,17 +201,66 @@ El mobile bottom sheet cierra con backdrop click (`onClick={onClose}`) pero no r
 
 | ID    | Severidad     | Descripción                                                            | Estado  |
 | ----- | ------------- | ---------------------------------------------------------------------- | ------- |
-| B-003 | ❌ BLOQUEANTE | `buildingByType` Map: upgrades recurso invisibles + cancel inaccesible | ABIERTO |
-| W-015 | ⚠️ Warning    | VillageGrid.tsx dead code (94 LOC no importado)                        | ABIERTO |
-| W-016 | ⚠️ Warning    | AppLayout no pasa `runes` a ResourceBar                                | ABIERTO |
-| W-017 | ⚠️ Warning    | Bottom sheet sin Escape key handler (a11y)                             | ABIERTO |
+| B-003 | ❌ BLOQUEANTE | `buildingByType` Map: upgrades recurso invisibles + cancel inaccesible | ✅ FIXED (`f7df0d8`) |
+| W-015 | ⚠️ Warning    | VillageGrid.tsx dead code (94 LOC no importado)                        | ✅ FIXED (`f7df0d8`) |
+| W-016 | ⚠️ Warning    | AppLayout no pasa `runes` a ResourceBar                                | ✅ FIXED (`f7df0d8`) |
+| W-017 | ⚠️ Warning    | Bottom sheet sin Escape key handler (a11y)                             | ✅ FIXED (`f7df0d8`) |
 
 ---
 
 ## Next Step
 
-@developer debe corregir **B-003**: reemplazar `buildingByType` en Village.tsx con selector inteligente que priorice el building con `upgradeFinishAt` y/o mayor level. @qa re-valida tras el fix.
+~~@developer debe corregir B-003~~ → COMPLETADO en `f7df0d8`.
 
 ---
 
-_Informe generado por @qa — 2026-03-05_
+## Re-Review (2026-03-05) — Commits `f7df0d8` + `a0a039a`
+
+**Verdict:** ✅ QA APPROVED
+
+### Verificación de fixes
+
+| Issue | Fix aplicado | Verificado |
+|-------|-------------|------------|
+| **B-003** | Map eliminado → `pickForType()` filtra por tipo, prioriza `upgradeFinishAt`, luego ordena por level desc. Aplicado en `selectedBuilding`, `mainBuildingLevel`, y ambos loops de resource/inner slots. | ✅ Timer visible, cancel accesible, nivel correcto para multi-slot types |
+| **W-015** | `VillageGrid.tsx` + `VillageGrid.css` eliminados (145 LOC). | ✅ Archivos eliminados, sin imports huérfanos |
+| **W-016** | `AppLayout.tsx`: añadido `const runes = useAuthStore(s => s.user?.runes ?? 0)` y pasado como prop `runes={runes}` a ResourceBar. | ✅ Runas premium visibles en barra de recursos |
+| **W-017** | `BuildingDetailPanel.tsx`: añadido `useEffect` con `keydown` handler para Escape → `onClose()`. Cleanup en return. | ✅ Panel cierra con Escape |
+
+### `pickForType` — Análisis de corrección
+
+```typescript
+function pickForType(type: string, buildings: BuildingData[]): BuildingData | undefined {
+  const ofType = buildings.filter((b) => b.buildingType === type);
+  const upgrading = ofType.find((b) => b.upgradeFinishAt);
+  if (upgrading) return upgrading;
+  return ofType.sort((a, b) => b.level - a.level)[0];
+}
+```
+
+**Escenarios validados:**
+
+| Escenario | Backend state | `pickForType` retorna | UI resultado |
+|-----------|--------------|----------------------|-------------|
+| 4 woodcutters Lv 0, ninguno upgrading | slots 0-3 Lv 0 | slot 0 (primer Lv 0) | Muestra Lv 0 ✅ |
+| slot 0 upgrading a Lv 1 | slot 0: `upgradeFinishAt=T+60s` | slot 0 (prioriza upgrading) | Timer dorado + cancel ✅ |
+| slot 0 completado (Lv 1), rest Lv 0 | slot 0: Lv 1, slots 1-3: Lv 0 | slot 0 (mayor level) | Muestra Lv 1 ✅ |
+| mainBuilding (único) | slot 18: Lv 3 | slot 18 | `mainBuildingLevel=3` ✅ |
+
+### TypeScript
+
+| Proyecto | Resultado |
+|----------|----------|
+| Frontend (`sandbox-web`) | ✅ `tsc --noEmit` — 0 errores |
+
+### Conclusión
+
+Todos los issues (1 bloqueante + 3 warnings) resueltos correctamente. Compilación limpia. `pickForType` resuelve la colisión multi-slot de forma elegante.
+
+Warnings pendientes de PRs anteriores (no afectan a MO-06): W-004, W-005, W-006, W-007, W-008, W-009.
+
+**Listo para merge a develop.**
+
+---
+
+_Informe actualizado por @qa — 2026-03-05_
