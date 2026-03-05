@@ -23,7 +23,7 @@ import "./Village.css";
  */
 function pickForType(
   type: string,
-  buildings: BuildingData[]
+  buildings: BuildingData[],
 ): BuildingData | undefined {
   const ofType = buildings.filter((b) => b.buildingType === type);
   const upgrading = ofType.find((b) => b.upgradeFinishAt);

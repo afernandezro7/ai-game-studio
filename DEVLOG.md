@@ -352,8 +352,6 @@ Se establece **Unity** como el motor target para producción (Play Store + App S
 
 ---
 
-_Fin del registro actual. Añade nuevas entradas debajo._
-
 ### [2026-02-23] - Archivist Paso 5: GDD Completo de Midgard Online
 
 **Autor:** @archivist
@@ -846,11 +844,7 @@ Re-verificación de las 2 advertencias del QA review original.
 
 ### Siguiente Paso
 
-Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
-
-_Fin del registro actual. Añade nuevas entradas debajo._
-
----
+## Mergear PR #17 a `develop`. Siguiente tarea: MO-03 — Villages (issue #9).
 
 ## MO-03 — Villages: Creación Automática + CRUD + Recursos Iniciales · 2026-02-26
 
@@ -1168,8 +1162,6 @@ Re-revisión tras commit `3b67a5b` con fixes de @developer.
 
 Informe actualizado: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
 
-_Fin del registro actual. Añade nuevas entradas debajo._
-
 ---
 
 ### [2026-03-06] - MO-06: Village UI — AppLayout + Grid + Panel de Edificio
@@ -1219,3 +1211,24 @@ Revisión completa del PR de UI de aldea (15 archivos, +1127/-245 LOC, 0 cambios
 **Acción:** @developer corregir B-003 (smart selector o buildingBySlot Map). @qa re-valida tras fix.
 
 Informe completo: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
+
+
+### [2026-03-05] - MO-06 QA Fixes — B-003 + W-015 + W-016 + W-017
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-06-village-ui`
+**Commit:** `f7df0d8`
+**PR:** #21
+
+Aplicados todos los issues del QA review @qa.
+
+- **B-003 (BLOQUEANTE):** `buildingByType` Map reemplazado por `pickForType(type, buildings)` en `Village.tsx`. Prioriza la fila con `upgradeFinishAt` activo; si no, la de mayor nivel. Los 18 slots de recurso (woodcutter×4, claypit×4, ironMine×4, farm×6) ahora muestran timer y nivel correctos.
+- **W-015:** `VillageGrid.tsx` + `VillageGrid.css` eliminados (94 LOC dead code).
+- **W-016:** `AppLayout.tsx` lee `runes` desde `useAuthStore(s.user?.runes)` y lo pasa a `<ResourceBar runes={runes} />`. ᚱ premium ya aparece en la barra sticky.
+- **W-017:** `BuildingDetailPanel.tsx` añade `useEffect` con listener `keydown → onClose()` cuando `e.key === "Escape"`. Cleanup correcto en unmount.
+
+**Verificación:** `tsc --noEmit` → EXIT:0 — 0 errores.
+
+**Pendiente:** ⚠️ @qa re-revisión de PR #21 antes de merge.
+
+_Fin del registro actual. Añade nuevas entradas debajo._
