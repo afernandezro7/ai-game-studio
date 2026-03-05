@@ -1131,4 +1131,20 @@ Warnings pendientes de PRs anteriores: W-004, W-005, W-006, W-007, W-008, W-009.
 
 Informe completo: `games/midgard-online/docs/qa-review-pr20-mo05-buildings.md`
 
+### [2026-03-05] - MO-05 QA Fixes: B-002 + W-010/W-011/W-012/W-013/W-014
+
+**Autor:** `@developer`
+**PR:** #20 — `feature/MO-05-buildings` → `develop`
+
+Corregidos todos los issues del QA Report `qa-review-pr20-mo05-buildings.md`.
+
+1. **B-002 (BLOQUEANTE) — Building seed en aldeas nuevas:** `createVillageInTx` crea 21 building rows a Lv.0 (woodcutter×4, claypit×4, ironMine×4, farm×6, mainBuilding, warehouse, granary). Sistema funcional para nuevos jugadores.
+2. **W-010 — 500 → 403:** `validateUpgrade` lanza `"Forbidden"` (igual que `cancelUpgrade`) → route handler matchea y devuelve 403.
+3. **W-011 — Tiempo efectivo:** `getVillageBuildings` retorna `effectiveBuildTimeSec` con reducción Gran Salón aplicada. `BuildingCard` muestra el tiempo real.
+4. **W-012 — Valor siguiente nivel:** `getVillageBuildings` retorna `nextLevelStats`. `BuildingPanel` usa su valor en lugar del label.
+5. **W-013 — Progress bar:** Denominador usa `effectiveBuildTimeSec` → barra empieza en 0% con Gran Salón activo.
+6. **W-014 — Atómico:** `startUpgrade` usa `{ decrement }`, `cancelUpgrade` usa `{ increment }` en Prisma.
+
+**Verificación:** `tsc --noEmit` backend ✅ + frontend ✅ — 0 errores.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
