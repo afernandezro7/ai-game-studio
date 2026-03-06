@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import api from "@/services/api";
+import { socketService } from "@/services/socketService";
 
 interface User {
   id: string;
@@ -42,6 +43,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       villageId: data.villageId ?? null,
       isAuthenticated: true,
     });
+    socketService.connect(data.token as string);
   },
 
   register: async (username, email, password) => {
@@ -60,11 +62,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       villageId: data.villageId ?? null,
       isAuthenticated: true,
     });
+    socketService.connect(data.token as string);
   },
 
   logout: () => {
     localStorage.removeItem("midgard_token");
     localStorage.removeItem("midgard_village_id");
+    socketService.disconnect();
     set({ token: null, user: null, villageId: null, isAuthenticated: false });
   },
 

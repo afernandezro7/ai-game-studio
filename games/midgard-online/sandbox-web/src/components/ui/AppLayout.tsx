@@ -7,6 +7,8 @@
 import { NavLink } from "react-router-dom";
 import ResourceBar from "@/components/resources/ResourceBar";
 import { useResources } from "@/hooks/useResources";
+import { useWebSocket } from "@/hooks/useWebSocket";
+import { ToastContainer } from "@/components/ui/Toast";
 import { useAuthStore } from "@/store/authStore";
 import "./AppLayout.css";
 
@@ -19,6 +21,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const runes = useAuthStore((s) => s.user?.runes ?? 0);
   const { wood, clay, iron, wheat, rates, caps, isFull } =
     useResources(villageId);
+
+  // WebSocket: maintain connection + village room + building toast
+  useWebSocket(villageId);
 
   return (
     <div className="app-layout">
@@ -76,6 +81,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
       {/* ── Page content ── */}
       <main className="app-content">{children}</main>
+
+      {/* ── Toast notifications ── */}
+      <ToastContainer />
     </div>
   );
 }
