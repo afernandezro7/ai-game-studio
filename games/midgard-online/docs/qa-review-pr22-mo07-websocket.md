@@ -9,9 +9,9 @@
 
 ---
 
-## Verdict: ❌ BLOCKED
+## Verdict: ✅ APPROVED (re-review commit `8b85600`)
 
-1 bug bloqueante (B-004) + 4 warnings no bloqueantes.
+Todos los issues resueltos. ~~1 bug bloqueante (B-004) + 4 warnings no bloqueantes.~~
 
 ---
 
@@ -196,11 +196,11 @@ W-006 reportaba: "WS room join sin ownership check — cualquier cliente puede e
 
 | ID | Severidad | Descripción | Archivo | Estado |
 |----|-----------|-------------|---------|--------|
-| B-004 | 🔴 BLOQUEANTE | Room re-join missing on WS reconnect | useWebSocket.ts:82 | OPEN |
-| W-018 | 🟡 Warning | Double `join_village` on mount | useWebSocket.ts + useResources.ts | OPEN |
-| W-019 | 🟡 Warning | Double `building:complete` invalidation | useWebSocket.ts + useBuildings.ts | OPEN |
-| W-020 | 🟡 Warning | `ResourcesTickPayload` type incompleto | socketServer.ts:11 | OPEN |
-| W-021 | 🟡 Warning | Toast slide-out animation missing | Toast.tsx + Toast.css | OPEN |
+| B-004 | 🔴 BLOQUEANTE | Room re-join missing on WS reconnect | useWebSocket.ts:82 | ✅ RESUELTO |
+| W-018 | 🟡 Warning | Double `join_village` on mount | useWebSocket.ts + useResources.ts | ✅ RESUELTO |
+| W-019 | 🟡 Warning | Double `building:complete` invalidation | useWebSocket.ts + useBuildings.ts | ✅ RESUELTO |
+| W-020 | 🟡 Warning | `BuildingCompletePayload` type incompleto | useWebSocket.ts | ✅ RESUELTO |
+| W-021 | 🟡 Warning | Toast slide-out animation missing | Toast.css | ✅ RESUELTO |
 
 ### Warnings de PRs anteriores (abiertos)
 
@@ -215,8 +215,17 @@ W-006 reportaba: "WS room join sin ownership check — cualquier cliente puede e
 
 ---
 
-## Acción Requerida
+## Re-Review — commit `8b85600` — ✅ APPROVED
 
-@developer corregir **B-004** — añadir re-join de village room tras reconnect del socket. Fix propuesto: añadir `isConnected` a los deps del effect de join en `useWebSocket.ts` y eliminar el ref guard.
+**Fecha:** 2026-03-06
 
-@qa re-valida tras fix.
+| Fix | Verificación |
+|-----|--------------|
+| B-004: `onDisconnect` resetea ref + `isConnected` en deps | ✅ |
+| W-018: `joinVillage`/`leaveVillage` eliminados de `useResources` | ✅ |
+| W-019: `invalidateQueries` eliminado de `useWebSocket` handler | ✅ |
+| W-020: `BuildingCompletePayload` exportado, `useQueryClient` eliminado | ✅ |
+| W-021: `@keyframes toast-slide-out` + delay 4.7s | ✅ |
+| `tsc --noEmit` frontend | EXIT:0 ✅ |
+
+**Decisión:** ✅ QA APPROVED — PR #22 listo para merge a `develop`.

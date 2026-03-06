@@ -1312,4 +1312,42 @@ Revisión completa del PR de WebSocket (11 archivos, +517/-63 LOC, 4 backend + 7
 
 Informe completo: `games/midgard-online/docs/qa-review-pr22-mo07-websocket.md`
 
+### [2026-03-06] - MO-07 QA Fixes — B-004 + W-018 + W-019 + W-020 + W-021
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-07-websocket`
+**Commit:** `8b85600`
+**PR:** #22
+
+Resueltos todos los issues del QA review de PR #22.
+
+- **B-004 (BLOQUEANTE) — Re-join tras reconexión:** `onDisconnect` resetea `joinedVillageRef.current = null` + `isConnected` añadido a los deps del effect de join. El guard sólo permite el join cuando `isConnected === true`, garantizando que tras cada reconexión se emite un nuevo `join_village`.
+- **W-018 — Double join eliminado:** `joinVillage` / `leaveVillage` eliminados de `useResources.ts`. La gestión del room está centralizada en `useWebSocket` (montado en `AppLayout`).
+- **W-019 — Double invalidation eliminada:** El handler `building:complete` de `useWebSocket` ya no llama a `invalidateQueries`. Esa responsabilidad pertenece a `useBuildings`. `useWebSocket` sólo llama a `toast()` + `setLastTick()`.
+- **W-020 — Tipo nombrado:** Exportada interfaz `BuildingCompletePayload` en `useWebSocket.ts`. Import de `useQueryClient` eliminado (ya no se necesita).
+- **W-021 — Slide-out animation:** Añadido `@keyframes toast-slide-out` en `Toast.css` con delay `4.7s` (pure CSS, sin cambios en JS).
+
+**Verificación:** `tsc --noEmit` frontend → EXIT:0 ✅
+
+---
+
+### [2026-03-06] - QA Re-Review PR #22 — MO-07 WebSocket ✅ APPROVED
+
+**Autor:** `@qa`
+**PR:** #22 — `feature/MO-07-websocket` → `develop`
+
+Re-revisión tras commit `8b85600` con fixes de @developer.
+
+**Verificación:**
+- **B-004** (BLOQUEANTE): `joinedVillageRef` reset en `onDisconnect` + `isConnected` en deps — ✅ RESUELTO
+- **W-018**: `joinVillage`/`leaveVillage` eliminados de `useResources` — ✅ RESUELTO
+- **W-019**: `invalidateQueries` eliminado de `useWebSocket.building:complete` — ✅ RESUELTO
+- **W-020**: `BuildingCompletePayload` exportado, `useQueryClient` eliminado — ✅ RESUELTO
+- **W-021**: `toast-slide-out` keyframe + delay 4.7s en `Toast.css` — ✅ RESUELTO
+- `tsc --noEmit` frontend: 0 errores ✅
+
+**Resultado:** ✅ QA APPROVED — todos los issues resueltos. Listo para merge.
+
+Informe actualizado: `games/midgard-online/docs/qa-review-pr22-mo07-websocket.md`
+
 _Fin del registro actual. Añade nuevas entradas debajo._
