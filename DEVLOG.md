@@ -1249,4 +1249,44 @@ Re-revisión tras commits `f7df0d8` + `a0a039a` con fixes de @developer.
 
 Informe actualizado: `games/midgard-online/docs/qa-review-pr21-mo06-village-ui.md`
 
+---
+
+### [2026-03-06] - MO-07: WebSocket — JWT auth + join_village + Toast
+
+**Autor:** `@developer`
+**Branch:** `feature/MO-07-websocket`
+**Commit:** `d392d50`
+**PR:** #22 — `feature/MO-07-websocket` -> `develop` (Closes #13)
+
+Implementacion completa de la integracion WebSocket con JWT auth, sala por aldea, eventos en tiempo real y sistema de notificaciones Toast.
+
+**Backend (4 archivos):**
+
+1. `src/ws/socketServer.ts` - Reescritura completa: middleware JWT en `socket.handshake.auth.token`, handler `join_village` (underscore) con validacion de ownership via Prisma, tipos exportados `ResourcesTickPayload`, `BuildingCompletePayload`, `JoinVillagePayload`, interfaz `SocketData`.
+2. `src/cron/productionTick.ts` - Redondeo a 2 decimales en emit: `Math.round(x * 100) / 100`.
+3. `src/ws/attackNotifier.ts` - Stubs v0.2.0: `notifyIncomingAttack` + `notifyAttackResolved`.
+4. `src/ws/chatHandler.ts` - Stub v0.3.0: `handleAllianceChat(socket, io)`.
+
+**Frontend (6 archivos modificados + 2 nuevos):**
+
+1. `src/services/socketService.ts` - Reescritura completa: auto-connect en constructor (resuelve timing de page refresh), `connect(token)` idempotente, `joinVillage` emite `join_village` con `{ villageId }`, `onEvent<T>` / `offEvent<T>` type-safe, getters `isConnected` + `connectionState`.
+2. `src/store/authStore.ts` - `socketService.connect(token)` tras login/register, `socketService.disconnect()` en logout.
+3. `src/hooks/useWebSocket.ts` - Reescritura: connect on token, join village room, listener `building:complete` -> toast + query invalidation, listener `resources:tick` -> `lastTick`. Retorna `{ isConnected, lastTick }`.
+4. `src/components/ui/Toast.tsx` - NUEVO: Zustand store `useToastStore`, funcion imperativa `toast(msg)`, `<ToastContainer>`, auto-dismiss 5s.
+5. `src/components/ui/Toast.css` - NUEVO: fixed bottom-right, `toast-slide-in` keyframes, fondo `--accent-gold`, responsive mobile.
+6. `src/components/ui/AppLayout.tsx` - `useWebSocket(villageId)` + `<ToastContainer />` anadidos.
+
+**Decisiones clave:**
+- `join_village` (underscore) - correccion del anterior `join:village` (colon) en ambos lados.
+- Auto-connect en constructor resuelve la race condition de page refresh: el socket existe antes del primer mount de React.
+- `leaveVillage` mantenido como no-op para compatibilidad con cleanup de `useResources`.
+- Doble listener en `building:complete` (useBuildings invalida queries; useWebSocket muestra toast) - independiente y sin side effects.
+
+**Verificacion:**
+- `tsc --noEmit` backend -> EXIT:0 OK
+- `tsc --noEmit` frontend -> EXIT:0 OK
+- 10 archivos cambiados, +477/-63 lineas
+
+**Pendiente:** @qa debe revisar y aprobar PR #22 antes de merge.
+
 _Fin del registro actual. Añade nuevas entradas debajo._
