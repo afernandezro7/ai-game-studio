@@ -78,10 +78,10 @@ async function runProductionTick(): Promise<void> {
       getIO()
         .to(`village:${village.id}`)
         .emit("resources:tick", {
-          wood: updated.wood,
-          clay: updated.clay,
-          iron: updated.iron,
-          wheat: updated.wheat,
+          wood: Math.round(updated.wood * 100) / 100,
+          clay: Math.round(updated.clay * 100) / 100,
+          iron: Math.round(updated.iron * 100) / 100,
+          wheat: Math.round(updated.wheat * 100) / 100,
           rates: {
             woodPerHour: rates.woodPerHour,
             clayPerHour: rates.clayPerHour,
