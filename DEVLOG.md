@@ -1287,6 +1287,29 @@ Implementacion completa de la integracion WebSocket con JWT auth, sala por aldea
 - `tsc --noEmit` frontend -> EXIT:0 OK
 - 10 archivos cambiados, +477/-63 lineas
 
-**Pendiente:** @qa debe revisar y aprobar PR #22 antes de merge.
+**Pendiente:** ~~@qa debe revisar y aprobar PR #22 antes de merge.~~ → En revisión.
+
+### [2026-03-06] - QA Review PR #22 — MO-07 WebSocket ❌ BLOCKED
+
+**Autor:** `@qa`
+**PR:** #22 — `feature/MO-07-websocket` → `develop`
+
+Revisión completa del PR de WebSocket (11 archivos, +517/-63 LOC, 4 backend + 7 frontend).
+
+**Issue encontrado:**
+
+- **B-004 (BLOQUEANTE):** `useWebSocket.ts:82-89` — Tras reconnect automático de Socket.io, el cliente NO re-emite `join_village` porque `joinedVillageRef.current === villageId` (guard impide re-join) y `isConnected` no está en los deps del efecto. El servidor crea un nuevo socket sin rooms, así que `resources:tick` y `building:complete` dejan de llegar al cliente. Fallo silencioso — afecta 100% de escenarios de reconexión.
+
+**Warnings:** W-018 (double `join_village`), W-019 (double query invalidation), W-020 (type incompleto), W-021 (slide-out animation falta).
+
+**Resolución de W-006 (de MO-04):** `join_village` ahora valida ownership con Prisma → **W-006 CERRADO**.
+
+**Compilación:** `tsc --noEmit` backend + frontend → 0 errores.
+
+**Criterios de aceptación:** 4/5 PASS — criterio #4 (reconexión funcional) FAIL por B-004.
+
+**Acción:** @developer corregir B-004 (añadir `isConnected` a deps del effect de join). @qa re-valida tras fix.
+
+Informe completo: `games/midgard-online/docs/qa-review-pr22-mo07-websocket.md`
 
 _Fin del registro actual. Añade nuevas entradas debajo._
