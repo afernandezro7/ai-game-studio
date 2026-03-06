@@ -26,7 +26,7 @@
   max-width: 400px;
   pointer-events: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  animation: toast-slide-in 0.25s ease-out;
+  animation: toast-slide-in 0.25s ease-out, toast-slide-out 0.3s ease-in 4.7s forwards;
 }
 
 .toast-item__message {
@@ -58,6 +58,18 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* W-021: slide-out fires at 4.7 s, completes at 5 s — matches store auto-dismiss */
+@keyframes toast-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(24px);
   }
 }
 

@@ -197,13 +197,13 @@ export function useResources(villageId: string | null): ResourceDisplay {
   useEffect(() => {
     if (!villageId) return;
 
+    // W-018: room join is managed centrally by useWebSocket (in AppLayout).
+    // This hook only attaches the event listener.
     const socket = socketService.getSocket();
-    socketService.joinVillage(villageId);
     socket?.on("resources:tick", handleTick);
 
     return () => {
       socket?.off("resources:tick", handleTick);
-      socketService.leaveVillage(villageId);
     };
   }, [villageId, handleTick]);
 

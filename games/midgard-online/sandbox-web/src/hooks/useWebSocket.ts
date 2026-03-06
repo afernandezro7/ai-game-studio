@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { socketService } from "@/services/socketService";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "@/components/ui/Toast";
@@ -34,6 +33,12 @@ const BUILDING_NAMES: Record<string, string> = {
 
 // ── Types ───────────────────────────────────────────────
 
+/** Matches the payload emitted by buildingChecker.ts */
+export interface BuildingCompletePayload {
+  buildingType: string;
+  newLevel: number;
+}
+
 export interface UseWebSocketResult {
   isConnected: boolean;
   lastTick: Date | null;
@@ -41,11 +46,8 @@ export interface UseWebSocketResult {
 
 // ── Hook ───────────────────────────────────────────────
 
-export function useWebSocket(
-  villageId: string | null,
-): UseWebSocketResult {
+export function useWebSocket(villageId: string | null): UseWebSocketResult {
   const token = useAuthStore((s) => s.token);
-  const queryClient = useQueryClient();
   const [isConnected, setIsConnected] = useState(socketService.isConnected);
   const [lastTick, setLastTick] = useState<Date | null>(null);
   const joinedVillageRef = useRef<string | null>(null);
@@ -61,7 +63,11 @@ export function useWebSocket(
     if (!socket) return;
 
     const onConnect = () => setIsConnected(true);
-    const onDisconnect = () => setIsConnected(false);
+    const onDisconnect = () => {
+      setIsConnected(false);
+      // B-004: reset ref so re-join fires when socket reconnects
+      joinedVillageRef.current = null;
+    };
     const onError = () => setIsConnected(false);
 
     socket.on("connect", onConnect);
@@ -79,40 +85,33 @@ export function useWebSocket(
   }, [token]);
 
   // ── Join village room ───────────────────────────────────
+  // B-004: isConnected in deps so this re-runs on reconnect.
+  // onDisconnect resets the ref, guaranteeing a new join_village emit.
   useEffect(() => {
-    if (!villageId) return;
+    if (!villageId || !isConnected) return;
     if (joinedVillageRef.current === villageId) return;
 
-    // Socket.io buffers emits until connected — no need to wait for isConnected
     socketService.joinVillage(villageId);
     joinedVillageRef.current = villageId;
-  }, [villageId]);
+  }, [villageId, isConnected]);
 
   // ── building:complete → toast + query invalidation ───────────────
   useEffect(() => {
     if (!villageId) return;
 
-    const handleComplete = (payload: {
-      buildingType: string;
-      newLevel: number;
-    }) => {
-      const name =
-        BUILDING_NAMES[payload.buildingType] ?? payload.buildingType;
+    // W-019: query invalidation owned by useBuildings — only toast here
+    // W-020: use named BuildingCompletePayload type
+    const handleComplete = (payload: BuildingCompletePayload) => {
+      const name = BUILDING_NAMES[payload.buildingType] ?? payload.buildingType;
       toast(`¡${name} mejorado a Nivel ${payload.newLevel}!`);
       setLastTick(new Date());
-      void queryClient.invalidateQueries({
-        queryKey: ["buildings", villageId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["resources", villageId],
-      });
     };
 
     socketService.onEvent("building:complete", handleComplete);
     return () => {
       socketService.offEvent("building:complete", handleComplete);
     };
-  }, [villageId, queryClient]);
+  }, [villageId]);
 
   // ── resources:tick → update lastTick timestamp ────────────────
   useEffect(() => {
